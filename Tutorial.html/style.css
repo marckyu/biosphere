@@ -1,0 +1,17 @@
+body{
+    background-color: rgb(163,162,165);
+}
+
+.container{
+    background:rgb(0,0,0);
+    color: white;
+}
+
+#post{
+    color: white;
+    background: blue;
+}
+
+.text-green{
+    color: greenyellow;
+}

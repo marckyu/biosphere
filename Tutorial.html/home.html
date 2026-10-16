@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<style>
+    table,tr,th,td{
+        border-width: 1px;
+        border-color: black;
+        border-style: solid;
+        text-align: center;
+    }
+    caption{
+        text-align: center;
+        caption-side: bottom;
+    }
+    thead{
+        background-color: yellow;
+    }
+    tbody{
+        background-color: red;
+    }
+    tfoot{
+        background-color: blueviolet;
+    }
+
+</style>
+<body>
+    <h1>Hello World</h1>
+    <h4>Home</h4>
+    <p>This is my first website</p>
+    <ol>
+        <li>Web dev</li>
+        <ul>
+            <li>HTML</li>
+            <li>CSS</li>
+            <li>Java script</li>
+        </ul>
+        <li>Mobile dev</li>
+        <ul>
+            <li>Java</li>
+            <li>Kotlin</li>
+        </ul>
+        <li>Game dev</li>
+        <ul>
+            <li>Python</li>
+            <li>Java</li>
+        </ul>
+    </ol>
+    <table>
+        <caption>1st Sem grade</caption>
+        <thead>
+            <tr>
+                <th rowspan="2">Name</th>
+                <th colspan="3">Subjects</th>
+            </tr>
+            <tr>
+                <td>Python</td>
+                <td>Java</td>
+                <td>C++</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>JM</td>
+                <td>93</td>
+                <td>95</td>
+                <td>92</td>
+            </tr>
+            <tr>
+                <td>Romelyn</td>
+                <td>94</td>
+                <td>95</td>
+                <td>91</td>
+            </tr>
+            <tr>
+                <td>Cristine</td>
+                <td>93</td>
+                <td>96</td>
+                <td>93</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <td colspan="4">Demo row</td>
+        </tfoot>
+    </table>
+    <br>
+    <form>
+        <input type="email" placeholder="email">
+        <br>
+        <input type="password" placeholder="password">
+        <br>
+       <input type="tel" placeholder="Telephone"> 
+       <br>
+       <input type="search" placeholder="Search"> 
+       <br>
+       <input type="url" placeholder="URL"> 
+       <br>
+       <input type="date"> 
+       <br>
+        <input type="file" accept="image/*"/> 
+        <br>
+        <input id="apple" type="checkbox">
+        <label for="apple">Apple</label>
+        <br>
+        <input id="Yes" name="answer" type="radio">
+        <label for="Yes">Yes</label>
+        <br>
+        <input id="No" name="answer" type="radio">
+        <label for="No">No</label>
+        <br>
+        <input type="button" value="click me">
+        <br>
+        <input type="reset">
+        <br>
+        <input type="range" min="0" max="100" value="100">
+        <br>
+        <input type="color">
+        <br>
+
+
+    </form>
+</body>
+</html>
