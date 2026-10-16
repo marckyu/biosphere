@@ -1,6 +1,6 @@
 /* ===== script.js ===== */
 (function() {
-  // ----- 20 Quiz Questions (with correct answer indices varied) -----
+  // ----- 20 Quiz Questions -----
   const quizData = [
     { q: "What is biodiversity?", options: ["Variety of life on Earth", "Number of humans", "Only animal species", "Weather patterns"], correct: 0 },
     { q: "Which is a major driver of biodiversity loss?", options: ["Planting trees", "Habitat destruction", "Recycling", "Solar energy"], correct: 1 },
@@ -64,6 +64,49 @@
     if (toggle) {
       toggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
     }
+  }
+
+  /* ===== MOBILE MENU TOGGLE ===== */
+  function initMobileMenu() {
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    if (!menuToggle || !navLinks) return;
+
+    menuToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = navLinks.classList.toggle('open');
+      menuToggle.classList.toggle('active', isOpen);
+      menuToggle.setAttribute('aria-expanded', isOpen);
+    });
+
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+          navLinks.classList.remove('open');
+          menuToggle.classList.remove('active');
+          menuToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= 768 &&
+          !navLinks.contains(e.target) &&
+          !menuToggle.contains(e.target) &&
+          navLinks.classList.contains('open')) {
+        navLinks.classList.remove('open');
+        menuToggle.classList.remove('active');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768 && navLinks.classList.contains('open')) {
+        navLinks.classList.remove('open');
+        menuToggle.classList.remove('active');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
   }
 
   /* ===== WORKING SEARCH FILTER ===== */
@@ -230,41 +273,19 @@
     }
   }
 
-  /* ===== CONFETTI FOR PERFECT SCORE ===== */
+  /* ===== CONFETTI ===== */
   function fireConfetti() {
     const colors = ['#0f4c5c', '#2a6f7a', '#3c6e47', '#e3b448', '#6fb87f'];
 
-    confetti({
-      particleCount: 150,
-      spread: 80,
-      origin: { y: 0.6 },
-      colors: colors
-    });
+    confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors });
 
     setTimeout(() => {
-      confetti({
-        particleCount: 100,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0, y: 0.7 },
-        colors: colors
-      });
-      confetti({
-        particleCount: 100,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1, y: 0.7 },
-        colors: colors
-      });
+      confetti({ particleCount: 100, angle: 60, spread: 55, origin: { x: 0, y: 0.7 }, colors });
+      confetti({ particleCount: 100, angle: 120, spread: 55, origin: { x: 1, y: 0.7 }, colors });
     }, 250);
 
     setTimeout(() => {
-      confetti({
-        particleCount: 80,
-        spread: 100,
-        origin: { y: 0.5 },
-        colors: colors
-      });
+      confetti({ particleCount: 80, spread: 100, origin: { y: 0.5 }, colors });
     }, 600);
   }
 
@@ -280,7 +301,7 @@
     resultDiv.innerHTML = '';
   }
 
-  /* ===== SCROLL REVEAL ANIMATIONS ===== */
+  /* ===== SCROLL REVEAL ===== */
   function initScrollReveal() {
     const revealTargets = document.querySelectorAll(
       '.card, .case-card, .ethics-item, .visual-item, .staff-member'
@@ -305,12 +326,11 @@
     document.querySelectorAll('.reveal, .section-title').forEach(el => observer.observe(el));
   }
 
-  /* ===== STAGGER DELAYS ===== */
+  /* ===== STAGGER ===== */
   function applyStagger() {
     const grids = document.querySelectorAll(
       '.article-grid, .case-grid, .ethics-list, .visual-grid, .staff-grid'
     );
-
     grids.forEach(grid => {
       [...grid.children].forEach((child, i) => {
         child.style.setProperty('--delay', `${i * 0.08}s`);
@@ -335,7 +355,7 @@
   /* ===== SCROLL SPY ===== */
   function initScrollSpy() {
     const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+    const navLinks = document.querySelectorAll('.nav-menu a[href^="#"]');
 
     const spy = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -349,6 +369,14 @@
     }, { rootMargin: '-40% 0px -55% 0px' });
 
     sections.forEach(s => spy.observe(s));
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY < 200) {
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' || link.textContent.trim() === 'Home');
+        });
+      }
+    }, { passive: true });
   }
 
   /* ===== ANIMATED COUNTERS ===== */
@@ -379,18 +407,14 @@
     let current = 0;
 
     el.textContent = '0%';
-
     const timer = setInterval(() => {
       current += increment;
-      if (current >= target) {
-        current = target;
-        clearInterval(timer);
-      }
+      if (current >= target) { current = target; clearInterval(timer); }
       el.textContent = Math.round(current) + '%';
     }, interval);
   }
 
-  /* ===== INTERACTIVE CASE STUDY MAP ===== */
+  /* ===== INTERACTIVE MAP ===== */
   function initCaseMap() {
     const mapEl = document.getElementById('caseMap');
     if (!mapEl || typeof L === 'undefined') return;
@@ -409,38 +433,15 @@
     }).addTo(map);
 
     const caseStudies = [
-      {
-        coords: [-3.4653, -62.2159],
-        location: 'Amazon Basin, Brazil',
-        title: 'Deforestation & Malaria',
-        description: 'Clearing for cattle ranches increased mosquito breeding sites and human exposure.',
-        stat: '48% rise in malaria cases'
-      },
-      {
-        coords: [8.8496, 119.9153],
-        location: 'Tubbataha Reefs, Philippines',
-        title: 'Blast Fishing & Food Security',
-        description: 'Destructive fishing decimated reefs, reducing fish catch in coastal villages.',
-        stat: '60% drop in fish catch'
-      },
-      {
-        coords: [9.9456, -9.6966],
-        location: 'Guinea, West Africa',
-        title: 'Ebola & Bushmeat',
-        description: 'Fruit bat habitat disruption linked to Ebola spillover near forest edges.',
-        stat: '70% outbreaks near forest edges'
-      }
+      { coords: [-3.4653, -62.2159], location: 'Amazon Basin, Brazil', title: 'Deforestation & Malaria', description: 'Clearing for cattle ranches increased mosquito breeding sites and human exposure.', stat: '48% rise in malaria cases' },
+      { coords: [8.8496, 119.9153], location: 'Tubbataha Reefs, Philippines', title: 'Blast Fishing & Food Security', description: 'Destructive fishing decimated reefs, reducing fish catch in coastal villages.', stat: '60% drop in fish catch' },
+      { coords: [9.9456, -9.6966], location: 'Guinea, West Africa', title: 'Ebola & Bushmeat', description: 'Fruit bat habitat disruption linked to Ebola spillover near forest edges.', stat: '70% outbreaks near forest edges' }
     ];
 
     function createIcon() {
       return L.divIcon({
         className: 'custom-marker',
-        html: `
-          <div class="marker-wrap">
-            <div class="marker-pulse"></div>
-            <div class="marker-pin"></div>
-          </div>
-        `,
+        html: `<div class="marker-wrap"><div class="marker-pulse"></div><div class="marker-pin"></div></div>`,
         iconSize: [30, 30],
         iconAnchor: [15, 30],
         popupAnchor: [0, -34]
@@ -449,31 +450,25 @@
 
     caseStudies.forEach((study, index) => {
       const marker = L.marker(study.coords, { icon: createIcon() }).addTo(map);
-
       marker.bindPopup(`
         <div class="map-popup">
-          <div class="popup-location">
-            <i class="fas fa-map-marker-alt"></i> ${study.location}
-          </div>
+          <div class="popup-location"><i class="fas fa-map-marker-alt"></i> ${study.location}</div>
           <h4>${study.title}</h4>
           <p>${study.description}</p>
           <span class="popup-stat">${study.stat}</span>
         </div>
       `);
-
-      if (index === 0) {
-        setTimeout(() => marker.openPopup(), 800);
-      }
+      if (index === 0) setTimeout(() => marker.openPopup(), 800);
     });
 
     map.on('focus click', () => map.scrollWheelZoom.enable());
     map.on('blur mouseout', () => map.scrollWheelZoom.disable());
-
     setTimeout(() => map.invalidateSize(), 500);
   }
 
   /* ----- INIT ----- */
   initThemeToggle();
+  initMobileMenu();
   initSearch();
   renderQuiz();
   initScrollReveal();
@@ -488,7 +483,7 @@
   resetBtn.addEventListener('click', resetQuiz);
 
   /* ----- Smooth nav ----- */
-  document.querySelectorAll('.nav-links a, .btn-read').forEach(link => {
+  document.querySelectorAll('.nav-menu a, .btn-read').forEach(link => {
     link.addEventListener('click', (e) => {
       const href = link.getAttribute('href');
       if (href && href.startsWith('#') && href !== '#') {
