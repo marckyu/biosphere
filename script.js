@@ -28,6 +28,9 @@
   const resultDiv = document.getElementById('quiz-result');
   const submitBtn = document.getElementById('submitQuiz');
   const resetBtn = document.getElementById('resetQuiz');
+  const answeredCounter = document.getElementById('quizAnswered');
+  const percentLabel = document.getElementById('quizPercent');
+  const progressFill = document.getElementById('quizProgressFill');
 
   /* ===== THEME TOGGLE ===== */
   function initThemeToggle() {
@@ -66,7 +69,7 @@
     }
   }
 
-  /* ===== MOBILE MENU TOGGLE ===== */
+  /* ===== MOBILE MENU ===== */
   function initMobileMenu() {
     const menuToggle = document.getElementById('menuToggle');
     const navLinks = document.getElementById('navLinks');
@@ -109,7 +112,7 @@
     });
   }
 
-  /* ===== WORKING SEARCH FILTER ===== */
+  /* ===== SEARCH ===== */
   function initSearch() {
     const input = document.getElementById('searchInput');
     const btn = document.getElementById('searchBtn');
@@ -182,7 +185,7 @@
     }
   }
 
-  /* ----- Render quiz ----- */
+  /* ===== QUIZ RENDER ===== */
   function renderQuiz() {
     let html = '';
     quizData.forEach((item, index) => {
@@ -191,9 +194,10 @@
           <p>${index + 1}. ${item.q}</p>
           <div class="quiz-options">
             ${item.options.map((opt, optIndex) => `
-              <label for="q${index}o${optIndex}">
+              <label for="q${index}o${optIndex}" class="quiz-option">
                 <input type="radio" id="q${index}o${optIndex}" name="q${index}" value="${optIndex}">
-                ${opt}
+                <span class="option-letter">${String.fromCharCode(65 + optIndex)}</span>
+                <span class="option-text">${opt}</span>
               </label>
             `).join('')}
           </div>
@@ -202,15 +206,41 @@
       `;
     });
     quizContainer.innerHTML = html;
-    resultDiv.style.display = 'none';
+
+    resultDiv.classList.remove('visible');
     resultDiv.innerHTML = '';
+
+    updateProgress();
+
+    quizContainer.querySelectorAll('input[type="radio"]').forEach(radio => {
+      radio.addEventListener('change', updateProgress);
+    });
   }
 
-  /* ----- Evaluate quiz ----- */
+  /* ===== PROGRESS ===== */
+  function updateProgress() {
+    let answered = 0;
+    quizData.forEach((_, i) => {
+      const radios = document.getElementsByName(`q${i}`);
+      for (let r of radios) {
+        if (r.checked) { answered++; break; }
+      }
+    });
+
+    const total = quizData.length;
+    const percent = Math.round(answered / total * 100);
+
+    if (answeredCounter) answeredCounter.textContent = answered;
+    if (percentLabel) percentLabel.textContent = percent + '%';
+    if (progressFill) progressFill.style.width = percent + '%';
+  }
+
+  /* ===== EVALUATE QUIZ ===== */
   function evaluateQuiz() {
     const questions = document.querySelectorAll('.quiz-question');
     let score = 0;
     let answeredAll = true;
+    let firstUnanswered = null;
 
     for (let i = 0; i < questions.length; i++) {
       const radios = document.getElementsByName(`q${i}`);
@@ -218,12 +248,23 @@
       for (let r of radios) {
         if (r.checked) { selected = r.value; break; }
       }
-      if (selected === null) { answeredAll = false; break; }
+      if (selected === null) {
+        answeredAll = false;
+        if (!firstUnanswered) firstUnanswered = questions[i];
+      }
     }
 
     if (!answeredAll) {
-      resultDiv.style.display = 'block';
-      resultDiv.innerHTML = `⚠️ Please answer all 20 questions before submitting.`;
+      resultDiv.classList.add('visible');
+      resultDiv.innerHTML = `
+        <div class="quiz-warning">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span>Please answer all 20 questions before submitting. You still have <strong>${20 - countAnswered()}</strong> unanswered.</span>
+        </div>
+      `;
+      if (firstUnanswered) {
+        firstUnanswered.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
       return;
     }
 
@@ -260,17 +301,86 @@
       }
     }
 
-    const percent = Math.round(score / 20 * 100);
-    resultDiv.style.display = 'block';
-    resultDiv.innerHTML = `✅ You scored ${score} out of 20 (${percent}%). ${
-      score === 20 ? 'Perfect! You are a biodiversity expert!' :
-      score >= 15 ? 'Great job! You have a strong understanding.' :
-      'Good start — review the articles and try again!'
-    }`;
+    showResultCard(score);
 
     if (score === 20 && typeof confetti === 'function') {
       fireConfetti();
     }
+  }
+
+  function countAnswered() {
+    let count = 0;
+    quizData.forEach((_, i) => {
+      const radios = document.getElementsByName(`q${i}`);
+      for (let r of radios) {
+        if (r.checked) { count++; break; }
+      }
+    });
+    return count;
+  }
+
+  /* ===== SCORE CARD ===== */
+  function showResultCard(score) {
+    const percent = Math.round(score / 20 * 100);
+    let icon, message;
+
+    if (score === 20) {
+      icon = '🏆';
+      message = 'Perfect! You are a biodiversity expert!';
+    } else if (score >= 15) {
+      icon = '🌟';
+      message = 'Great job! You have a strong understanding.';
+    } else if (score >= 10) {
+      icon = '👍';
+      message = 'Good work! Review the articles to sharpen your knowledge.';
+    } else {
+      icon = '📚';
+      message = 'Keep learning! Review the articles and try again.';
+    }
+
+    resultDiv.classList.add('visible');
+    resultDiv.innerHTML = `
+      <div class="quiz-result-card">
+        <span class="quiz-result-icon">${icon}</span>
+        <div class="quiz-result-score">
+          <span id="scoreNumber">0</span>
+          <span class="score-total">/ 20</span>
+        </div>
+        <div class="quiz-result-percent">${percent}%</div>
+        <p class="quiz-result-message">${message}</p>
+        <button class="quiz-result-retake" id="retakeBtn" type="button">
+          <i class="fas fa-redo-alt"></i> Retake Quiz
+        </button>
+      </div>
+    `;
+
+    animateCountUp(document.getElementById('scoreNumber'), score);
+
+    const retakeBtn = document.getElementById('retakeBtn');
+    if (retakeBtn) {
+      retakeBtn.addEventListener('click', () => {
+        resetQuiz();
+        document.getElementById('quiz').scrollIntoView({ behavior: 'smooth' });
+      });
+    }
+  }
+
+  function animateCountUp(el, target) {
+    const duration = 1200;
+    const steps = 40;
+    const increment = target / steps;
+    const interval = duration / steps;
+    let current = 0;
+    el.textContent = '0';
+
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= target) {
+        current = target;
+        clearInterval(timer);
+      }
+      el.textContent = Math.round(current);
+    }, interval);
   }
 
   /* ===== CONFETTI ===== */
@@ -289,7 +399,7 @@
     }, 600);
   }
 
-  /* ----- Reset quiz ----- */
+  /* ===== RESET QUIZ ===== */
   function resetQuiz() {
     document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
     document.querySelectorAll('.quiz-question').forEach(q => {
@@ -297,8 +407,9 @@
       const fb = q.querySelector('.answer-feedback');
       if (fb) fb.innerHTML = '';
     });
-    resultDiv.style.display = 'none';
+    resultDiv.classList.remove('visible');
     resultDiv.innerHTML = '';
+    updateProgress();
   }
 
   /* ===== SCROLL REVEAL ===== */
@@ -379,7 +490,7 @@
     }, { passive: true });
   }
 
-  /* ===== ANIMATED COUNTERS ===== */
+  /* ===== COUNTERS ===== */
   function initCounters() {
     const counters = document.querySelectorAll('.bar-value[data-target]');
     if (!counters.length) return;
@@ -414,7 +525,7 @@
     }, interval);
   }
 
-  /* ===== INTERACTIVE MAP ===== */
+  /* ===== MAP ===== */
   function initCaseMap() {
     const mapEl = document.getElementById('caseMap');
     if (!mapEl || typeof L === 'undefined') return;

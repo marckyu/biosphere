@@ -276,7 +276,23 @@
       <div class="section-title">
         <i class="fas fa-question-circle"></i> Knowledge Check · 20 Questions
       </div>
+
+      <!-- Progress Bar -->
+      <div class="quiz-progress">
+        <div class="quiz-progress-info">
+          <span class="quiz-progress-label">
+            <i class="fas fa-tasks"></i>
+            <strong id="quizAnswered">0</strong> of <strong>20</strong> answered
+          </span>
+          <span class="quiz-progress-percent" id="quizPercent">0%</span>
+        </div>
+        <div class="quiz-progress-bar">
+          <div class="quiz-progress-fill" id="quizProgressFill"></div>
+        </div>
+      </div>
+
       <div class="quiz-section" id="quizContainer"></div>
+
       <div class="quiz-actions">
         <button class="btn-primary" id="submitQuiz"><i class="fas fa-check-circle"></i> Submit Answers</button>
         <button class="btn-secondary" id="resetQuiz"><i class="fas fa-redo-alt"></i> Reset</button>
