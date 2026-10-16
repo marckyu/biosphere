@@ -27,9 +27,9 @@
   --hero-intro-bg: rgba(255, 255, 255, 0.6);
   --hero-intro-border: rgba(255, 255, 255, 0.8);
 
-  /* Glassmorphism tokens */
-  --nav-bg: rgba(15, 76, 92, 0.68);
-  --nav-blur: 32px;
+  /* Glassmorphism tokens — MORE TRANSPARENT */
+  --nav-bg: rgba(15, 76, 92, 0.42);
+  --nav-blur: 40px;
   --nav-saturate: 200%;
   --nav-border: rgba(255, 255, 255, 0.14);
   --nav-inner-glow: rgba(255, 255, 255, 0.08);
@@ -60,7 +60,7 @@
   --hero-intro-bg: rgba(255, 255, 255, 0.06);
   --hero-intro-border: rgba(255, 255, 255, 0.12);
 
-  --nav-bg: rgba(10, 20, 22, 0.65);
+  --nav-bg: rgba(10, 20, 22, 0.42);
   --nav-border: rgba(255, 255, 255, 0.08);
   --nav-inner-glow: rgba(255, 255, 255, 0.04);
   --nav-link: rgba(255, 255, 255, 0.85);
@@ -143,24 +143,12 @@ img {
   100% { transform: scale(2.6); opacity: 0; }
 }
 @keyframes slideDownSmooth {
-  from {
-    opacity: 0;
-    transform: translateY(-12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 @keyframes menuItemIn {
-  from {
-    opacity: 0;
-    transform: translateX(-12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  from { opacity: 0; transform: translateX(-12px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
 
 /* ===== SCROLL REVEAL ===== */
@@ -176,7 +164,7 @@ img {
 }
 
 /* =================================================================== */
-/* ===== NAVBAR — ENHANCED GLASSMORPHISM ===== */
+/* ===== NAVBAR — ENHANCED GLASSMORPHISM (MORE TRANSPARENT) ===== */
 /* =================================================================== */
 .navbar {
   position: sticky;
@@ -1426,7 +1414,7 @@ footer a {
     border-top: 1px solid rgba(255, 255, 255, 0.12);
   }
 
-  /* Staggered menu items — smooth entrance */
+  /* Staggered menu items */
   .nav-links.open .search-box {
     animation: menuItemIn 0.4s var(--ease-smooth) 0.05s backwards;
   }
@@ -1484,7 +1472,6 @@ footer a {
     padding-left: 13px;
   }
 
-  /* Smooth hamburger → X transition */
   .menu-toggle i {
     transition: transform 0.4s var(--ease-spring);
     display: inline-block;
