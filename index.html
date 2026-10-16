@@ -3,13 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="BioSphere — research-based educational platform about threats to biodiversity and their impact on human health and society.">
+  <meta name="theme-color" content="#0f4c5c">
+  <meta name="color-scheme" content="light dark">
   <title>BioSphere · Threats to Biodiversity & Healthy Society</title>
+
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('biosphere-theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = saved || (prefersDark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {}
+    })();
+  </script>
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- NAVIGATION -->
   <header class="navbar">
     <div class="logo">
       <i class="fas fa-leaf"></i>
@@ -24,15 +39,21 @@
       <a href="#quiz">Quiz</a>
       <a href="#staff">Staff</a>
     </div>
-    <div class="search-box">
-      <input type="text" placeholder="Search..." aria-label="Search">
-      <button><i class="fas fa-search"></i></button>
+    <div class="nav-actions">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search..." aria-label="Search articles and sections">
+        <button id="searchBtn" aria-label="Search"><i class="fas fa-search"></i></button>
+      </div>
+      <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+      </button>
     </div>
   </header>
 
   <main class="container">
 
-    <!-- HOME PAGE / COVER -->
+    <div id="searchStatus" class="search-status" role="status" aria-live="polite"></div>
+
     <section class="home-cover">
       <h1><i class="fas fa-seedling"></i> Threats to Biodiversity<br>and the Healthy Society</h1>
       <div class="subhead">A research-based educational platform · Science, Technology & Society</div>
@@ -40,14 +61,19 @@
         <p><strong>Welcome to BioSphere.</strong> Biodiversity — the variety of life on Earth — is declining at an unprecedented rate. This website translates our group's research into an accessible, engaging resource. Explore the major threats, real-world case studies, ethical dilemmas, and the deep connections between ecosystem health and human well-being. Our goal is to inform, provoke critical thinking, and inspire action.</p>
       </div>
       <div class="cover-image-placeholder">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%232a6f7a'/%3E%3Ctext x='100' y='80' font-size='14' text-anchor='middle' fill='%23ffffff' font-family='Arial'%3EForest Biodiversity%3C/text%3E%3C/svg%3E" alt="Illustration of a lush forest representing biodiversity">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%233c6e47'/%3E%3Ctext x='100' y='80' font-size='14' text-anchor='middle' fill='%23ffffff' font-family='Arial'%3EMarine Life%3C/text%3E%3C/svg%3E" alt="Illustration of marine biodiversity">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%230f4c5c'/%3E%3Ctext x='100' y='80' font-size='14' text-anchor='middle' fill='%23ffffff' font-family='Arial'%3EHuman Health%3C/text%3E%3C/svg%3E" alt="Symbol representing human health and society">
+        <div class="img-wrap">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%232a6f7a'/%3E%3Ctext x='100' y='80' font-size='14' text-anchor='middle' fill='%23ffffff' font-family='Arial'%3EForest Biodiversity%3C/text%3E%3C/svg%3E" alt="Illustration of a lush forest representing biodiversity">
+        </div>
+        <div class="img-wrap">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%233c6e47'/%3E%3Ctext x='100' y='80' font-size='14' text-anchor='middle' fill='%23ffffff' font-family='Arial'%3EMarine Life%3C/text%3E%3C/svg%3E" alt="Illustration of marine biodiversity">
+        </div>
+        <div class="img-wrap">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%230f4c5c'/%3E%3Ctext x='100' y='80' font-size='14' text-anchor='middle' fill='%23ffffff' font-family='Arial'%3EHuman Health%3C/text%3E%3C/svg%3E" alt="Symbol representing human health and society">
+        </div>
       </div>
       <p class="alt-text-note"><i class="fas fa-image"></i> Visual: forest, marine, and human health icons</p>
     </section>
 
-    <!-- ADVERTISEMENT -->
     <div class="ad-banner">
       <div class="ad-text">
         <h3><i class="fas fa-microchip"></i> EcoTech Innovation Summit 2025</h3>
@@ -58,20 +84,18 @@
       </div>
     </div>
 
-    <!-- MAIN HEADLINE ARTICLE -->
     <section id="headline">
       <div class="section-title">
         <i class="fas fa-newspaper"></i> Main Headline
       </div>
       <div class="card" style="border-left: 10px solid var(--accent);">
-        <h3><i class="fas fa-exclamation-triangle"></i> “The Silent Crisis: How Biodiversity Loss Threatens Global Health”</h3>
+        <h3><i class="fas fa-exclamation-triangle"></i> "The Silent Crisis: How Biodiversity Loss Threatens Global Health"</h3>
         <div class="meta"><i class="fas fa-user"></i> By Research Team · <i class="fas fa-calendar"></i> May 2025</div>
         <p>New research reveals that the rapid decline of species isn't just an environmental issue — it directly fuels the spread of infectious diseases, reduces food security, and undermines mental well-being. This headline article synthesizes our group's findings: habitat destruction, climate change, and pollution are driving a sixth mass extinction. We explore the scientific evidence linking biodiversity loss to zoonotic spillover, loss of medicinal resources, and the collapse of ecosystem services that keep humanity healthy. The message is clear: protecting nature is protecting ourselves.</p>
         <button class="btn-read"><i class="fas fa-book-open"></i> Read full headline</button>
       </div>
     </section>
 
-    <!-- RESEARCH-BASED ARTICLES (5 additional) -->
     <section id="articles">
       <div class="section-title">
         <i class="fas fa-file-alt"></i> Research Articles
@@ -110,7 +134,6 @@
       </div>
     </section>
 
-    <!-- VISUAL MATERIALS -->
     <div class="section-title">
       <i class="fas fa-chart-pie"></i> Visual Materials
     </div>
@@ -120,9 +143,18 @@
         <h4>Species decline</h4>
         <p>Bar chart: 68% average population drop in monitored vertebrates (1970–2020).</p>
         <div class="bar-chart">
-          <div><div class="bar" style="height: 100px;"></div><div class="bar-label">1970</div></div>
-          <div><div class="bar" style="height: 70px;"></div><div class="bar-label">1990</div></div>
-          <div><div class="bar" style="height: 40px;"></div><div class="bar-label">2020</div></div>
+          <div>
+            <div class="bar" style="height: 100px;"><span class="bar-value" data-target="100">0%</span></div>
+            <div class="bar-label">1970</div>
+          </div>
+          <div>
+            <div class="bar" style="height: 70px;"><span class="bar-value" data-target="70">0%</span></div>
+            <div class="bar-label">1990</div>
+          </div>
+          <div>
+            <div class="bar" style="height: 40px;"><span class="bar-value" data-target="40">0%</span></div>
+            <div class="bar-label">2020</div>
+          </div>
         </div>
       </div>
       <div class="visual-item">
@@ -142,7 +174,7 @@
       <div class="visual-item">
         <i class="fas fa-video"></i>
         <h4>Video</h4>
-        <p>“Biodiversity & Pandemics” (4 min) — animation.</p>
+        <p>"Biodiversity & Pandemics" (4 min) — animation.</p>
         <i class="fas fa-play-circle" style="font-size: 2.2rem; color: var(--primary);"></i>
       </div>
       <div class="visual-item">
@@ -157,11 +189,18 @@
       </div>
     </div>
 
-    <!-- CASE STUDIES -->
     <section id="cases">
       <div class="section-title">
         <i class="fas fa-map-pin"></i> Case Studies & Examples
       </div>
+
+      <div class="case-map-wrapper">
+        <div id="caseMap" role="region" aria-label="Interactive world map showing biodiversity case study locations"></div>
+        <p class="map-hint">
+          <i class="fas fa-mouse-pointer"></i> Click any marker to see the case study details
+        </p>
+      </div>
+
       <div class="case-grid">
         <div class="case-card">
           <div class="location"><i class="fas fa-map-marker-alt"></i> Amazon Basin, Brazil</div>
@@ -169,19 +208,18 @@
           <p>Clearing for cattle ranches increased mosquito breeding sites and human exposure. Malaria cases rose 48% in newly deforested areas (2009–2019).</p>
         </div>
         <div class="case-card">
-          <div class="location"><i class="fas fa-map-marker-alt"></i> Philippines, Coral Triangle</div>
+          <div class="location"><i class="fas fa-map-marker-alt"></i> Tubbataha Reefs, Philippines</div>
           <h4>Blast Fishing & Food Security</h4>
           <p>Destructive fishing decimated reefs, reducing fish catch by 60% in some villages. Communities lost protein sources and income.</p>
         </div>
         <div class="case-card">
-          <div class="location"><i class="fas fa-map-marker-alt"></i> West Africa</div>
+          <div class="location"><i class="fas fa-map-marker-alt"></i> Guinea, West Africa</div>
           <h4>Ebola & Bushmeat</h4>
           <p>Fruit bat habitat disruption linked to Ebola spillover. Study shows 70% of outbreaks originated near forest edges.</p>
         </div>
       </div>
     </section>
 
-    <!-- ETHICAL & SOCIAL ISSUES -->
     <section id="ethics">
       <div class="section-title">
         <i class="fas fa-balance-scale"></i> Ethical & Social Issues
@@ -210,14 +248,11 @@
       </div>
     </section>
 
-    <!-- INTERACTIVE KNOWLEDGE CHECK (20 questions) -->
     <section id="quiz">
       <div class="section-title">
         <i class="fas fa-question-circle"></i> Knowledge Check · 20 Questions
       </div>
-      <div class="quiz-section" id="quizContainer">
-        <!-- questions injected by JS -->
-      </div>
+      <div class="quiz-section" id="quizContainer"></div>
       <div class="quiz-actions">
         <button class="btn-primary" id="submitQuiz"><i class="fas fa-check-circle"></i> Submit Answers</button>
         <button class="btn-secondary" id="resetQuiz"><i class="fas fa-redo-alt"></i> Reset</button>
@@ -225,7 +260,6 @@
       <div id="quiz-result"></div>
     </section>
 
-    <!-- EDITORIAL STAFF / ABOUT US -->
     <section id="staff">
       <div class="section-title">
         <i class="fas fa-users"></i> Editorial Staff / About Us
@@ -271,7 +305,6 @@
       <p style="text-align: center; color: var(--text-light); margin-top: 1rem;">All members contributed to research, writing, and review. We follow strict research ethics and cite all sources.</p>
     </section>
 
-    <!-- REFERENCES -->
     <div class="section-title">
       <i class="fas fa-book"></i> References & Sources
     </div>
@@ -284,6 +317,7 @@
         <li>Philippine Biodiversity Conservation Priorities (2020).</li>
         <li>Additional group research findings, 2025 (unpublished).</li>
         <li>Images: original SVG graphics by team; icons from Font Awesome (CC BY 4.0).</li>
+        <li>Map tiles: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors; powered by <a href="https://leafletjs.com/" target="_blank" rel="noopener">Leaflet</a>.</li>
       </ul>
     </div>
 
@@ -294,6 +328,12 @@
     <p><i class="fas fa-leaf"></i> Accessible · Research-based · Ethical</p>
   </footer>
 
+  <button id="backToTop" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
