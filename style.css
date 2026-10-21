@@ -81,6 +81,7 @@ body {
   transition: background 0.5s var(--ease-fluid), color 0.5s var(--ease-fluid);
   overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
+  position: relative;
 }
 
 a {
@@ -98,6 +99,54 @@ img {
   height: auto;
   display: block;
   border-radius: 12px;
+}
+
+/* ===== SCROLL PROGRESS BAR ===== */
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 4px;
+  background: linear-gradient(to right, var(--primary), var(--accent));
+  z-index: 9999;
+  transition: width 0.1s ease-out;
+}
+
+/* ===== BACKGROUND SHAPES ===== */
+.bg-shape {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: -1;
+  opacity: 0.4;
+  animation: floatShape 20s infinite alternate;
+}
+.shape-1 { width: 400px; height: 400px; background: var(--primary-light); top: 10%; left: -10%; }
+.shape-2 { width: 300px; height: 300px; background: var(--accent); bottom: 20%; right: -5%; animation-delay: -5s; }
+.shape-3 { width: 250px; height: 250px; background: var(--secondary); top: 50%; left: 30%; animation-delay: -10s; }
+
+@keyframes floatShape {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(50px, 50px) scale(1.1); }
+  100% { transform: translate(-50px, 100px) scale(0.9); }
+}
+
+/* ===== SCROLL REVEAL ANIMATIONS ===== */
+.reveal, .reveal-left, .reveal-right, .reveal-scale {
+  opacity: 0;
+  transition: opacity 0.8s var(--ease-fluid), transform 0.8s var(--ease-spring);
+  will-change: opacity, transform;
+}
+
+.reveal { transform: translateY(40px); }
+.reveal-left { transform: translateX(-50px); }
+.reveal-right { transform: translateX(50px); }
+.reveal-scale { transform: scale(0.85); }
+
+.reveal.visible, .reveal-left.visible, .reveal-right.visible, .reveal-scale.visible {
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
 }
 
 @keyframes fadeUp {
@@ -147,19 +196,7 @@ img {
   to   { opacity: 1; transform: translateX(0); }
 }
 
-.reveal {
-  opacity: 0;
-  transform: translateY(30px) scale(0.98);
-  transition: opacity 0.6s var(--ease-snappy), transform 0.6s var(--ease-spring);
-  transition-delay: var(--delay, 0s);
-  will-change: opacity, transform;
-}
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
-
-/* ===== ULTRA SMOOTH 3D TILT & GLARE ===== */
+/* ===== 3D TILT & GLARE ===== */
 .interactive-card {
   position: relative;
   transform-style: preserve-3d;
@@ -186,7 +223,7 @@ img {
 [data-theme="dark"] .interactive-card::before {
   background: radial-gradient(
     800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.08),
     transparent 40%
   );
 }
@@ -581,8 +618,6 @@ img {
   margin-bottom: 0.8rem;
   font-weight: 800;
   letter-spacing: -1px;
-  animation: fadeUp 0.8s var(--ease-spring) forwards;
-  opacity: 0;
 }
 
 .home-cover h1 i {
@@ -597,8 +632,6 @@ img {
   margin-bottom: 1.8rem;
   font-weight: 400;
   max-width: 800px;
-  animation: fadeUp 0.8s var(--ease-spring) 0.1s forwards;
-  opacity: 0;
 }
 
 .home-cover .intro-text {
@@ -609,8 +642,6 @@ img {
   backdrop-filter: blur(4px);
   margin-bottom: 2rem;
   border: 1px solid var(--hero-intro-border);
-  animation: fadeUp 0.8s var(--ease-spring) 0.2s forwards;
-  opacity: 0;
 }
 
 .cover-image-placeholder {
@@ -623,8 +654,7 @@ img {
 
 .img-wrap {
   display: inline-block;
-  animation: fadeUp 0.8s var(--ease-spring) 0.3s forwards;
-  opacity: 0;
+  will-change: transform;
 }
 
 .cover-image-placeholder img {
@@ -1396,18 +1426,6 @@ img {
   will-change: transform, box-shadow;
 }
 
-.staff-member.reveal {
-  opacity: 0;
-  transform: translateY(30px) scale(0.95);
-  transition: opacity 0.6s var(--ease-spring), transform 0.6s var(--ease-bounce);
-  transition-delay: var(--delay, 0s);
-}
-
-.staff-member.reveal.visible {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
-
 .staff-member:hover {
   transform: translateY(-8px) scale(1.03);
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
@@ -2029,7 +2047,10 @@ footer a {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  .reveal { opacity: 1 !important; transform: none !important; }
+  .reveal, .reveal-left, .reveal-right, .reveal-scale {
+    opacity: 1 !important;
+    transform: none !important;
+  }
   .home-cover h1,
   .home-cover .subhead,
   .home-cover .intro-text,

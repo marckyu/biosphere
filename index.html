@@ -25,6 +25,14 @@
 </head>
 <body>
 
+  <!-- SCROLL PROGRESS BAR -->
+  <div id="scroll-progress"></div>
+
+  <!-- BACKGROUND FLOATING SHAPES -->
+  <div class="bg-shape shape-1"></div>
+  <div class="bg-shape shape-2"></div>
+  <div class="bg-shape shape-3"></div>
+
   <header class="navbar">
     <div class="nav-top">
       <a href="#home" class="logo" aria-label="BioSphere home">
@@ -62,27 +70,27 @@
   <main class="container">
     <div id="searchStatus" class="search-status" role="status" aria-live="polite"></div>
 
-    <section id="home" class="home-cover interactive-card">
-      <h1><i class="fas fa-seedling"></i> Threats to Biodiversity<br>and the Healthy Society</h1>
-      <div class="subhead">A research-based educational platform · Science, Technology & Society</div>
-      <div class="intro-text">
+    <section id="home" class="home-cover">
+      <h1 class="reveal-left"><i class="fas fa-seedling"></i> Threats to Biodiversity<br>and the Healthy Society</h1>
+      <div class="subhead reveal-left" style="transition-delay: 0.1s;">A research-based educational platform · Science, Technology & Society</div>
+      <div class="intro-text reveal-left" style="transition-delay: 0.2s;">
         <p><strong>Welcome to BioSphere.</strong> Biodiversity — the variety of life on Earth — is declining at an unprecedented rate. This website translates our group's research into an accessible, engaging resource. Explore the major threats, real-world case studies, ethical dilemmas, and the deep connections between ecosystem health and human well-being. Our goal is to inform, provoke critical thinking, and inspire action.</p>
       </div>
       <div class="cover-image-placeholder">
-        <div class="img-wrap">
+        <div class="img-wrap reveal-scale" data-parallax="0.05">
           <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%232a6f7a'/%3E%3Ctext x='100' y='80' font-size='14' text-anchor='middle' fill='%23ffffff' font-family='Arial'%3EForest Biodiversity%3C/text%3E%3C/svg%3E" alt="Illustration of a lush forest representing biodiversity">
         </div>
-        <div class="img-wrap">
+        <div class="img-wrap reveal-scale" style="transition-delay: 0.1s;" data-parallax="0.1">
           <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%233c6e47'/%3E%3Ctext x='100' y='80' font-size='14' text-anchor='middle' fill='%23ffffff' font-family='Arial'%3EMarine Life%3C/text%3E%3C/svg%3E" alt="Illustration of marine biodiversity">
         </div>
-        <div class="img-wrap">
+        <div class="img-wrap reveal-scale" style="transition-delay: 0.2s;" data-parallax="0.15">
           <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%230f4c5c'/%3E%3Ctext x='100' y='80' font-size='14' text-anchor='middle' fill='%23ffffff' font-family='Arial'%3EHuman Health%3C/text%3E%3C/svg%3E" alt="Symbol representing human health and society">
         </div>
       </div>
-      <p class="alt-text-note"><i class="fas fa-image"></i> Visual: forest, marine, and human health icons</p>
+      <p class="alt-text-note reveal"><i class="fas fa-image"></i> Visual: forest, marine, and human health icons</p>
     </section>
 
-    <div class="ad-banner interactive-card">
+    <div class="ad-banner interactive-card reveal-right">
       <div class="ad-text">
         <h3><i class="fas fa-microchip"></i> EcoTech Innovation Summit 2025</h3>
         <p>Join the global movement merging AI, biotech, and conservation. Learn how technology can restore biodiversity.</p>
@@ -93,10 +101,10 @@
     </div>
 
     <section id="headline">
-      <div class="section-title">
+      <div class="section-title reveal">
         <i class="fas fa-newspaper"></i> Main Headline
       </div>
-      <div class="card interactive-card" style="border-left: 10px solid var(--accent);">
+      <div class="card interactive-card reveal" style="border-left: 10px solid var(--accent);">
         <h3><i class="fas fa-exclamation-triangle"></i> "The Silent Crisis: How Biodiversity Loss Threatens Global Health"</h3>
         <div class="meta"><i class="fas fa-user"></i> By Research Team · <i class="fas fa-calendar"></i> May 2025</div>
         <p>New research reveals that the rapid decline of species isn't just an environmental issue — it directly fuels the spread of infectious diseases, reduces food security, and undermines mental well-being. This headline article synthesizes our group's findings: habitat destruction, climate change, and pollution are driving a sixth mass extinction. We explore the scientific evidence linking biodiversity loss to zoonotic spillover, loss of medicinal resources, and the collapse of ecosystem services that keep humanity healthy. The message is clear: protecting nature is protecting ourselves.</p>
@@ -105,35 +113,35 @@
     </section>
 
     <section id="articles">
-      <div class="section-title">
+      <div class="section-title reveal">
         <i class="fas fa-file-alt"></i> Research Articles
       </div>
       <div class="article-grid">
-        <article class="card interactive-card">
+        <article class="card interactive-card reveal">
           <h3><i class="fas fa-tree"></i> Deforestation & Zoonotic Spillover</h3>
           <div class="meta"><i class="fas fa-flask"></i> Research finding</div>
           <p>Land-use change forces wildlife into closer contact with humans, increasing the risk of viruses jumping species. Our analysis of 40 studies shows a 32% rise in emerging infectious diseases in deforested regions.</p>
           <button class="btn-read"><i class="fas fa-arrow-right"></i> Read more</button>
         </article>
-        <article class="card interactive-card">
+        <article class="card interactive-card reveal" style="transition-delay: 0.1s;">
           <h3><i class="fas fa-fish"></i> Coral Reefs: Medicine Cabinets of the Sea</h3>
           <div class="meta"><i class="fas fa-flask"></i> Health implication</div>
           <p>Reefs host compounds used in cancer and pain treatments. With 50% of reefs degraded, we risk losing undiscovered cures. The article highlights promising drugs from marine organisms.</p>
           <button class="btn-read"><i class="fas fa-arrow-right"></i> Read more</button>
         </article>
-        <article class="card interactive-card">
+        <article class="card interactive-card reveal" style="transition-delay: 0.2s;">
           <h3><i class="fas fa-dna"></i> Agrobiodiversity & Food Security</h3>
           <div class="meta"><i class="fas fa-flask"></i> Current issue</div>
           <p>Monocultures and loss of traditional crop varieties make food systems vulnerable to pests and climate shocks. We examine the narrowing genetic base of global staples.</p>
           <button class="btn-read"><i class="fas fa-arrow-right"></i> Read more</button>
         </article>
-        <article class="card interactive-card">
+        <article class="card interactive-card reveal" style="transition-delay: 0.3s;">
           <h3><i class="fas fa-city"></i> Urbanization vs. Native Pollinators</h3>
           <div class="meta"><i class="fas fa-flask"></i> Environmental implication</div>
           <p>Concrete jungles fragment habitats. Our study in Metro Manila shows a 45% decline in bee diversity, threatening local fruit and vegetable production.</p>
           <button class="btn-read"><i class="fas fa-arrow-right"></i> Read more</button>
         </article>
-        <article class="card interactive-card">
+        <article class="card interactive-card reveal" style="transition-delay: 0.4s;">
           <h3><i class="fas fa-globe-asia"></i> Climate Change as a Threat Multiplier</h3>
           <div class="meta"><i class="fas fa-flask"></i> Expert perspective</div>
           <p>Rising temperatures shift species ranges and disrupt life cycles. We present projections for Southeast Asia's biodiversity hotspots and the consequences for human health.</p>
@@ -142,11 +150,11 @@
       </div>
     </section>
 
-    <div class="section-title">
+    <div class="section-title reveal">
       <i class="fas fa-chart-pie"></i> Visual Materials
     </div>
     <div class="visual-grid">
-      <div class="visual-item interactive-card">
+      <div class="visual-item interactive-card reveal-scale">
         <i class="fas fa-chart-bar"></i>
         <h4>Species decline</h4>
         <p>Bar chart: 68% average population drop in monitored vertebrates (1970–2020).</p>
@@ -165,7 +173,7 @@
           </div>
         </div>
       </div>
-      <div class="visual-item interactive-card">
+      <div class="visual-item interactive-card reveal-scale" style="transition-delay: 0.1s;">
         <i class="fas fa-clock"></i>
         <h4>Timeline: Key events</h4>
         <div class="timeline" style="flex-direction: column; gap: 0.5rem;">
@@ -174,23 +182,23 @@
           <div class="timeline-item"><span class="year">2022</span> Kunming-Montreal Framework</div>
         </div>
       </div>
-      <div class="visual-item interactive-card">
+      <div class="visual-item interactive-card reveal-scale" style="transition-delay: 0.2s;">
         <i class="fas fa-project-diagram"></i>
         <h4>Diagram: Ecosystem services</h4>
         <p>Provisioning, regulating, cultural, supporting — arrows to human health.</p>
       </div>
-      <div class="visual-item interactive-card">
+      <div class="visual-item interactive-card reveal-scale" style="transition-delay: 0.3s;">
         <i class="fas fa-video"></i>
         <h4>Video</h4>
         <p>"Biodiversity & Pandemics" (4 min) — animation.</p>
         <i class="fas fa-play-circle" style="font-size: 2.2rem; color: var(--primary);"></i>
       </div>
-      <div class="visual-item interactive-card">
+      <div class="visual-item interactive-card reveal-scale" style="transition-delay: 0.4s;">
         <i class="fas fa-icons"></i>
         <h4>Icons & Infographics</h4>
         <p>Icon set: deforestation, pollution, overexploitation.</p>
       </div>
-      <div class="visual-item interactive-card">
+      <div class="visual-item interactive-card reveal-scale" style="transition-delay: 0.5s;">
         <i class="fas fa-camera"></i>
         <h4>Photographs</h4>
         <p>Before/after habitat loss imagery (used with permission).</p>
@@ -198,11 +206,11 @@
     </div>
 
     <section id="cases">
-      <div class="section-title">
+      <div class="section-title reveal">
         <i class="fas fa-map-pin"></i> Case Studies & Examples
       </div>
 
-      <div class="case-map-wrapper interactive-card">
+      <div class="case-map-wrapper interactive-card reveal">
         <div id="caseMap" role="region" aria-label="Interactive world map showing biodiversity case study locations"></div>
         <p class="map-hint">
           <i class="fas fa-mouse-pointer"></i> Click any marker to see the case study details
@@ -210,17 +218,17 @@
       </div>
 
       <div class="case-grid">
-        <div class="case-card interactive-card">
+        <div class="case-card interactive-card reveal">
           <div class="location"><i class="fas fa-map-marker-alt"></i> Amazon Basin, Brazil</div>
           <h4>Deforestation & Malaria</h4>
           <p>Clearing for cattle ranches increased mosquito breeding sites and human exposure. Malaria cases rose 48% in newly deforested areas (2009–2019).</p>
         </div>
-        <div class="case-card interactive-card">
+        <div class="case-card interactive-card reveal" style="transition-delay: 0.1s;">
           <div class="location"><i class="fas fa-map-marker-alt"></i> Tubbataha Reefs, Philippines</div>
           <h4>Blast Fishing & Food Security</h4>
           <p>Destructive fishing decimated reefs, reducing fish catch by 60% in some villages. Communities lost protein sources and income.</p>
         </div>
-        <div class="case-card interactive-card">
+        <div class="case-card interactive-card reveal" style="transition-delay: 0.2s;">
           <div class="location"><i class="fas fa-map-marker-alt"></i> Guinea, West Africa</div>
           <h4>Ebola & Bushmeat</h4>
           <p>Fruit bat habitat disruption linked to Ebola spillover. Study shows 70% of outbreaks originated near forest edges.</p>
@@ -229,26 +237,26 @@
     </section>
 
     <section id="ethics">
-      <div class="section-title">
+      <div class="section-title reveal">
         <i class="fas fa-balance-scale"></i> Ethical & Social Issues
       </div>
       <div class="ethics-list">
-        <div class="ethics-item interactive-card">
+        <div class="ethics-item interactive-card reveal-left">
           <i class="fas fa-hand-holding-heart"></i>
           <h4>Intrinsic value of nature</h4>
           <p>Do species have a right to exist beyond their utility to humans? Ethical frameworks challenge purely economic arguments.</p>
         </div>
-        <div class="ethics-item interactive-card">
+        <div class="ethics-item interactive-card reveal-left" style="transition-delay: 0.1s;">
           <i class="fas fa-users"></i>
           <h4>Environmental justice</h4>
           <p>Marginalized communities often bear the brunt of biodiversity loss and pollution, while contributing least to the drivers.</p>
         </div>
-        <div class="ethics-item interactive-card">
+        <div class="ethics-item interactive-card reveal-right" style="transition-delay: 0.2s;">
           <i class="fas fa-dna"></i>
           <h4>Genetic modification & conservation</h4>
           <p>Should we use gene drives to save species? Debates on unintended consequences and hubris.</p>
         </div>
-        <div class="ethics-item interactive-card">
+        <div class="ethics-item interactive-card reveal-right" style="transition-delay: 0.3s;">
           <i class="fas fa-chart-line"></i>
           <h4>Sustainable development</h4>
           <p>Balancing economic growth with ecosystem protection — challenges for policy and individual choices.</p>
@@ -257,11 +265,11 @@
     </section>
 
     <section id="quiz">
-      <div class="section-title">
+      <div class="section-title reveal">
         <i class="fas fa-question-circle"></i> Knowledge Check · 20 Questions
       </div>
 
-      <div class="quiz-progress interactive-card">
+      <div class="quiz-progress interactive-card reveal">
         <div class="quiz-progress-info">
           <span class="quiz-progress-label">
             <i class="fas fa-tasks"></i>
@@ -274,9 +282,9 @@
         </div>
       </div>
 
-      <div class="quiz-section interactive-card" id="quizContainer"></div>
+      <div class="quiz-section interactive-card reveal" id="quizContainer"></div>
 
-      <div class="quiz-actions">
+      <div class="quiz-actions reveal">
         <button class="btn-primary" id="submitQuiz"><i class="fas fa-check-circle"></i> Submit Answers</button>
         <button class="btn-secondary" id="resetQuiz"><i class="fas fa-redo-alt"></i> Reset</button>
       </div>
@@ -284,11 +292,11 @@
     </section>
 
     <section id="staff">
-      <div class="section-title">
+      <div class="section-title reveal">
         <i class="fas fa-users"></i> Editorial Staff / About Us
       </div>
       <div class="staff-grid">
-        <div class="staff-member interactive-card">
+        <div class="staff-member interactive-card reveal-scale">
           <div class="staff-avatar">
             <img src="addriane.jpg" alt="Portrait of Addriane Quintela">
           </div>
@@ -296,25 +304,25 @@
           <div class="role">Lead Researcher & Writer</div>
           <p>Main headline, case studies</p>
         </div>
-        <div class="staff-member interactive-card">
+        <div class="staff-member interactive-card reveal-scale" style="transition-delay: 0.1s;">
           <i class="fas fa-user-edit"></i>
           <h4>Camille Osinsao</h4>
           <div class="role">Research & Data Analyst</div>
           <p>Infographics, charts, references</p>
         </div>
-        <div class="staff-member interactive-card">
+        <div class="staff-member interactive-card reveal-scale" style="transition-delay: 0.2s;">
           <i class="fas fa-user-graduate"></i>
           <h4>Aleah Talusan</h4>
           <div class="role">Ethics & Society Editor</div>
           <p>Ethical section, social implications</p>
         </div>
-        <div class="staff-member interactive-card">
+        <div class="staff-member interactive-card reveal-scale" style="transition-delay: 0.3s;">
           <i class="fas fa-laptop-code"></i>
           <h4>Moschin Talusan</h4>
           <div class="role">Web Developer</div>
           <p>HTML/CSS/JS, interactive quiz</p>
         </div>
-        <div class="staff-member interactive-card">
+        <div class="staff-member interactive-card reveal-scale" style="transition-delay: 0.4s;">
           <div class="staff-avatar">
             <img src="asuncion.jpg" alt="Portrait of Johnmarc Asuncion">
           </div>
@@ -322,7 +330,7 @@
           <div class="role">Web Developer</div>
           <p>HTML/CSS/JS, interactive quiz</p>
         </div>
-        <div class="staff-member interactive-card">
+        <div class="staff-member interactive-card reveal-scale" style="transition-delay: 0.5s;">
           <div class="staff-avatar">
             <img src="marivic.jpg" alt="Portrait of Marivic Quikelez">
           </div>
@@ -331,13 +339,13 @@
           <p>Images, video, alt text</p>
         </div>
       </div>
-      <p style="text-align: center; color: var(--text-light); margin-top: 1rem;">All members contributed to research, writing, and review. We follow strict research ethics and cite all sources.</p>
+      <p class="reveal" style="text-align: center; color: var(--text-light); margin-top: 1rem;">All members contributed to research, writing, and review. We follow strict research ethics and cite all sources.</p>
     </section>
 
-    <div class="section-title">
+    <div class="section-title reveal">
       <i class="fas fa-book"></i> References & Sources
     </div>
-    <div class="references">
+    <div class="references interactive-card reveal">
       <ul>
         <li>IPBES (2019). Global Assessment Report on Biodiversity and Ecosystem Services.</li>
         <li>WHO (2021). Biodiversity and Health.</li>

@@ -390,15 +390,40 @@
     updateProgress();
   }
 
+  /* ===== SCROLL PROGRESS BAR ===== */
+  function initScrollProgress() {
+    const bar = document.getElementById('scroll-progress');
+    if (!bar) return;
+    
+    window.addEventListener('scroll', () => {
+      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (scrollTop / scrollHeight) * 100;
+      bar.style.width = scrolled + '%';
+    }, { passive: true });
+  }
+
+  /* ===== PARALLAX EFFECT ===== */
+  function initParallax() {
+    const elements = document.querySelectorAll('[data-parallax]');
+    if (!elements.length) return;
+
+    window.addEventListener('scroll', () => {
+      requestAnimationFrame(() => {
+        const scrollY = window.scrollY;
+        elements.forEach(el => {
+          const speed = parseFloat(el.getAttribute('data-parallax'));
+          const yPos = -(scrollY * speed);
+          el.style.transform = `translateY(${yPos}px)`;
+        });
+      });
+    }, { passive: true });
+  }
+
+  /* ===== SCROLL REVEAL (WITH DIRECTION & STAGGER) ===== */
   function initScrollReveal() {
-    const revealTargets = document.querySelectorAll(
-      '.card, .case-card, .ethics-item, .visual-item, .staff-member'
-    );
-
-    revealTargets.forEach(el => {
-      if (!el.classList.contains('reveal')) el.classList.add('reveal');
-    });
-
+    const targets = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .section-title');
+    
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -408,21 +433,10 @@
       });
     }, {
       threshold: 0.1,
-      rootMargin: '0px 0px -40px 0px'
+      rootMargin: '0px 0px -50px 0px'
     });
 
-    document.querySelectorAll('.reveal, .section-title').forEach(el => observer.observe(el));
-  }
-
-  function applyStagger() {
-    const grids = document.querySelectorAll(
-      '.article-grid, .case-grid, .ethics-list, .visual-grid, .staff-grid'
-    );
-    grids.forEach(grid => {
-      [...grid.children].forEach((child, i) => {
-        child.style.setProperty('--delay', `${i * 0.08}s`);
-      });
-    });
+    targets.forEach(el => observer.observe(el));
   }
 
   function initBackToTop() {
@@ -563,7 +577,7 @@
     setTimeout(() => map.invalidateSize(), 400);
   }
 
-  /* ===== ULTRA SMOOTH 3D TILT FOR ALL CARDS ===== */
+  /* ===== 3D TILT & GLARE FOR ALL CARDS ===== */
   function init3DTilt() {
     const cards = document.querySelectorAll('.interactive-card');
     if (!cards.length) return;
@@ -577,7 +591,6 @@
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
         
-        // Mas mababa ang rotate (8 degrees max) para hindi masyadong hilo at malabo ang text
         const rotateX = ((y - centerY) / centerY) * -8;
         const rotateY = ((x - centerX) / centerX) * 8;
 
@@ -604,12 +617,13 @@
   initSearch();
   renderQuiz();
   initScrollReveal();
-  applyStagger();
   initBackToTop();
   initScrollSpy();
   initCounters();
   initCaseMap();
   init3DTilt();
+  initScrollProgress();
+  initParallax();
 
   submitBtn.addEventListener('click', evaluateQuiz);
   resetBtn.addEventListener('click', resetQuiz);
