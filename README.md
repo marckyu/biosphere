@@ -19,7 +19,6 @@
 - [File Structure](#file-structure)
 - [Getting Started](#getting-started)
 - [Design System](#design-system)
-- [Navbar](#navbar)
 - [Animations](#animations)
 - [Interactive Map](#interactive-map)
 - [Interactive Quiz](#interactive-quiz)
@@ -53,30 +52,35 @@
 
 | Feature | Description |
 |---|---|
-| Modern Navbar | Glassmorphism with gradient logo and pill-shaped nav links |
-| Light / Dark Mode | Toggle with localStorage persistence and OS preference detection |
-| Working Search | Real-time filter across articles, cases, ethics, visuals, and staff |
+| Main Headline | Synthesized research article on biodiversity loss and global health |
+| 5 Research Articles | Cards covering deforestation, coral reefs, agrobiodiversity, urbanization, climate change |
+| Visual Materials | Animated bar chart, timeline, diagram placeholders, icons |
 | Interactive Map | Leaflet.js world map with 3 case study markers and rich popups |
-| Quiz Redesign | Lettered options, progress bar, animated score card, retake button |
-| Confetti | Celebration animation on perfect quiz score |
+| Case Studies | Amazon malaria, Coral Triangle blast fishing, West Africa Ebola |
+| Ethics Section | Intrinsic value, environmental justice, gene drives, sustainable development |
+| Interactive Quiz | 20 questions with per-question feedback, scoring, reset |
+| Confetti on Perfect Score | Celebration animation when user scores 20/20 |
+| Dark Mode Toggle | Light/dark theme switch with localStorage persistence |
+| Live Search Filter | Real-time filter across all content cards |
 | Animated Counters | Bar chart values count up when scrolled into view |
+| Editorial Staff | Team credits with roles |
+| References | Academic and institutional sources |
 | Back-to-Top Button | Appears after scrolling 400px |
-| Scroll Animations | IntersectionObserver-based reveal effects with stagger |
-| Mobile Menu | Hamburger toggle with smooth slide-down and staggered links |
-| Reduced Motion | Respects prefers-reduced-motion for accessibility |
+| Scroll Animations | IntersectionObserver-based reveal effects |
 
 ---
 
 ## Tech Stack
 
 - **HTML5** — Semantic structure
-- **CSS3** — Custom properties, Grid, Flexbox, Keyframe animations, backdrop-filter
+- **CSS3** — Custom properties (variables), Grid, Flexbox, Keyframe animations
 - **Vanilla JavaScript (ES6+)** — No frameworks, no dependencies
 - **Leaflet 1.9.4** — Interactive world map via CDN
 - **canvas-confetti 1.9.2** — Confetti animation for perfect quiz score
 - **Font Awesome 6.0** — Icons via CDN
+- **System Fonts** — `Segoe UI`, `Roboto`, `system-ui`
 
-**Zero build tools. Zero npm. Just open `index.html` in a browser.**
+**Zero build tools. Zero npm. Just open `dashboard.html` in a browser.**
 
 ---
 
@@ -84,10 +88,10 @@
 
 ```
 biosphere/
-├── index.html      # Main HTML file
-├── style.css       # All styles + animations + themes
-├── script.js       # Quiz, map, search, theme, animations
-└── README.md       # This file
+├── dashboard.html      # Main HTML file
+├── style.css           # All styles + animations + themes
+├── script.js           # Quiz, map, search, theme, animations
+└── README.md           # This file
 ```
 
 ---
@@ -96,7 +100,8 @@ biosphere/
 
 ### Option 1 — Direct Open
 1. Download or clone this repository.
-2. Open `index.html` in any modern browser.
+2. Open `dashboard.html` in any modern browser.
+3. Done.
 
 ### Option 2 — Local Server (recommended)
 ```bash
@@ -106,6 +111,8 @@ python -m http.server 8000
 # Node.js (npx)
 npx serve
 ```
+
+Then visit: `http://localhost:8000/dashboard.html`
 
 ### Browser Support
 
@@ -151,45 +158,13 @@ npx serve
 - **Font Stack:** `'Segoe UI', Roboto, system-ui, sans-serif`
 - **Base Line Height:** `1.6`
 - **Headings:** Weight `700–800`, letter-spacing `-0.5px to -1px`
-- **Body:** Weight `400`, size `0.95–1.1rem`
+- **Body:** Weight `400`, size `0.98–1.1rem`
 
----
+### Spacing Scale
 
-## Navbar
-
-### Design
-
-Modern glassmorphism with strong translucency and saturated blur.
-
-- **Backdrop blur:** 40px
-- **Saturation:** 200%
-- **Background:** `rgba(15, 76, 92, 0.42)` in light mode
-- **Inner glow:** `rgba(255, 255, 255, 0.08)` inset highlight
-
-### Structure
-
-- **Top bar:** logo + theme toggle + hamburger (mobile)
-- **Nav links row:** search box + nav menu
-
-### Logo
-
-- Gold gradient icon with rounded square
-- Rotation and glow on hover
-- Leaf icon has continuous sway animation
-
-### Navigation Links
-
-- Pill-shaped on hover
-- Gold tint for active link
-- Underline dot for active state
-- Full-width tap targets on mobile
-
-### Mobile Menu
-
-- Hamburger toggle with icon swap (bars to X)
-- Smooth slide-down with spring easing
-- Staggered menu item entrance
-- Auto-close on link click, outside click, or window resize
+- Cards: `1.8rem` padding
+- Sections: `2.5rem` vertical margin
+- Grid gaps: `1.5rem – 2rem`
 
 ---
 
@@ -199,38 +174,37 @@ Modern glassmorphism with strong translucency and saturated blur.
 
 | Name | Purpose |
 |---|---|
-| `fadeUp` | Hero content entry, general reveal |
-| `fadeIn` | Bar chart value labels, active indicator |
+| `fadeUp` | Hero content entry, reveal |
+| `fadeIn` | Bar chart value labels, map fade |
 | `float` | Hero images idle animation |
 | `leafSway` | Logo leaf icon |
-| `shimmer` | Progress bar fill animation |
+| `shimmer` | Card hover effect |
 | `growBar` | Bar chart entrance |
 | `pinDrop` | Map marker entrance |
 | `pulseRing` | Map marker pulse |
-| `popIn` | Quiz feedback and result card |
+| `popIn` | Quiz correct feedback |
 | `shake` | Quiz incorrect feedback |
-| `menuItemIn` | Mobile menu staggered entrance |
-
-### Easing Functions
-
-- **Smooth:** `cubic-bezier(0.4, 0, 0.2, 1)` — Material Design standard
-- **Spring:** `cubic-bezier(0.34, 1.56, 0.64, 1)` — Bouncy interactive elements
+| `spin` | Reserved for loading spinners |
 
 ### Scroll Reveal
 
-Elements with class `.reveal` become visible via `IntersectionObserver`:
+Elements with class `.reveal` become visible via `IntersectionObserver`.
 
+**Auto-tagged elements:**
 - `.card`
 - `.case-card`
 - `.ethics-item`
 - `.visual-item`
 - `.staff-member`
 
-Stagger delay applied per grid item: `--delay` custom property.
+**Stagger delay** applied per grid item:
+```css
+.reveal.visible { transition-delay: var(--delay, 0s); }
+```
 
 ### Reduced Motion
 
-Full `prefers-reduced-motion: reduce` support — animations and transitions disabled for accessibility.
+Full `prefers-reduced-motion: reduce` support — animations disabled for accessibility.
 
 ---
 
@@ -252,9 +226,13 @@ A world map embedded in the Case Studies section, powered by Leaflet 1.9.4 and O
 
 - Auto-opens first popup after 800ms
 - Custom animated pins with pulse ring
-- Scroll-wheel zoom disabled by default, enabled on focus or click
-- Responsive heights: 400px desktop, 320px tablet, 260px mobile
-- Dark theme aware (popup and zoom controls recolor)
+- Scroll-wheel zoom disabled by default, enabled on focus/click
+- Responsive heights: 450px desktop, 350px tablet, 280px mobile
+- Dark theme aware (popup and controls recolor)
+
+### Initialization
+
+Defined as `initCaseMap()` in `script.js`. Called at the end of the IIFE initialization block.
 
 ---
 
@@ -262,96 +240,87 @@ A world map embedded in the Case Studies section, powered by Leaflet 1.9.4 and O
 
 ### Architecture
 
-- **Data:** `quizData[]` array with 20 questions
-- **Correct answers:** Varied indices (not always first option)
-- **Rendering:** Dynamic HTML injection via `renderQuiz()`
-- **Evaluation:** `evaluateQuiz()` checks all answers, highlights per question
-- **Reset:** `resetQuiz()` clears selections and feedback
+- **Data:** `quizData[]` array in `script.js` with 20 questions.
+- **Correct answers:** Varied indices (not always "A").
+- **Rendering:** Dynamic HTML injection via `renderQuiz()`.
+- **Evaluation:** `evaluateQuiz()` checks all answers, highlights per question.
+- **Reset:** `resetQuiz()` clears selections and feedback.
 
-### Modern Design Features
+### Scoring Logic
 
-#### Lettered Options
-
-Each option has a circular badge with letter A, B, C, or D. Selected option shows gold tint and letter transforms.
-
-#### Progress Bar
-
-Live progress tracking with:
-- "X of 20 answered" counter
-- Percentage label
-- Gradient fill with animated shimmer
-- Smooth width transition
-
-#### Animated Score Card
-
-Results screen displays:
-- Dynamic icon based on score (trophy, star, thumbs up, books)
-- Count-up animation for score number
-- Percentage badge
-- Contextual message
-- Retake button
-
-#### Scoring Logic
-
-| Score | Icon | Message |
+| Score | Message | Confetti |
 |---|---|---|
-| 20/20 | Trophy | Perfect! You are a biodiversity expert! |
-| 15–19 | Star | Great job! You have a strong understanding. |
-| 10–14 | Thumbs up | Good work! Review the articles to sharpen your knowledge. |
-| 0–9 | Books | Keep learning! Review the articles and try again. |
+| 20/20 | "Perfect! You are a biodiversity expert!" | Yes |
+| 15–19 | "Great job! You have a strong understanding." | No |
+| 0–14 | "Good start — review the articles and try again!" | No |
 
-#### Feedback
+### Confetti
 
-- Correct: green left border + popIn animation
-- Incorrect: red left border + shake animation
-- Shows user's answer and correct answer
-- Incomplete submission: warning with auto-scroll to first unanswered
+Triggered via `canvas-confetti` library (CDN) on perfect score. Three staggered bursts with BioSphere brand colors.
 
-#### Confetti
+### Visual Feedback
 
-Triggered via `canvas-confetti` on perfect score. Three staggered bursts with BioSphere brand colors.
+- Correct → `.correct-highlight` (green) + `popIn` animation
+- Incorrect → `.incorrect-highlight` (red) + `shake` animation
+- Shows user's answer + correct answer
 
 ---
 
 ## Dark Mode
 
-### How It Works
+### Overview
 
-Dark mode is driven by a `data-theme` attribute on `<html>`. All colors swap through CSS variable overrides.
+Toggleable light/dark theme with localStorage persistence. Respects system preference by default.
 
-### Persistence
+### Behavior
 
-Theme preference stored in `localStorage` under key `biosphere-theme`.
+1. On first visit, reads `prefers-color-scheme` from OS.
+2. User can override via the moon/sun toggle in the navbar.
+3. Choice saved to `localStorage` under key `biosphere-theme`.
+4. Subsequent visits respect saved choice.
+5. If user clears storage, system preference takes over again.
 
-### OS Preference
+### Implementation
 
-Follows `prefers-color-scheme` when no user preference is saved.
+- Toggle button: `#themeToggle` in `.nav-actions`
+- Applied via `data-theme="dark"` on `<html>`
+- CSS uses `[data-theme="dark"]` overrides on top of `:root` variables
+- Icon swaps between `fa-moon` and `fa-sun`
 
-### Anti-FOUC
+### Affected Components
 
-Inline script in `<head>` applies theme before page renders, preventing flash of wrong theme.
-
-### Toggle Button
-
-Located in the navbar. Moon icon in light mode, sun icon in dark mode with rotation animation.
+Navbar, cards, quiz, references, footer, map popup, timeline, search box, back-to-top button — all recolor via CSS variables.
 
 ---
 
 ## Search Filter
 
+### Overview
+
+Real-time text filter that scans all content cards on the page.
+
 ### Behavior
 
-- Live filtering with 200ms debounce
-- Enter key or button click triggers immediate search
+- Live filtering as user types (200ms debounce)
+- Enter key or click triggers immediate search
 - Filters: articles, case cards, ethics items, visual items, staff members
-- Status message: "Found N results for X"
+- Shows status message: "Found N results for X"
 - Empty state: "No results found for X"
 - Clear button resets search and refocuses input
+
+### Implementation
+
+- Input: `#searchInput`
+- Button: `#searchBtn`
+- Status: `#searchStatus`
+- Searchable selector: `.card, .case-card, .ethics-item, .visual-item, .staff-member`
+- Case-insensitive substring match
 
 ### Accessibility
 
 - `role="status"` with `aria-live="polite"` on status message
-- Keyboard accessible
+- Keyboard accessible (Tab + Enter)
+- Result count announced to screen readers
 
 ---
 
@@ -360,18 +329,19 @@ Located in the navbar. Moon icon in light mode, sun icon in dark mode with rotat
 | Feature | Implementation |
 |---|---|
 | Alt text | All images have descriptive `alt` attributes |
-| ARIA labels | Search button, theme toggle, menu toggle, map region, back-to-top |
+| ARIA labels | Search button, back-to-top, theme toggle, map region, search input |
 | Focus styles | `:focus-visible` with gold outline |
 | Radio labels | `<label for="qXoY">` properly associated |
 | Reduced motion | `prefers-reduced-motion` media query |
-| Semantic HTML | `<header>`, `<main>`, `<section>`, `<article>`, `<footer>`, `<nav>` |
+| Semantic HTML | `<header>`, `<main>`, `<section>`, `<article>`, `<footer>` |
+| Color scheme | `meta[name="color-scheme"]` for browser UI |
 | Live region | Search status uses `aria-live="polite"` |
-| Contrast | Text meets WCAG AA in both themes |
+| Contrast | All text meets WCAG AA in both themes |
 
 ### Keyboard Navigation
 
 - Tab through nav links, search, theme toggle, buttons, quiz options
-- Enter or Space activates buttons
+- Enter/Space activates buttons
 - Arrow keys navigate radio groups
 - Map can be focused for keyboard scroll zoom
 
@@ -381,36 +351,38 @@ Located in the navbar. Moon icon in light mode, sun icon in dark mode with rotat
 
 | Breakpoint | Target | Changes |
 |---|---|---|
-| > 1024px | Desktop | Full 3-column grids, 400px map |
-| 768px – 1024px | Tablet | 2-column grids, 320px map |
+| > 1024px | Desktop | Full 3-column grids, 450px map |
+| 768px – 1024px | Tablet | 2-column grids, 350px map, nav wraps |
 | 480px – 768px | Mobile landscape | Navbar stacks, 1-column grids |
-| < 480px | Mobile portrait | Reduced fonts, 260px map, full-width buttons |
+| < 480px | Mobile portrait | Reduced fonts, 280px map, vertical quiz options, smaller search |
 
 ### Mobile-Specific
 
-- Hamburger menu with slide-down animation
-- Staggered menu item entrance
-- Full-width tap targets (min 48px)
-- Full-width search box
-- Quiz buttons full-width
+- Navbar becomes column layout
+- Nav actions wrap below logo and links
+- Ad banner stacks text + badge
+- Quiz options stack vertically
+- Back-to-top button shrinks to 44px
 - Map popup narrows to 200px
-- Back-to-top shrinks to 42px
+- Search input shrinks to 110px
 
 ---
 
 ## Contributing
 
-1. Preserve the design system — use CSS variables, do not hardcode colors
-2. Support both themes — always test in light and dark mode
-3. Keep animations subtle — follow existing easing functions
-4. Accessibility first — test with keyboard and screen reader
-5. Document changes — update this README
-6. No external libraries unless essential
+This is an educational group project. If you're extending it:
+
+1. **Preserve the design system** — use CSS variables, don't hardcode colors.
+2. **Support both themes** — always test in light and dark mode.
+3. **Keep animations subtle** — follow existing `cubic-bezier(0.34, 1.56, 0.64, 1)` easing.
+4. **Accessibility first** — test with keyboard and screen reader.
+5. **Document changes** — update this README.
+6. **No external libraries** unless essential — keep it vanilla.
 
 ### Code Style
 
 - **CSS:** kebab-case classes, 2-space indent
-- **JS:** camelCase variables, `const` or `let` (no `var`), IIFE wrapper
+- **JS:** camelCase variables, `const`/`let` (no `var`), IIFE wrapper
 - **HTML:** lowercase tags, double quotes for attributes
 
 ---
@@ -419,14 +391,14 @@ Located in the navbar. Moon icon in light mode, sun icon in dark mode with rotat
 
 | Name | Role | Contribution |
 |---|---|---|
-| Addriane Quintela | Lead Researcher & Writer | Main headline, case studies |
-| Camille Osinsao | Research & Data Analyst | Infographics, charts, references |
-| Aleah Talusan | Ethics & Society Editor | Ethical section, social implications |
-| Moschin Talusan | Web Developer | HTML/CSS/JS, interactive quiz |
-| Johnmarc Asuncion | Web Developer | HTML/CSS/JS, interactive quiz |
-| Marivic Quikelez | Visual & Media | Images, video, alt text |
+| **Addriane Quintela** | Lead Researcher & Writer | Main headline, case studies |
+| **Camille Osinsao** | Research & Data Analyst | Infographics, charts, references |
+| **Aleah Talusan** | Ethics & Society Editor | Ethical section, social implications |
+| **Moschin Talusan** | Web Developer | HTML/CSS/JS, interactive quiz |
+| **Johnmarc Asuncion** | Web Developer | HTML/CSS/JS, interactive quiz |
+| **Marivic Quikelez** | Visual & Media | Images, video, alt text |
 
-All members contributed to research, writing, and review.
+*All members contributed to research, writing, and review.*
 
 ---
 
@@ -438,60 +410,51 @@ All members contributed to research, writing, and review.
 - Keesing, F. et al. (2010). Impacts of biodiversity on the emergence of infectious diseases. *Nature.*
 - Philippine Biodiversity Conservation Priorities (2020).
 - Additional group research findings, 2025 (unpublished).
-- Icons: Font Awesome (CC BY 4.0).
+- Icons: [Font Awesome](https://fontawesome.com/) (CC BY 4.0).
 - SVG graphics: original work by the team.
-- Map tiles: OpenStreetMap contributors.
-- Map library: Leaflet 1.9.4.
-- Confetti library: canvas-confetti 1.9.2.
+- Map tiles: [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors.
+- Map library: [Leaflet](https://leafletjs.com/) 1.9.4.
+- Confetti library: [canvas-confetti](https://github.com/catdad/canvas-confetti) 1.9.2.
 
 ---
 
 ## Changelog
-
-### v1.5.0 — Quiz Redesign (Modern & Clean)
-- Added lettered options (A, B, C, D) with circular badges
-- Added progress bar with live "X of 20 answered" counter
-- Added animated gradient fill on progress bar
-- Improved hover and selected states with smooth transitions
-- Added animated score card with count-up number
-- Added dynamic icon and message based on score
-- Added "Retake Quiz" button on results screen
-- Improved incomplete submission warning with auto-scroll
-
-### v1.4.0 — Navbar Redesign
-- Redesigned navbar with modern glassmorphism effect
-- Added gradient logo icon with rotation on hover
-- Improved nav links with pill-shaped hover and active states
-- Refined search box with focus glow
-- Updated mobile menu with slide-down animation and staggered items
-- Increased navbar transparency with stronger blur
-- Consistent rounded-square buttons for theme and menu toggles
 
 ### v1.3.0 — Polish Update
 - Added dark mode toggle with localStorage persistence
 - Added live search filter across all content cards
 - Added confetti animation for perfect quiz score
 - Added animated counters for bar chart values
+- Added search status live region for accessibility
+- Added `meta[name="color-scheme"]` for browser UI theming
 
 ### v1.1.0 — Interactive Map Update
 - Added interactive world map (Leaflet 1.9.4)
-- 3 clickable markers with animated pins
-- Rich popups with case study details
+- 3 clickable markers: Amazon Basin, Tubbataha Reefs, Guinea
+- Custom animated markers with pulse effect
+- Rich popups with case study details and stat badges
+- Auto-opens first popup on load
+- Fully responsive (450px → 350px → 280px heights)
+- ARIA label on map region
 
 ### v1.0.0 — Initial Release
 - Full HTML structure with semantic sections
 - Complete CSS design system with variables
 - 20-question interactive quiz
-- Scroll reveal animations
+- Scroll reveal animations (IntersectionObserver)
+- Stagger delays for grid items
 - Back-to-top button
-- Responsive design
-- Accessibility features
+- Scroll spy (active nav link)
+- Reduced motion support
+- Responsive design (mobile/tablet/desktop)
+- Accessibility: focus styles, ARIA labels, alt text
 
-### Planned (v1.6.0)
+### Planned (v1.4.0)
 - Interactive glossary with tooltips
 - Modal reader for "Read more" buttons
 - Newsletter signup section
 - Print-friendly stylesheet
+- Species spotlight rotator
 
 ---
 
@@ -500,7 +463,7 @@ All members contributed to research, writing, and review.
 This project is created for **educational purposes** as part of a Science, Technology & Society course requirement.
 
 - **Code:** Free to use, modify, and learn from.
-- **Content & Research:** © 2025 BioSphere Team.
+- **Content & Research:** © 2025 BioSphere Team. Please cite appropriately.
 - **Icons:** Font Awesome (CC BY 4.0).
 - **Images:** Original SVGs by team; other imagery used with permission.
 
@@ -508,9 +471,11 @@ This project is created for **educational purposes** as part of a Science, Techn
 
 ## Contact
 
+For questions, corrections, or collaboration:
+
 - Email: *(add team email)*
-- Website: *(add deployed link)*
-- Institution: *(add school)*
+- Website: *(add deployed link if any)*
+- Institution: *(add school/university)*
 
 ---
 
