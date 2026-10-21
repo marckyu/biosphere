@@ -436,7 +436,6 @@
     });
 
     function updateParallax() {
-      // Lerp (Linear Interpolation) for butter smooth movement
       targetX += (mouseX - targetX) * 0.05;
       targetY += (mouseY - targetY) * 0.05;
 
@@ -611,9 +610,10 @@
     setTimeout(() => map.invalidateSize(), 400);
   }
 
-  /* ===== 3D TILT & GLARE FOR ALL CARDS ===== */
+  /* ===== 3D TILT & GLARE (SKIPPING THE MAP) ===== */
   function init3DTilt() {
-    const cards = document.querySelectorAll('.interactive-card');
+    // Tanggalin ang map sa selection para hindi magka-conflict sa Leaflet drag
+    const cards = document.querySelectorAll('.interactive-card:not(.case-map-wrapper)');
     if (!cards.length) return;
 
     cards.forEach(card => {
@@ -664,7 +664,7 @@
   init3DTilt();
   initScrollProgress();
   initParallax();
-  initGlobalMouseParallax(); // Initializes the moving background on margins
+  initGlobalMouseParallax();
 
   submitBtn.addEventListener('click', evaluateQuiz);
   resetBtn.addEventListener('click', resetQuiz);
@@ -672,9 +672,9 @@
   document.querySelectorAll('.btn-read').forEach(link => {
     link.addEventListener('click', (e) => {
       if (link.classList.contains('btn-read')) {
-        e.preventDefault();
-        alert('This is a prototype article. In the full version, it opens a detailed page.');
-      }
-    });
+      e.preventDefault();
+      alert('This is a prototype article. In the full version, it opens a detailed page.');
+    }
   });
+});
 })();

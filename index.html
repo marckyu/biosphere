@@ -27,7 +27,6 @@
 
   <div id="scroll-progress"></div>
 
-  <!-- GLOBAL BACKGROUND SHAPES FOR MOUSE PARALLAX -->
   <div class="bg-shape shape-1"></div>
   <div class="bg-shape shape-2"></div>
   <div class="bg-shape shape-3"></div>
@@ -77,14 +76,14 @@
         <p><strong>Welcome to BioSphere.</strong> Biodiversity — the variety of life on Earth — is declining at an unprecedented rate. This website translates our group's research into an accessible, engaging resource. Explore the major threats, real-world case studies, ethical dilemmas, and the deep connections between ecosystem health and human well-being. Our goal is to inform, provoke critical thinking, and inspire action.</p>
       </div>
       <div class="cover-image-placeholder">
-        <div class="img-wrap reveal-scale" data-parallax="0.05">
-          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%232a6f7a'/%3E%3Ctext x='100' y='80' font-size='14' text-anchor='middle' fill='%23ffffff' font-family='Arial'%3EForest Biodiversity%3C/text%3E%3C/svg%3E" alt="Illustration of a lush forest representing biodiversity">
+        <div class="img-wrap reveal-scale">
+          <img data-parallax="0.05" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%232a6f7a'/%3E%3Ctext x='100' y='80' font-size='14' text-anchor='middle' fill='%23ffffff' font-family='Arial'%3EForest Biodiversity%3C/text%3E%3C/svg%3E" alt="Illustration of a lush forest representing biodiversity">
         </div>
-        <div class="img-wrap reveal-scale" style="transition-delay: 0.1s;" data-parallax="0.1">
-          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%233c6e47'/%3E%3Ctext x='100' y='80' font-size='14' text-anchor='middle' fill='%23ffffff' font-family='Arial'%3EMarine Life%3C/text%3E%3C/svg%3E" alt="Illustration of marine biodiversity">
+        <div class="img-wrap reveal-scale" style="transition-delay: 0.1s;">
+          <img data-parallax="0.1" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%233c6e47'/%3E%3Ctext x='100' y='80' font-size='14' text-anchor='middle' fill='%23ffffff' font-family='Arial'%3EMarine Life%3C/text%3E%3C/svg%3E" alt="Illustration of marine biodiversity">
         </div>
-        <div class="img-wrap reveal-scale" style="transition-delay: 0.2s;" data-parallax="0.15">
-          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%230f4c5c'/%3E%3Ctext x='100' y='80' font-size='14' text-anchor='middle' fill='%23ffffff' font-family='Arial'%3EHuman Health%3C/text%3E%3C/svg%3E" alt="Symbol representing human health and society">
+        <div class="img-wrap reveal-scale" style="transition-delay: 0.2s;">
+          <img data-parallax="0.15" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%230f4c5c'/%3E%3Ctext x='100' y='80' font-size='14' text-anchor='middle' fill='%23ffffff' font-family='Arial'%3EHuman Health%3C/text%3E%3C/svg%3E" alt="Symbol representing human health and society">
         </div>
       </div>
       <p class="alt-text-note reveal"><i class="fas fa-image"></i> Visual: forest, marine, and human health icons</p>
@@ -210,7 +209,8 @@
         <i class="fas fa-map-pin"></i> Case Studies & Examples
       </div>
 
-      <div class="case-map-wrapper interactive-card reveal">
+      <!-- Tinanggal ang interactive-card dito para gumana ang drag ng map -->
+      <div class="case-map-wrapper reveal">
         <div id="caseMap" role="region" aria-label="Interactive world map showing biodiversity case study locations"></div>
         <p class="map-hint">
           <i class="fas fa-mouse-pointer"></i> Click any marker to see the case study details
