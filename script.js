@@ -563,6 +563,36 @@
     setTimeout(() => map.invalidateSize(), 400);
   }
 
+  /* ===== NEW INTERACTIVE MOUSE TRACKING ===== */
+  function initInteractiveMouse() {
+    // 1. Spotlight Glow for Cards
+    document.querySelectorAll('.interactive-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+      });
+    });
+
+    // 2. Magnetic Effect for Navbar Links
+    const navLinks = document.querySelectorAll('.nav-item');
+    navLinks.forEach(link => {
+      link.addEventListener('mousemove', (e) => {
+        const rect = link.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        // Move element slightly towards mouse (divide to make it subtle)
+        link.style.transform = `translateY(-2px) translate(${x / 4}px, ${y / 4}px)`;
+      });
+      link.addEventListener('mouseleave', () => {
+        // Reset back to normal
+        link.style.transform = '';
+      });
+    });
+  }
+
   initThemeToggle();
   initMobileMenu();
   initSearch();
@@ -573,6 +603,7 @@
   initScrollSpy();
   initCounters();
   initCaseMap();
+  initInteractiveMouse(); // Initialize interactive mouse effects
 
   submitBtn.addEventListener('click', evaluateQuiz);
   resetBtn.addEventListener('click', resetQuiz);
