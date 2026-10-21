@@ -563,30 +563,38 @@
     setTimeout(() => map.invalidateSize(), 400);
   }
 
-  /* ===== INTERACTIVE MOUSE TRACKING ===== */
-  function initInteractiveMouse() {
-    // 1. Spotlight Glow for Cards
-    document.querySelectorAll('.interactive-card').forEach(card => {
+  /* ===== ULTRA SMOOTH 3D TILT FOR ALL CARDS ===== */
+  function init3DTilt() {
+    const cards = document.querySelectorAll('.interactive-card');
+    if (!cards.length) return;
+
+    cards.forEach(card => {
       card.addEventListener('mousemove', (e) => {
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        // Mas mababa ang rotate (8 degrees max) para hindi masyadong hilo at malabo ang text
+        const rotateX = ((y - centerY) / centerY) * -8;
+        const rotateY = ((x - centerX) / centerX) * 8;
+
+        card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
         card.style.setProperty('--mouse-x', `${x}px`);
         card.style.setProperty('--mouse-y', `${y}px`);
+        card.style.zIndex = 10;
       });
-    });
 
-    // 2. Magnetic Effect for Navbar Links
-    const navLinks = document.querySelectorAll('.nav-item');
-    navLinks.forEach(link => {
-      link.addEventListener('mousemove', (e) => {
-        const rect = link.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-        link.style.transform = `translateY(-2px) translate(${x / 4}px, ${y / 4}px)`;
-      });
-      link.addEventListener('mouseleave', () => {
-        link.style.transform = '';
+      card.addEventListener('mouseleave', () => {
+        card.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        card.style.transform = `perspective(1200px) rotateX(0) rotateY(0) scale3d(1, 1, 1)`;
+        card.style.zIndex = '';
+        
+        setTimeout(() => {
+          card.style.transition = 'transform 0.1s ease-out, box-shadow 0.3s ease';
+        }, 500);
       });
     });
   }
@@ -601,7 +609,7 @@
   initScrollSpy();
   initCounters();
   initCaseMap();
-  initInteractiveMouse();
+  init3DTilt();
 
   submitBtn.addEventListener('click', evaluateQuiz);
   resetBtn.addEventListener('click', resetQuiz);

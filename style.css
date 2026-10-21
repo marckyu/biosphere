@@ -159,10 +159,12 @@ img {
   transform: translateY(0) scale(1);
 }
 
-/* ===== INTERACTIVE GLOW EFFECT ===== */
+/* ===== ULTRA SMOOTH 3D TILT & GLARE ===== */
 .interactive-card {
   position: relative;
   transform-style: preserve-3d;
+  perspective: 1000px;
+  will-change: transform;
 }
 
 .interactive-card::before {
@@ -171,11 +173,11 @@ img {
   inset: 0;
   border-radius: inherit;
   background: radial-gradient(
-    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(227, 180, 72, 0.15),
+    800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(255, 255, 255, 0.15),
     transparent 40%
   );
-  z-index: 1;
+  z-index: 10;
   opacity: 0;
   transition: opacity 0.3s var(--ease-fluid);
   pointer-events: none;
@@ -183,8 +185,8 @@ img {
 
 [data-theme="dark"] .interactive-card::before {
   background: radial-gradient(
-    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(240, 200, 104, 0.12),
+    800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(255, 255, 255, 0.1),
     transparent 40%
   );
 }
@@ -196,6 +198,8 @@ img {
 .interactive-card > * {
   position: relative;
   z-index: 2;
+  transform: translateZ(30px);
+  transition: transform 0.3s var(--ease-spring);
 }
 
 /* ========================================= */
