@@ -1904,3 +1904,24 @@ footer a {
     animation: none !important;
   }
 }
+
+/* ===== STAFF PROFILE PICTURE ===== */
+.staff-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin: 0 auto 0.8rem auto;
+  overflow: hidden;
+  border: 3px solid var(--accent);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background: var(--card-bg);
+}
+
+.staff-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%; 
+  border-radius: 0;
+  display: block;
+}
