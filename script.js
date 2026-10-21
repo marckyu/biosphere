@@ -414,7 +414,7 @@
         elements.forEach(el => {
           const speed = parseFloat(el.getAttribute('data-parallax'));
           const yPos = -(scrollY * speed);
-          el.style.transform = `translateY(${yPos}px)`;
+          el.style.transform = `translate3d(0, ${yPos}px, 0)`;
         });
       });
     }, { passive: true });
