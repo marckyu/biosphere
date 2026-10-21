@@ -563,7 +563,7 @@
     setTimeout(() => map.invalidateSize(), 400);
   }
 
-  /* ===== NEW INTERACTIVE MOUSE TRACKING ===== */
+  /* ===== INTERACTIVE MOUSE TRACKING ===== */
   function initInteractiveMouse() {
     // 1. Spotlight Glow for Cards
     document.querySelectorAll('.interactive-card').forEach(card => {
@@ -583,11 +583,9 @@
         const rect = link.getBoundingClientRect();
         const x = e.clientX - rect.left - rect.width / 2;
         const y = e.clientY - rect.top - rect.height / 2;
-        // Move element slightly towards mouse (divide to make it subtle)
         link.style.transform = `translateY(-2px) translate(${x / 4}px, ${y / 4}px)`;
       });
       link.addEventListener('mouseleave', () => {
-        // Reset back to normal
         link.style.transform = '';
       });
     });
@@ -603,7 +601,7 @@
   initScrollSpy();
   initCounters();
   initCaseMap();
-  initInteractiveMouse(); // Initialize interactive mouse effects
+  initInteractiveMouse();
 
   submitBtn.addEventListener('click', evaluateQuiz);
   resetBtn.addEventListener('click', resetQuiz);
