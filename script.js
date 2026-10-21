@@ -403,7 +403,7 @@
     }, { passive: true });
   }
 
-  /* ===== PARALLAX EFFECT ===== */
+  /* ===== SCROLL PARALLAX (Images) ===== */
   function initParallax() {
     const elements = document.querySelectorAll('[data-parallax]');
     if (!elements.length) return;
@@ -418,6 +418,40 @@
         });
       });
     }, { passive: true });
+  }
+
+  /* ===== GLOBAL MOUSE PARALLAX (Moving on Margins) ===== */
+  function initGlobalMouseParallax() {
+    const shapes = document.querySelectorAll('.bg-shape');
+    if (!shapes.length) return;
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let targetX = mouseX;
+    let targetY = mouseY;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function updateParallax() {
+      // Lerp (Linear Interpolation) for butter smooth movement
+      targetX += (mouseX - targetX) * 0.05;
+      targetY += (mouseY - targetY) * 0.05;
+
+      const xOffset = (targetX - window.innerWidth / 2) * 0.05;
+      const yOffset = (targetY - window.innerHeight / 2) * 0.05;
+
+      shapes.forEach((shape, index) => {
+        const speed = (index + 1) * 0.8;
+        shape.style.transform = `translate3d(${xOffset * speed}px, ${yOffset * speed}px, 0)`;
+      });
+
+      requestAnimationFrame(updateParallax);
+    }
+
+    requestAnimationFrame(updateParallax);
   }
 
   /* ===== SCROLL REVEAL (WITH DIRECTION & STAGGER) ===== */
@@ -583,24 +617,30 @@
     if (!cards.length) return;
 
     cards.forEach(card => {
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        
-        const rotateX = ((y - centerY) / centerY) * -8;
-        const rotateY = ((x - centerX) / centerX) * 8;
+      let rafId;
 
-        card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-        card.style.setProperty('--mouse-x', `${x}px`);
-        card.style.setProperty('--mouse-y', `${y}px`);
-        card.style.zIndex = 10;
+      card.addEventListener('mousemove', (e) => {
+        cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(() => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          
+          const rotateX = ((y - centerY) / centerY) * -8;
+          const rotateY = ((x - centerX) / centerX) * 8;
+
+          card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+          card.style.setProperty('--mouse-x', `${x}px`);
+          card.style.setProperty('--mouse-y', `${y}px`);
+          card.style.zIndex = 10;
+        });
       });
 
       card.addEventListener('mouseleave', () => {
+        cancelAnimationFrame(rafId);
         card.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
         card.style.transform = `perspective(1200px) rotateX(0) rotateY(0) scale3d(1, 1, 1)`;
         card.style.zIndex = '';
@@ -624,6 +664,7 @@
   init3DTilt();
   initScrollProgress();
   initParallax();
+  initGlobalMouseParallax(); // Initializes the moving background on margins
 
   submitBtn.addEventListener('click', evaluateQuiz);
   resetBtn.addEventListener('click', resetQuiz);

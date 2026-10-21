@@ -71,7 +71,6 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  overflow-y: overlay; /* Mas smooth na scrollbar sa ibang browsers */
 }
 
 body {
@@ -83,7 +82,23 @@ body {
   overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
   position: relative;
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling sa iOS */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ===== CUSTOM SCROLLBAR (SMOOTH) ===== */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--body-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--primary-light);
+  border-radius: 10px;
+  border: 2px solid var(--body-bg);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
 }
 
 a {
@@ -115,25 +130,22 @@ img {
   transition: width 0.1s ease-out;
 }
 
-/* ===== BACKGROUND SHAPES ===== */
+/* ===== BACKGROUND SHAPES (MARGIN PARALLAX) ===== */
 .bg-shape {
   position: fixed;
   border-radius: 50%;
   filter: blur(80px);
   z-index: -1;
   opacity: 0.4;
-  animation: floatShape 20s infinite alternate;
+  pointer-events: none;
   will-change: transform;
+  /* The animation here is a fallback, JS will take over for mouse tracking */
+  transition: transform 0.1s ease-out; 
 }
 .shape-1 { width: 400px; height: 400px; background: var(--primary-light); top: 10%; left: -10%; }
-.shape-2 { width: 300px; height: 300px; background: var(--accent); bottom: 20%; right: -5%; animation-delay: -5s; }
-.shape-3 { width: 250px; height: 250px; background: var(--secondary); top: 50%; left: 30%; animation-delay: -10s; }
-
-@keyframes floatShape {
-  0% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(50px, 50px, 0) scale(1.1); }
-  100% { transform: translate3d(-50px, 100px, 0) scale(0.9); }
-}
+.shape-2 { width: 300px; height: 300px; background: var(--accent); bottom: 20%; right: -5%; }
+.shape-3 { width: 250px; height: 250px; background: var(--secondary); top: 50%; left: 30%; }
+.shape-4 { width: 200px; height: 200px; background: var(--primary); top: -5%; right: 20%; }
 
 /* ===== SCROLL REVEAL ANIMATIONS ===== */
 .reveal, .reveal-left, .reveal-right, .reveal-scale {
