@@ -144,7 +144,7 @@ img {
 
 .reveal, .reveal-left, .reveal-right, .reveal-scale {
   opacity: 0;
-  transition: opacity 0.8s var(--ease-fluid), transform 0.8s var(--ease-spring);
+  transition: opacity 1s var(--ease-fluid), transform 1s var(--ease-spring);
   will-change: opacity, transform;
 }
 
@@ -665,7 +665,7 @@ img {
   height: 4px;
   width: 0;
   background: var(--accent);
-  transition: width 0.8s var(--ease-spring);
+  transition: width 1s var(--ease-spring);
 }
 
 .section-title.visible::after {
