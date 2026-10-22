@@ -2081,7 +2081,7 @@ footer a {
   .home-cover .subhead,
   .home-cover .intro-text,
   .img-wrap {
-    opacity: 1 !important;
+    opacity: 1 !important;  
     animation: none !important;
   }
 }

@@ -607,7 +607,7 @@
   }
 
   function init3DTilt() {
-    const cards = document.querySelectorAll('.interactive-card:not(.case-map-wrapper)');
+    const cards = document.querySelectorAll('.interactive-card');
     if (!cards.length) return;
 
     cards.forEach(card => {
