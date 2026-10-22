@@ -30,6 +30,12 @@
   const percentLabel = document.getElementById('quizPercent');
   const progressFill = document.getElementById('quizProgressFill');
 
+  function refreshLucide() {
+    if (typeof lucide !== 'undefined' && lucide.createIcons) {
+      lucide.createIcons();
+    }
+  }
+
   function initThemeToggle() {
     const toggle = document.getElementById('themeToggle');
     if (!toggle) return;
@@ -58,7 +64,8 @@
     document.documentElement.setAttribute('data-theme', theme);
     const icon = document.querySelector('#themeToggle i');
     if (icon) {
-      icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+      icon.setAttribute('data-lucide', theme === 'dark' ? 'sun' : 'moon');
+      refreshLucide();
     }
     const toggle = document.getElementById('themeToggle');
     if (toggle) {
@@ -76,6 +83,11 @@
       const isOpen = navLinks.classList.toggle('open');
       menuToggle.classList.toggle('active', isOpen);
       menuToggle.setAttribute('aria-expanded', isOpen);
+      const icon = menuToggle.querySelector('i');
+      if (icon) {
+        icon.setAttribute('data-lucide', isOpen ? 'x' : 'menu');
+        refreshLucide();
+      }
     });
 
     navLinks.querySelectorAll('a').forEach(link => {
@@ -84,6 +96,11 @@
           navLinks.classList.remove('open');
           menuToggle.classList.remove('active');
           menuToggle.setAttribute('aria-expanded', 'false');
+          const icon = menuToggle.querySelector('i');
+          if (icon) {
+            icon.setAttribute('data-lucide', 'menu');
+            refreshLucide();
+          }
         }
       });
     });
@@ -96,6 +113,11 @@
         navLinks.classList.remove('open');
         menuToggle.classList.remove('active');
         menuToggle.setAttribute('aria-expanded', 'false');
+        const icon = menuToggle.querySelector('i');
+        if (icon) {
+          icon.setAttribute('data-lucide', 'menu');
+          refreshLucide();
+        }
       }
     });
   }
@@ -130,9 +152,9 @@
 
       status.classList.add('visible');
       if (visibleCount === 0) {
-        status.innerHTML = `<i class="fas fa-search"></i> No results found for "<strong>${escapeHtml(query)}</strong>". <button class="clear-search" type="button">Clear search</button>`;
+        status.innerHTML = `<i data-lucide="search"></i> No results found for "<strong>${escapeHtml(query)}</strong>". <button class="clear-search" type="button">Clear search</button>`;
       } else {
-        status.innerHTML = `<i class="fas fa-check-circle"></i> Found <strong>${visibleCount}</strong> result${visibleCount !== 1 ? 's' : ''} for "<strong>${escapeHtml(query)}</strong>". <button class="clear-search" type="button">Clear search</button>`;
+        status.innerHTML = `<i data-lucide="check-circle-2"></i> Found <strong>${visibleCount}</strong> result${visibleCount !== 1 ? 's' : ''} for "<strong>${escapeHtml(query)}</strong>". <button class="clear-search" type="button">Clear search</button>`;
       }
 
       const clearBtn = status.querySelector('.clear-search');
@@ -143,6 +165,8 @@
           input.focus();
         });
       }
+
+      refreshLucide();
     }
 
     function escapeHtml(str) {
@@ -239,10 +263,11 @@
       resultDiv.classList.add('visible');
       resultDiv.innerHTML = `
         <div class="quiz-warning">
-          <i class="fas fa-exclamation-triangle"></i>
+          <i data-lucide="alert-triangle"></i>
           <span>Please answer all 20 questions before submitting. You still have <strong>${20 - countAnswered()}</strong> unanswered.</span>
         </div>
       `;
+      refreshLucide();
       if (firstUnanswered) {
         firstUnanswered.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
@@ -267,14 +292,14 @@
       if (feedbackDiv) {
         if (isCorrect) {
           feedbackDiv.innerHTML = `
-            <span class="correct-icon"><i class="fas fa-check-circle"></i></span>
+            <span class="correct-icon"><i data-lucide="check-circle-2"></i></span>
             <span>Correct!</span>
           `;
         } else {
           const correctAnswerText = quizData[i].options[quizData[i].correct];
           const userAnswerText = quizData[i].options[selectedValue];
           feedbackDiv.innerHTML = `
-            <span class="incorrect-icon"><i class="fas fa-times-circle"></i></span>
+            <span class="incorrect-icon"><i data-lucide="x-circle"></i></span>
             <span>Incorrect. Your answer: <strong>${userAnswerText}</strong></span>
             <span class="correct-answer-text">Correct: ${correctAnswerText}</span>
           `;
@@ -282,6 +307,7 @@
       }
     }
 
+    refreshLucide();
     showResultCard(score);
 
     if (score === 20 && typeof confetti === 'function') {
@@ -329,11 +355,12 @@
         <div class="quiz-result-percent">${percent}%</div>
         <p class="quiz-result-message">${message}</p>
         <button class="quiz-result-retake" id="retakeBtn" type="button">
-          <i class="fas fa-redo-alt"></i> Retake Quiz
+          <i data-lucide="rotate-ccw"></i> Retake Quiz
         </button>
       </div>
     `;
 
+    refreshLucide();
     animateCountUp(document.getElementById('scoreNumber'), score);
 
     const retakeBtn = document.getElementById('retakeBtn');
@@ -393,7 +420,7 @@
   function initScrollProgress() {
     const bar = document.getElementById('scroll-progress');
     if (!bar) return;
-    
+
     window.addEventListener('scroll', () => {
       const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
       const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -452,7 +479,7 @@
 
   function initScrollReveal() {
     const targets = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .section-title');
-    
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -591,22 +618,23 @@
       const marker = L.marker(study.coords, { icon: createIcon() }).addTo(map);
       marker.bindPopup(`
         <div class="map-popup">
-          <div class="popup-location"><i class="fas fa-map-marker-alt"></i> ${study.location}</div>
+          <div class="popup-location"><i data-lucide="map-pin"></i> ${study.location}</div>
           <h4>${study.title}</h4>
           <p>${study.description}</p>
           <span class="popup-stat">${study.stat}</span>
         </div>
       `, { autoPanPadding: [20, 20] });
-      
+
       if (index === 0) setTimeout(() => marker.openPopup(), 800);
     });
 
+    map.on('popupopen', refreshLucide);
     map.on('focus click', () => map.scrollWheelZoom.enable());
     map.on('blur mouseout', () => map.scrollWheelZoom.disable());
     setTimeout(() => map.invalidateSize(), 400);
   }
 
-  // NOTE: init3DTilt() has been removed completely — cards no longer react to mouse movement.
+  refreshLucide();
 
   initThemeToggle();
   initMobileMenu();
