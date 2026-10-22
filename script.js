@@ -390,7 +390,6 @@
     updateProgress();
   }
 
-  /* ===== SCROLL PROGRESS BAR ===== */
   function initScrollProgress() {
     const bar = document.getElementById('scroll-progress');
     if (!bar) return;
@@ -403,7 +402,6 @@
     }, { passive: true });
   }
 
-  /* ===== SCROLL PARALLAX (Images) ===== */
   function initParallax() {
     const elements = document.querySelectorAll('[data-parallax]');
     if (!elements.length) return;
@@ -420,7 +418,6 @@
     }, { passive: true });
   }
 
-  /* ===== GLOBAL MOUSE PARALLAX (Moving on Margins) ===== */
   function initGlobalMouseParallax() {
     const shapes = document.querySelectorAll('.bg-shape');
     if (!shapes.length) return;
@@ -453,7 +450,6 @@
     requestAnimationFrame(updateParallax);
   }
 
-  /* ===== SCROLL REVEAL (WITH DIRECTION & STAGGER) ===== */
   function initScrollReveal() {
     const targets = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .section-title');
     
@@ -610,9 +606,7 @@
     setTimeout(() => map.invalidateSize(), 400);
   }
 
-  /* ===== 3D TILT & GLARE (SKIPPING THE MAP) ===== */
   function init3DTilt() {
-    // Tanggalin ang map sa selection para hindi magka-conflict sa Leaflet drag
     const cards = document.querySelectorAll('.interactive-card:not(.case-map-wrapper)');
     if (!cards.length) return;
 
@@ -672,9 +666,9 @@
   document.querySelectorAll('.btn-read').forEach(link => {
     link.addEventListener('click', (e) => {
       if (link.classList.contains('btn-read')) {
-      e.preventDefault();
-      alert('This is a prototype article. In the full version, it opens a detailed page.');
-    }
+        e.preventDefault();
+        alert('This is a prototype article. In the full version, it opens a detailed page.');
+      }
+    });
   });
-});
 })();
