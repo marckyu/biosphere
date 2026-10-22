@@ -117,7 +117,6 @@ img {
   border-radius: 12px;
 }
 
-/* ===== SCROLL PROGRESS BAR ===== */
 #scroll-progress {
   position: fixed;
   top: 0;
@@ -129,7 +128,6 @@ img {
   transition: width 0.1s ease-out;
 }
 
-/* ===== BACKGROUND SHAPES (MARGIN PARALLAX) ===== */
 .bg-shape {
   position: fixed;
   border-radius: 50%;
@@ -144,7 +142,6 @@ img {
 .shape-3 { width: 250px; height: 250px; background: var(--secondary); top: 50%; left: 30%; }
 .shape-4 { width: 200px; height: 200px; background: var(--primary); top: -5%; right: 20%; }
 
-/* ===== SCROLL REVEAL ANIMATIONS ===== */
 .reveal, .reveal-left, .reveal-right, .reveal-scale {
   opacity: 0;
   transition: opacity 0.8s var(--ease-fluid), transform 0.8s var(--ease-spring);
@@ -208,26 +205,18 @@ img {
   to   { opacity: 1; transform: translateX(0); }
 }
 
-/* ===== 3D TILT & GLARE (DISABLED) ===== */
 .interactive-card {
   position: relative;
-  /* transform-style: preserve-3d; */
-  /* perspective: 1000px; */
-  /* will-change: transform; */
 }
 
-/* Glare effect completely disabled */
 .interactive-card::before {
   display: none;
 }
 
-/* Removed translateZ to prevent floating layers */
 .interactive-card > * {
   position: relative;
   z-index: 2;
 }
-
-/* ========================================= */
 
 .navbar {
   position: sticky;
@@ -942,7 +931,6 @@ img {
   font-size: 0.95rem;
 }
 
-/* ===== QUIZ STYLES ===== */
 .quiz-progress {
   background: var(--card-bg);
   border-radius: var(--radius);

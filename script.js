@@ -1,4 +1,6 @@
 (function() {
+  'use strict';
+
   const quizData = [
     { q: "What is biodiversity?", options: ["Variety of life on Earth", "Number of humans", "Only animal species", "Weather patterns"], correct: 0 },
     { q: "Which is a major driver of biodiversity loss?", options: ["Planting trees", "Habitat destruction", "Recycling", "Solar energy"], correct: 1 },
@@ -32,7 +34,11 @@
 
   function refreshLucide() {
     if (typeof lucide !== 'undefined' && lucide.createIcons) {
-      lucide.createIcons();
+      try {
+        lucide.createIcons();
+      } catch (e) {
+        console.warn("Lucide render error:", e);
+      }
     }
   }
 
@@ -197,6 +203,8 @@
   }
 
   function renderQuiz() {
+    if (!quizContainer) return;
+    
     let html = '';
     quizData.forEach((item, index) => {
       html += `
@@ -215,13 +223,21 @@
         </div>
       `;
     });
+    
     quizContainer.innerHTML = html;
-    resultDiv.classList.remove('visible');
-    resultDiv.innerHTML = '';
+    
+    if (resultDiv) {
+      resultDiv.classList.remove('visible');
+      resultDiv.innerHTML = '';
+    }
+    
     updateProgress();
+    
     quizContainer.querySelectorAll('input[type="radio"]').forEach(radio => {
       radio.addEventListener('change', updateProgress);
     });
+
+    setTimeout(refreshLucide, 100);
   }
 
   function updateProgress() {
@@ -243,6 +259,8 @@
 
   function evaluateQuiz() {
     const questions = document.querySelectorAll('.quiz-question');
+    if (questions.length === 0) return;
+
     let score = 0;
     let answeredAll = true;
     let firstUnanswered = null;
@@ -260,13 +278,15 @@
     }
 
     if (!answeredAll) {
-      resultDiv.classList.add('visible');
-      resultDiv.innerHTML = `
-        <div class="quiz-warning">
-          <i data-lucide="alert-triangle"></i>
-          <span>Please answer all 20 questions before submitting. You still have <strong>${20 - countAnswered()}</strong> unanswered.</span>
-        </div>
-      `;
+      if (resultDiv) {
+        resultDiv.classList.add('visible');
+        resultDiv.innerHTML = `
+          <div class="quiz-warning">
+            <i data-lucide="alert-triangle"></i>
+            <span>Please answer all 20 questions before submitting. You still have <strong>${20 - countAnswered()}</strong> unanswered.</span>
+          </div>
+        `;
+      }
       refreshLucide();
       if (firstUnanswered) {
         firstUnanswered.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -327,6 +347,8 @@
   }
 
   function showResultCard(score) {
+    if (!resultDiv) return;
+    
     const percent = Math.round(score / 20 * 100);
     let icon, message;
 
@@ -373,6 +395,7 @@
   }
 
   function animateCountUp(el, target) {
+    if (!el) return;
     const duration = 1200;
     const steps = 40;
     const increment = target / steps;
@@ -392,14 +415,11 @@
 
   function fireConfetti() {
     const colors = ['#0f4c5c', '#2a6f7a', '#3c6e47', '#e3b448', '#6fb87f'];
-
     confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors });
-
     setTimeout(() => {
       confetti({ particleCount: 100, angle: 60, spread: 55, origin: { x: 0, y: 0.7 }, colors });
       confetti({ particleCount: 100, angle: 120, spread: 55, origin: { x: 1, y: 0.7 }, colors });
     }, 250);
-
     setTimeout(() => {
       confetti({ particleCount: 80, spread: 100, origin: { y: 0.5 }, colors });
     }, 600);
@@ -412,15 +432,17 @@
       const fb = q.querySelector('.answer-feedback');
       if (fb) fb.innerHTML = '';
     });
-    resultDiv.classList.remove('visible');
-    resultDiv.innerHTML = '';
+    if (resultDiv) {
+      resultDiv.classList.remove('visible');
+      resultDiv.innerHTML = '';
+    }
     updateProgress();
   }
 
   function initScrollProgress() {
     const bar = document.getElementById('scroll-progress');
     if (!bar) return;
-
+    
     window.addEventListener('scroll', () => {
       const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
       const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -462,7 +484,6 @@
     function updateParallax() {
       targetX += (mouseX - targetX) * 0.05;
       targetY += (mouseY - targetY) * 0.05;
-
       const xOffset = (targetX - window.innerWidth / 2) * 0.05;
       const yOffset = (targetY - window.innerHeight / 2) * 0.05;
 
@@ -473,13 +494,13 @@
 
       requestAnimationFrame(updateParallax);
     }
-
     requestAnimationFrame(updateParallax);
   }
 
   function initScrollReveal() {
     const targets = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .section-title');
-
+    if (!targets.length) return;
+    
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -511,6 +532,7 @@
   function initScrollSpy() {
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-menu a');
+    if (!sections.length || !navLinks.length) return;
 
     const updateActiveLink = (id) => {
       navLinks.forEach(link => {
@@ -624,7 +646,7 @@
           <span class="popup-stat">${study.stat}</span>
         </div>
       `, { autoPanPadding: [20, 20] });
-
+      
       if (index === 0) setTimeout(() => marker.openPopup(), 800);
     });
 
@@ -634,30 +656,41 @@
     setTimeout(() => map.invalidateSize(), 400);
   }
 
-  refreshLucide();
+  function init() {
+    initThemeToggle();
+    initMobileMenu();
+    initSearch();
+    renderQuiz();
+    initScrollReveal();
+    initBackToTop();
+    initScrollSpy();
+    initCounters();
+    initCaseMap();
+    initScrollProgress();
+    initParallax();
+    initGlobalMouseParallax();
 
-  initThemeToggle();
-  initMobileMenu();
-  initSearch();
-  renderQuiz();
-  initScrollReveal();
-  initBackToTop();
-  initScrollSpy();
-  initCounters();
-  initCaseMap();
-  initScrollProgress();
-  initParallax();
-  initGlobalMouseParallax();
+    if (submitBtn) submitBtn.addEventListener('click', evaluateQuiz);
+    if (resetBtn) resetBtn.addEventListener('click', resetQuiz);
 
-  submitBtn.addEventListener('click', evaluateQuiz);
-  resetBtn.addEventListener('click', resetQuiz);
-
-  document.querySelectorAll('.btn-read').forEach(link => {
-    link.addEventListener('click', (e) => {
-      if (link.classList.contains('btn-read')) {
-        e.preventDefault();
-        alert('This is a prototype article. In the full version, it opens a detailed page.');
-      }
+    document.querySelectorAll('.btn-read').forEach(link => {
+      link.addEventListener('click', (e) => {
+        if (link.classList.contains('btn-read')) {
+          e.preventDefault();
+          alert('This is a prototype article. In the full version, it opens a detailed page.');
+        }
+      });
     });
-  });
+
+    setTimeout(refreshLucide, 200);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  window.addEventListener('load', refreshLucide);
+
 })();
