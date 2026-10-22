@@ -237,6 +237,23 @@
       radio.addEventListener('change', updateProgress);
     });
 
+    const questions = quizContainer.querySelectorAll('.quiz-question');
+    
+    const quizObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+        } else {
+          entry.target.classList.remove('is-visible');
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+
+    questions.forEach(q => quizObserver.observe(q));
+
     setTimeout(refreshLucide, 100);
   }
 
@@ -384,6 +401,10 @@
 
     refreshLucide();
     animateCountUp(document.getElementById('scoreNumber'), score);
+
+    setTimeout(() => {
+      resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
 
     const retakeBtn = document.getElementById('retakeBtn');
     if (retakeBtn) {
