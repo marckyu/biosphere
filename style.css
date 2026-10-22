@@ -166,9 +166,9 @@ img {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-8px); }
+@keyframes floatSmooth {
+  0%, 100% { transform: translateY(0px); }
+  50%      { transform: translateY(-15px); }
 }
 @keyframes leafSway {
   0%, 100% { transform: rotate(0deg); }
@@ -641,8 +641,18 @@ img {
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
   border: 3px solid white;
   object-fit: cover;
-  animation: float 4s ease-in-out infinite;
   will-change: transform;
+  animation: floatSmooth 5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+
+.cover-image-placeholder .img-wrap:nth-child(1) img {
+  animation-delay: 0s;
+}
+.cover-image-placeholder .img-wrap:nth-child(2) img {
+  animation-delay: 1.2s; 
+}
+.cover-image-placeholder .img-wrap:nth-child(3) img {
+  animation-delay: 2.4s;
 }
 
 .section-title {
@@ -1386,6 +1396,12 @@ img {
 }
 
 .staff-member {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.staff-float {
   background: var(--card-bg);
   border-radius: 20px;
   padding: 1.3rem 1rem;
@@ -1396,12 +1412,24 @@ img {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  width: 100%;
+  height: 100%;
   transition: box-shadow 0.35s var(--ease-spring);
+  will-change: transform;
+  
+  animation: floatSmooth 5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
 }
 
-.staff-member:hover {
+.staff-member:nth-child(1) .staff-float { animation-delay: 0s; }
+.staff-member:nth-child(2) .staff-float { animation-delay: 0.4s; }
+.staff-member:nth-child(3) .staff-float { animation-delay: 0.8s; }
+.staff-member:nth-child(4) .staff-float { animation-delay: 1.2s; }
+.staff-member:nth-child(5) .staff-float { animation-delay: 1.6s; }
+.staff-member:nth-child(6) .staff-float { animation-delay: 2.0s; }
+
+.staff-member:hover .staff-float {
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-  z-index: 2;
+  z-index: 10;
 }
 
 .staff-member i {
@@ -2031,7 +2059,8 @@ footer a {
   .home-cover h1,
   .home-cover .subhead,
   .home-cover .intro-text,
-  .img-wrap {
+  .img-wrap,
+  .staff-float {
     opacity: 1 !important;  
     animation: none !important;
   }
