@@ -1,28 +1,31 @@
 (function() {
   'use strict';
 
-  const quizData = [
+  // Base Quiz Data (Nakabase sa research niyo)
+  const baseQuizData = [
     { q: "What is biodiversity?", options: ["Variety of life on Earth", "Number of humans", "Only animal species", "Weather patterns"], correct: 0 },
-    { q: "Which is a major driver of biodiversity loss?", options: ["Planting trees", "Habitat destruction", "Recycling", "Solar energy"], correct: 1 },
-    { q: "How does biodiversity loss affect human health?", options: ["Improves air quality", "No effect", "Increases pandemic risk", "Increases food security"], correct: 2 },
-    { q: "What is zoonotic spillover?", options: ["Ocean acidification", "Plant pollination", "Deforestation method", "Virus jumping from animals to humans"], correct: 3 },
-    { q: "Which ecosystem is most threatened by blast fishing?", options: ["Deserts", "Coral reefs", "Grasslands", "Tundras"], correct: 1 },
-    { q: "The Living Planet Report 2022 showed average decline in monitored wildlife populations of about:", options: ["10%", "25%", "68%", "90%"], correct: 2 },
-    { q: "What is an ethical concern of gene drives for conservation?", options: ["They are too cheap", "Unintended ecological effects", "They increase biodiversity instantly", "No concerns"], correct: 1 },
-    { q: "Which of these is an ecosystem service?", options: ["Deforestation", "Mining", "Overfishing", "Pollination"], correct: 3 },
-    { q: "How does deforestation influence malaria?", options: ["Kills all mosquitoes", "Increases mosquito breeding sites", "No link", "Reduces malaria"], correct: 1 },
-    { q: "What does agrobiodiversity refer to?", options: ["Urban farms", "GMO only", "Variety of crops and livestock", "Factory farming"], correct: 2 },
-    { q: "Which international agreement targets biodiversity loss?", options: ["Paris Agreement only", "Kyoto Protocol", "Montreal Protocol", "Kunming-Montreal Global Biodiversity Framework"], correct: 3 },
-    { q: "What is a key social issue related to biodiversity?", options: ["Stock market", "Environmental justice", "Space travel", "Cryptocurrency"], correct: 1 },
-    { q: "How do coral reefs contribute to medicine?", options: ["No medical use", "Only tourism", "Provide compounds for drugs", "Used as fuel"], correct: 2 },
-    { q: "Which is a direct human health benefit of biodiversity?", options: ["Increased pollution", "Spread of monocultures", "Loss of medicinal plants", "Access to diverse nutritious food"], correct: 3 },
+    { q: "Which is a major driver of biodiversity loss?", options: ["Habitat destruction", "Planting trees", "Recycling", "Solar energy"], correct: 0 },
+    { q: "How does biodiversity loss affect human health?", options: ["Increases pandemic risk", "Improves air quality", "No effect", "Increases food security"], correct: 0 },
+    { q: "What is zoonotic spillover?", options: ["Virus jumping from animals to humans", "Ocean acidification", "Plant pollination", "Deforestation method"], correct: 0 },
+    { q: "Which ecosystem is most threatened by blast fishing?", options: ["Coral reefs", "Deserts", "Grasslands", "Tundras"], correct: 0 },
+    { q: "The Living Planet Report 2022 showed average decline in monitored wildlife populations of about:", options: ["68%", "10%", "25%", "90%"], correct: 0 },
+    { q: "What is an ethical concern of gene drives for conservation?", options: ["Unintended ecological effects", "They are too cheap", "They increase biodiversity instantly", "No concerns"], correct: 0 },
+    { q: "Which of these is an ecosystem service?", options: ["Pollination", "Deforestation", "Mining", "Overfishing"], correct: 0 },
+    { q: "How does deforestation influence malaria?", options: ["Increases mosquito breeding sites", "Kills all mosquitoes", "No link", "Reduces malaria"], correct: 0 },
+    { q: "What does agrobiodiversity refer to?", options: ["Variety of crops and livestock", "Urban farms", "GMO only", "Factory farming"], correct: 0 },
+    { q: "Which international agreement targets biodiversity loss?", options: ["Kunming-Montreal Global Biodiversity Framework", "Paris Agreement only", "Kyoto Protocol", "Montreal Protocol"], correct: 0 },
+    { q: "What is a key social issue related to biodiversity?", options: ["Environmental justice", "Stock market", "Space travel", "Cryptocurrency"], correct: 0 },
+    { q: "How do coral reefs contribute to medicine?", options: ["Provide compounds for drugs", "No medical use", "Only tourism", "Used as fuel"], correct: 0 },
+    { q: "Which is a direct human health benefit of biodiversity?", options: ["Access to diverse nutritious food", "Increased pollution", "Spread of monocultures", "Loss of medicinal plants"], correct: 0 },
     { q: "What percentage of emerging infectious diseases originate from animals?", options: ["~60%", "10%", "5%", "90%"], correct: 0 },
-    { q: "Which is an example of an ethical perspective on biodiversity?", options: ["Only economic value matters", "Intrinsic value of species", "Humans own nature", "No moral duty"], correct: 1 },
-    { q: "What is a pollinator?", options: ["Pesticide", "Fertilizer", "Bee, butterfly, etc.", "Tractor"], correct: 2 },
-    { q: "How does climate change threaten biodiversity?", options: ["Increases all populations", "No effect", "Stops evolution", "Shifts species ranges"], correct: 3 },
-    { q: "Which of the following is a case study in our article?", options: ["Urban gardening", "Renewable energy", "Amazon deforestation & malaria", "Space exploration"], correct: 2 },
-    { q: "What is the primary goal of the BioSphere website?", options: ["Sell products", "Entertainment", "Political campaign", "Educate about biodiversity & health links"], correct: 3 }
+    { q: "Which is an example of an ethical perspective on biodiversity?", options: ["Intrinsic value of species", "Only economic value matters", "Humans own nature", "No moral duty"], correct: 0 },
+    { q: "What is a pollinator?", options: ["Bee, butterfly, etc.", "Pesticide", "Fertilizer", "Tractor"], correct: 0 },
+    { q: "How does climate change threaten biodiversity?", options: ["Shifts species ranges", "Increases all populations", "No effect", "Stops evolution"], correct: 0 },
+    { q: "Which of the following is a case study in our article?", options: ["Amazon deforestation & malaria", "Urban gardening", "Renewable energy", "Space exploration"], correct: 0 },
+    { q: "What is the primary goal of the BioSphere website?", options: ["Educate about biodiversity & health links", "Sell products", "Entertainment", "Political campaign"], correct: 0 }
   ];
+
+  let quizData = []; // Ito ang magiging dynamic array
 
   const quizContainer = document.getElementById('quizContainer');
   const resultDiv = document.getElementById('quiz-result');
@@ -31,6 +34,44 @@
   const answeredCounter = document.getElementById('quizAnswered');
   const percentLabel = document.getElementById('quizPercent');
   const progressFill = document.getElementById('quizProgressFill');
+
+  // Helper function para mag-shuffle ng array (Fisher-Yates algorithm)
+  function shuffleArray(array) {
+    let currentIndex = array.length, randomIndex;
+    while (currentIndex !== 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+      [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+    return array;
+  }
+
+  // Function para i-prepare ang randomized quiz
+  function prepareQuiz() {
+    // 1. Shuffle ang mga tanong
+    let shuffledQuestions = shuffleArray([...baseQuizData]);
+
+    // 2. I-shuffle din ang mga options sa bawat tanong
+    quizData = shuffledQuestions.map(item => {
+      // Gumawa ng bagong array na may options at tamang index
+      let optionsWithCorrect = item.options.map((opt, index) => ({
+        text: opt,
+        isCorrect: index === item.correct
+      }));
+
+      // I-shuffle ang options
+      let shuffledOptions = shuffleArray([...optionsWithCorrect]);
+
+      // Hanapin kung saan napunta ang tamang sagot
+      let newCorrectIndex = shuffledOptions.findIndex(opt => opt.isCorrect);
+
+      return {
+        q: item.q,
+        options: shuffledOptions.map(opt => opt.text),
+        correct: newCorrectIndex
+      };
+    });
+  }
 
   function refreshLucide() {
     if (typeof lucide !== 'undefined' && lucide.createIcons) {
@@ -142,18 +183,26 @@
 
       status.classList.remove('visible');
       status.innerHTML = '';
+      items.forEach(el => { el.style.display = ''; });
 
       if (!query) {
-        items.forEach(el => { el.style.display = ''; });
+        document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
         return;
       }
 
       let visibleCount = 0;
+      let firstMatch = null;
+
       items.forEach(el => {
         const text = el.textContent.toLowerCase();
         const match = text.includes(query);
-        el.style.display = match ? '' : 'none';
-        if (match) visibleCount++;
+        if (match) {
+          el.style.display = '';
+          visibleCount++;
+          if (!firstMatch) firstMatch = el;
+        } else {
+          el.style.display = 'none';
+        }
       });
 
       status.classList.add('visible');
@@ -161,6 +210,11 @@
         status.innerHTML = `<i data-lucide="search"></i> No results found for "<strong>${escapeHtml(query)}</strong>". <button class="clear-search" type="button">Clear search</button>`;
       } else {
         status.innerHTML = `<i data-lucide="check-circle-2"></i> Found <strong>${visibleCount}</strong> result${visibleCount !== 1 ? 's' : ''} for "<strong>${escapeHtml(query)}</strong>". <button class="clear-search" type="button">Clear search</button>`;
+        if (firstMatch) {
+          setTimeout(() => {
+            firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 300);
+        }
       }
 
       const clearBtn = status.querySelector('.clear-search');
@@ -171,7 +225,6 @@
           input.focus();
         });
       }
-
       refreshLucide();
     }
 
@@ -204,6 +257,9 @@
 
   function renderQuiz() {
     if (!quizContainer) return;
+    
+    // I-prepare ang randomized quiz bago i-render
+    prepareQuiz();
     
     let html = '';
     quizData.forEach((item, index) => {
@@ -238,7 +294,6 @@
     });
 
     const questions = quizContainer.querySelectorAll('.quiz-question');
-    
     const quizObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -251,7 +306,6 @@
       threshold: 0.1,
       rootMargin: '0px 0px -50px 0px'
     });
-
     questions.forEach(q => quizObserver.observe(q));
 
     setTimeout(refreshLucide, 100);
@@ -319,6 +373,7 @@
         if (r.checked) { selectedValue = parseInt(r.value); break; }
       }
 
+      // Dito natin ginagamit ang dynamic correct index mula sa shuffled quizData
       const isCorrect = (selectedValue === quizData[i].correct);
       if (isCorrect) score++;
 
@@ -447,17 +502,8 @@
   }
 
   function resetQuiz() {
-    document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
-    document.querySelectorAll('.quiz-question').forEach(q => {
-      q.classList.remove('correct-highlight', 'incorrect-highlight');
-      const fb = q.querySelector('.answer-feedback');
-      if (fb) fb.innerHTML = '';
-    });
-    if (resultDiv) {
-      resultDiv.classList.remove('visible');
-      resultDiv.innerHTML = '';
-    }
-    updateProgress();
+    // Dito natin tinatawag ulit ang renderQuiz() para mag-generate ng BAGONG random set
+    renderQuiz();
   }
 
   function initScrollProgress() {

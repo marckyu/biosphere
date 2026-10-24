@@ -21,6 +21,103 @@
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="style.css">
+  
+  <!-- Custom CSS para sa Modal (Popup) -->
+  <style>
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s var(--ease-fluid), visibility 0.4s var(--ease-fluid);
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal-content {
+      background: var(--card-bg);
+      color: var(--text-dark);
+      width: 90%;
+      max-width: 800px;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 2.5rem;
+      border-radius: var(--radius);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+      position: relative;
+      transform: translateY(30px) scale(0.95);
+      transition: transform 0.5s var(--ease-spring);
+      border: 1px solid var(--border-soft);
+    }
+    .modal-overlay.active .modal-content {
+      transform: translateY(0) scale(1);
+    }
+    .modal-close {
+      position: sticky;
+      top: 0;
+      float: right;
+      background: var(--primary);
+      color: white;
+      border: none;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.5rem;
+      display: flex; justify-content: center; align-items: center;
+      z-index: 10;
+      transition: all 0.3s var(--ease-bounce);
+    }
+    .modal-close:hover {
+      background: var(--secondary);
+      transform: scale(1.1) rotate(90deg);
+    }
+    .modal-content h2 {
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      padding-right: 40px;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+    }
+    .modal-content h3 {
+      margin-top: 2rem;
+      margin-bottom: 0.8rem;
+      color: var(--primary-light);
+      font-size: 1.2rem;
+    }
+    .modal-content p {
+      margin-bottom: 1rem;
+      line-height: 1.7;
+      font-size: 1.05rem;
+    }
+    .modal-content ul {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .modal-content li {
+      margin-bottom: 0.5rem;
+      line-height: 1.6;
+    }
+    
+    /* Scrollbar sa loob ng Modal */
+    .modal-content::-webkit-scrollbar { width: 8px; }
+    .modal-content::-webkit-scrollbar-track { background: var(--soft-bg); border-radius: 10px; }
+    .modal-content::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 10px; }
+
+    /* Custom style para sa infographic */
+    .infographic-img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      margin-top: 1rem;
+      border: 1px solid var(--border-soft);
+    }
+  </style>
 </head>
 <body>
 
@@ -57,8 +154,10 @@
         <a href="#home" class="active nav-item">Home</a>
         <a href="#headline" class="nav-item">Headline</a>
         <a href="#articles" class="nav-item">Articles</a>
-        <a href="#cases" class="nav-item">Case Studies</a>
+        <a href="#visuals" class="nav-item">Visuals</a>
         <a href="#ethics" class="nav-item">Ethics</a>
+        <a href="#methodology" class="nav-item">Methodology</a>
+        <a href="#cases" class="nav-item">Cases</a>
         <a href="#quiz" class="nav-item">Quiz</a>
         <a href="#staff" class="nav-item">Staff</a>
       </nav>
@@ -68,12 +167,16 @@
   <main class="container">
     <div id="searchStatus" class="search-status" role="status" aria-live="polite"></div>
 
+    <!-- CHAPTER 1: INTRODUCTION -->
     <section id="home" class="home-cover interactive-card">
       <h1 class="reveal-left"><i data-lucide="sprout"></i> Threats to Biodiversity<br>and the Healthy Society</h1>
-      <div class="subhead reveal-left" style="transition-delay: 0.1s;">A research-based educational platform · Science, Technology & Society</div>
+      <div class="subhead reveal-left" style="transition-delay: 0.1s;">A Research Paper in Science, Technology, and Society · BSIT 2-03 Group 2</div>
+      
       <div class="intro-text reveal-left" style="transition-delay: 0.2s;">
-        <p><strong>Welcome to BioSphere.</strong> Biodiversity — the variety of life on Earth — is declining at an unprecedented rate. This website translates our group's research into an accessible, engaging resource. Explore the major threats, real-world case studies, ethical dilemmas, and the deep connections between ecosystem health and human well-being. Our goal is to inform, provoke critical thinking, and inspire action.</p>
+        <p><strong>Introduction.</strong> Biodiversity refers to the variety of all living organisms on Earth, including plants, animals, and microorganisms, and the ecosystems they form. It plays a vital role in Science, Technology, and Society by providing essential services such as food, clean water, medicine, climate regulation, and disease control. Advances in science and technology have helped us understand and conserve biodiversity, while society depends on it for health, livelihood, and overall well-being.</p>
+        <p style="margin-top: 1rem;">However, global biodiversity is under severe threat. Major issues include habitat loss, climate change, pollution, overexploitation of resources, and invasive species. These threats not only endanger ecosystems but also affect human health and societal stability. Given the direct connection between a healthy environment and a healthy society, it is important to study the global threats to biodiversity and how they impact human life. This research paper aims to explore these threats and their implications to Science, Technology, and Society.</p>
       </div>
+
       <div class="cover-image-placeholder">
         <div class="img-wrap reveal-scale">
           <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%232a6f7a'/%3E%3Ctext x='100' y='80' font-size='14' text-anchor='middle' fill='%23ffffff' font-family='Arial'%3EForest Biodiversity%3C/text%3E%3C/svg%3E" alt="Illustration of a lush forest representing biodiversity">
@@ -88,152 +191,133 @@
       <p class="alt-text-note reveal"><i data-lucide="image"></i> Visual: forest, marine, and human health icons</p>
     </section>
 
-    <div class="ad-banner interactive-card reveal-right">
-      <div class="ad-text">
-        <h3><i data-lucide="cpu"></i> EcoTech Innovation Summit 2025</h3>
-        <p>Join the global movement merging AI, biotech, and conservation. Learn how technology can restore biodiversity.</p>
-      </div>
-      <div class="ad-badge">
-        <i data-lucide="calendar"></i> Register now
-      </div>
-    </div>
-
+    <!-- HEADLINE -->
     <section id="headline">
       <div class="section-title reveal">
         <i data-lucide="newspaper"></i> Main Headline
       </div>
       <div class="card interactive-card reveal" style="border-left: 10px solid var(--accent);">
         <h3><i data-lucide="alert-triangle"></i> "The Silent Crisis: How Biodiversity Loss Threatens Global Health"</h3>
-        <div class="meta"><i data-lucide="user"></i> By Research Team · <i data-lucide="calendar"></i> May 2025</div>
-        <p>New research reveals that the rapid decline of species isn't just an environmental issue — it directly fuels the spread of infectious diseases, reduces food security, and undermines mental well-being. This headline article synthesizes our group's findings: habitat destruction, climate change, and pollution are driving a sixth mass extinction. We explore the scientific evidence linking biodiversity loss to zoonotic spillover, loss of medicinal resources, and the collapse of ecosystem services that keep humanity healthy. The message is clear: protecting nature is protecting ourselves.</p>
-        <button class="btn-read"><i data-lucide="book-open"></i> Read full headline</button>
+        <div class="meta"><i data-lucide="user"></i> By BSIT 2-03 Group 2 · <i data-lucide="calendar"></i> 2026</div>
+        <p>According to the IPBES Global Assessment Report (2019), nature is declining globally at rates unprecedented in human history. Land and sea use changes, direct exploitation, climate change, pollution, and invasive alien species are the major direct drivers of biodiversity loss. This headline article synthesizes our group's findings: the rapid decline of species isn't just an environmental issue — it directly fuels the spread of infectious diseases, reduces food security, and undermines mental well-being. The message is clear: protecting nature is protecting ourselves.</p>
+        <button class="btn-read" onclick="openModal('modal-synthesis')"><i data-lucide="book-open"></i> Read Full Synthesis</button>
       </div>
     </section>
 
+    <!-- CHAPTER 2: ARTICLES (The 5 Threats) -->
     <section id="articles">
       <div class="section-title reveal">
-        <i data-lucide="file-text"></i> Research Articles
+        <i data-lucide="file-text"></i> The Five Major Threats
       </div>
       <div class="article-grid">
+        
         <article class="card interactive-card reveal">
-          <h3><i data-lucide="trees"></i> Deforestation & Zoonotic Spillover</h3>
+          <h3><i data-lucide="trees"></i> 1. Habitat Destruction</h3>
           <div class="meta"><i data-lucide="flask-conical"></i> Research finding</div>
-          <p>Land-use change forces wildlife into closer contact with humans, increasing the risk of viruses jumping species. Our analysis of 40 studies shows a 32% rise in emerging infectious diseases in deforested regions.</p>
-          <button class="btn-read"><i data-lucide="arrow-right"></i> Read more</button>
+          <p>Deforestation and land conversion for agriculture and settlements destroy ecosystems, forcing wildlife into closer contact with humans and increasing zoonotic disease risks.</p>
+          <button class="btn-read" onclick="openModal('modal-habitat')"><i data-lucide="book-open"></i> Read Full Chapter</button>
         </article>
+
         <article class="card interactive-card reveal" style="transition-delay: 0.1s;">
-          <h3><i data-lucide="fish"></i> Coral Reefs: Medicine Cabinets of the Sea</h3>
+          <h3><i data-lucide="factory"></i> 2. Pollution</h3>
           <div class="meta"><i data-lucide="flask-conical"></i> Health implication</div>
-          <p>Reefs host compounds used in cancer and pain treatments. With 50% of reefs degraded, we risk losing undiscovered cures. The article highlights promising drugs from marine organisms.</p>
-          <button class="btn-read"><i data-lucide="arrow-right"></i> Read more</button>
+          <p>Plastic waste, chemicals, and industrial pollutants contaminate ecosystems. Marine animals get entangled in plastic, while contaminated water exposes humans to diseases.</p>
+          <button class="btn-read" onclick="openModal('modal-pollution')"><i data-lucide="book-open"></i> Read Full Chapter</button>
         </article>
+
         <article class="card interactive-card reveal" style="transition-delay: 0.2s;">
-          <h3><i data-lucide="dna"></i> Agrobiodiversity & Food Security</h3>
+          <h3><i data-lucide="thermometer-sun"></i> 3. Climate Change</h3>
           <div class="meta"><i data-lucide="flask-conical"></i> Current issue</div>
-          <p>Monocultures and loss of traditional crop varieties make food systems vulnerable to pests and climate shocks. We examine the narrowing genetic base of global staples.</p>
-          <button class="btn-read"><i data-lucide="arrow-right"></i> Read more</button>
+          <p>Changing temperatures and extreme weather disrupt ecosystems. Coral bleaching and habitat fragmentation threaten food security and coastal safety.</p>
+          <button class="btn-read" onclick="openModal('modal-climate')"><i data-lucide="book-open"></i> Read Full Chapter</button>
         </article>
+
         <article class="card interactive-card reveal" style="transition-delay: 0.3s;">
-          <h3><i data-lucide="building-2"></i> Urbanization vs. Native Pollinators</h3>
+          <h3><i data-lucide="fish-symbol"></i> 4. Overexploitation</h3>
           <div class="meta"><i data-lucide="flask-conical"></i> Environmental implication</div>
-          <p>Concrete jungles fragment habitats. Our study in Metro Manila shows a 45% decline in bee diversity, threatening local fruit and vegetable production.</p>
-          <button class="btn-read"><i data-lucide="arrow-right"></i> Read more</button>
+          <p>Illegal wildlife trade, overfishing, and excessive logging deplete species faster than they can recover, threatening food supplies and marine balance.</p>
+          <button class="btn-read" onclick="openModal('modal-overexploitation')"><i data-lucide="book-open"></i> Read Full Chapter</button>
         </article>
+
         <article class="card interactive-card reveal" style="transition-delay: 0.4s;">
-          <h3><i data-lucide="globe-2"></i> Climate Change as a Threat Multiplier</h3>
+          <h3><i data-lucide="bug"></i> 5. Invasive Species</h3>
           <div class="meta"><i data-lucide="flask-conical"></i> Expert perspective</div>
-          <p>Rising temperatures shift species ranges and disrupt life cycles. We present projections for Southeast Asia's biodiversity hotspots and the consequences for human health.</p>
-          <button class="btn-read"><i data-lucide="arrow-right"></i> Read more</button>
+          <p>Non-native species introduced through trade outcompete native wildlife, disrupt food webs, and introduce new diseases to ecosystems.</p>
+          <button class="btn-read" onclick="openModal('modal-invasive')"><i data-lucide="book-open"></i> Read Full Chapter</button>
         </article>
       </div>
     </section>
 
-    <div class="section-title reveal">
-      <i data-lucide="pie-chart"></i> Visual Materials
-    </div>
-    <div class="visual-grid">
-      <div class="visual-item interactive-card reveal-scale">
-        <i data-lucide="bar-chart-3"></i>
-        <h4>Species decline</h4>
-        <p>Bar chart: 68% average population drop in monitored vertebrates (1970–2020).</p>
-        <div class="bar-chart">
-          <div>
-            <div class="bar" style="height: 100px;"><span class="bar-value" data-target="100">0%</span></div>
-            <div class="bar-label">1970</div>
-          </div>
-          <div>
-            <div class="bar" style="height: 70px;"><span class="bar-value" data-target="70">0%</span></div>
-            <div class="bar-label">1990</div>
-          </div>
-          <div>
-            <div class="bar" style="height: 40px;"><span class="bar-value" data-target="40">0%</span></div>
-            <div class="bar-label">2020</div>
-          </div>
-        </div>
-      </div>
-      <div class="visual-item interactive-card reveal-scale" style="transition-delay: 0.1s;">
-        <i data-lucide="clock"></i>
-        <h4>Timeline: Key events</h4>
-        <div class="timeline" style="flex-direction: column; gap: 0.5rem;">
-          <div class="timeline-item"><span class="year">1992</span> Convention on Biological Diversity</div>
-          <div class="timeline-item"><span class="year">2010</span> Aichi Targets</div>
-          <div class="timeline-item"><span class="year">2022</span> Kunming-Montreal Framework</div>
-        </div>
-      </div>
-      <div class="visual-item interactive-card reveal-scale" style="transition-delay: 0.2s;">
-        <i data-lucide="git-branch"></i>
-        <h4>Diagram: Ecosystem services</h4>
-        <p>Provisioning, regulating, cultural, supporting — arrows to human health.</p>
-      </div>
-      <div class="visual-item interactive-card reveal-scale" style="transition-delay: 0.3s;">
-        <i data-lucide="video"></i>
-        <h4>Video</h4>
-        <p>"Biodiversity & Pandemics" (4 min) — animation.</p>
-        <i data-lucide="play-circle" style="font-size: 2.2rem; color: var(--primary);"></i>
-      </div>
-      <div class="visual-item interactive-card reveal-scale" style="transition-delay: 0.4s;">
-        <i data-lucide="shapes"></i>
-        <h4>Icons & Infographics</h4>
-        <p>Icon set: deforestation, pollution, overexploitation.</p>
-      </div>
-      <div class="visual-item interactive-card reveal-scale" style="transition-delay: 0.5s;">
-        <i data-lucide="camera"></i>
-        <h4>Photographs</h4>
-        <p>Before/after habitat loss imagery (used with permission).</p>
-      </div>
-    </div>
-
-    <section id="cases">
+    <!-- VISUAL MATERIALS -->
+    <section id="visuals">
       <div class="section-title reveal">
-        <i data-lucide="map-pin"></i> Case Studies & Examples
+        <i data-lucide="pie-chart"></i> Visual Materials
       </div>
-
-      <div class="case-map-wrapper reveal">
-        <div id="caseMap" role="region" aria-label="Interactive world map showing biodiversity case study locations"></div>
-        <p class="map-hint">
-          <i data-lucide="mouse-pointer"></i> Click any marker to see the case study details
-        </p>
-      </div>
-
-      <div class="case-grid">
-        <div class="case-card interactive-card reveal">
-          <div class="location"><i data-lucide="map-pin"></i> Amazon Basin, Brazil</div>
-          <h4>Deforestation & Malaria</h4>
-          <p>Clearing for cattle ranches increased mosquito breeding sites and human exposure. Malaria cases rose 48% in newly deforested areas (2009–2019).</p>
+      <div class="visual-grid">
+        
+        <!-- ACCURATE BAR CHART BASE SA RESEARCH -->
+        <div class="visual-item interactive-card reveal-scale">
+          <i data-lucide="bar-chart-3"></i>
+          <h4>Species decline</h4>
+          <p>Living Planet Report: 68% average drop in monitored vertebrates (1970–2020).</p>
+          <div class="bar-chart">
+            <div>
+              <div class="bar" style="height: 100px; background: var(--primary);"><span class="bar-value" data-target="100">100%</span></div>
+              <div class="bar-label">1970</div>
+            </div>
+            <div>
+              <div class="bar" style="height: 55px;"><span class="bar-value" data-target="55">55%</span></div>
+              <div class="bar-label">1990</div>
+            </div>
+            <div>
+              <div class="bar" style="height: 32px;"><span class="bar-value" data-target="32">32%</span></div>
+              <div class="bar-label">2020</div>
+            </div>
+          </div>
         </div>
-        <div class="case-card interactive-card reveal" style="transition-delay: 0.1s;">
-          <div class="location"><i data-lucide="map-pin"></i> Tubbataha Reefs, Philippines</div>
-          <h4>Blast Fishing & Food Security</h4>
-          <p>Destructive fishing decimated reefs, reducing fish catch by 60% in some villages. Communities lost protein sources and income.</p>
+
+        <div class="visual-item interactive-card reveal-scale" style="transition-delay: 0.1s;">
+          <i data-lucide="clock"></i>
+          <h4>Timeline: Key events</h4>
+          <div class="timeline" style="flex-direction: column; gap: 0.5rem;">
+            <div class="timeline-item"><span class="year">1992</span> Convention on Biological Diversity</div>
+            <div class="timeline-item"><span class="year">2010</span> Aichi Targets</div>
+            <div class="timeline-item"><span class="year">2022</span> Kunming-Montreal Framework</div>
+          </div>
         </div>
-        <div class="case-card interactive-card reveal" style="transition-delay: 0.2s;">
-          <div class="location"><i data-lucide="map-pin"></i> Guinea, West Africa</div>
-          <h4>Ebola & Bushmeat</h4>
-          <p>Fruit bat habitat disruption linked to Ebola spillover. Study shows 70% of outbreaks originated near forest edges.</p>
+
+        <!-- BAGONG INFOGRAPHIC -->
+        <div class="visual-item interactive-card reveal-scale" style="transition-delay: 0.2s;">
+          <i data-lucide="image"></i>
+          <h4>Major Threats Infographic</h4>
+          <p>Visualizing Deforestation, Pollution, and Overexploitation.</p>
+          <img src="threats-infographic.png" alt="Infographic showing deforestation, pollution, and overexploitation" class="infographic-img" onerror="this.style.display='none'">
+        </div>
+
+        <!-- UPDATED VIDEO LINK (Kim Preshoff) -->
+        <div class="visual-item interactive-card reveal-scale" style="transition-delay: 0.3s;">
+          <i data-lucide="video"></i>
+          <h4>Video</h4>
+          <p>"Why is biodiversity so important?" - Kim Preshoff (TED-Ed)</p>
+          <a href="https://www.youtube.com/watch?v=b6Ua_zWDH6U" target="_blank" rel="noopener" style="display: inline-block; margin-top: 10px;">
+            <i data-lucide="play-circle" style="font-size: 2.5rem; color: var(--primary);"></i>
+          </a>
+        </div>
+
+        <div class="visual-item interactive-card reveal-scale" style="transition-delay: 0.4s;">
+          <i data-lucide="shapes"></i>
+          <h4>Icons & Infographics</h4>
+          <p>Icon set: deforestation, pollution, overexploitation.</p>
+        </div>
+        <div class="visual-item interactive-card reveal-scale" style="transition-delay: 0.5s;">
+          <i data-lucide="camera"></i>
+          <h4>Photographs</h4>
+          <p>Before/after habitat loss imagery (used with permission).</p>
         </div>
       </div>
     </section>
 
+    <!-- ETHICAL & SOCIAL ISSUES -->
     <section id="ethics">
       <div class="section-title reveal">
         <i data-lucide="scale"></i> Ethical & Social Issues
@@ -242,26 +326,69 @@
         <div class="ethics-item interactive-card reveal-left">
           <i data-lucide="heart-handshake"></i>
           <h4>Intrinsic value of nature</h4>
-          <p>Do species have a right to exist beyond their utility to humans? Ethical frameworks challenge purely economic arguments.</p>
+          <p>Do species have a right to exist beyond their utility to humans? Ethical frameworks challenge purely economic arguments. (Chapter 2.8)</p>
         </div>
         <div class="ethics-item interactive-card reveal-left" style="transition-delay: 0.1s;">
           <i data-lucide="users"></i>
           <h4>Environmental justice</h4>
-          <p>Marginalized communities often bear the brunt of biodiversity loss and pollution, while contributing least to the drivers.</p>
+          <p>Marginalized communities often bear the brunt of biodiversity loss and pollution, while contributing least to the drivers. (Chapter 2.9)</p>
         </div>
         <div class="ethics-item interactive-card reveal-right" style="transition-delay: 0.2s;">
           <i data-lucide="dna"></i>
-          <h4>Genetic modification & conservation</h4>
-          <p>Should we use gene drives to save species? Debates on unintended consequences and hubris.</p>
+          <h4>Intergenerational Responsibility</h4>
+          <p>Present generations should use natural resources responsibly so that future generations can enjoy a healthy environment. (Chapter 2.8)</p>
         </div>
         <div class="ethics-item interactive-card reveal-right" style="transition-delay: 0.3s;">
-          <i data-lucide="line-chart"></i>
-          <h4>Sustainable development</h4>
-          <p>Balancing economic growth with ecosystem protection — challenges for policy and individual choices.</p>
+          <i data-lucide="chart-line"></i>
+          <h4>Sustainable development</h4>  
+          <p>Balancing economic growth with ecosystem protection — challenges for policy and individual choices. (Chapter 2.6.1)</p>
         </div>
       </div>
     </section>
 
+    <!-- CHAPTER 3: METHODOLOGY -->
+    <section id="methodology">
+      <div class="section-title reveal">
+        <i data-lucide="microscope"></i> Research Methodology
+      </div>
+      <div class="card interactive-card reveal" style="border-left: 10px solid var(--secondary);">
+        <h3><i data-lucide="clipboard-list"></i> Chapter 3: Research Design & Data Gathering</h3>
+        <p>This study utilized a <strong>descriptive research design</strong> to understand the threats to biodiversity and their effects on society. The researchers gathered information through a rigorous review of secondary sources, including Google Scholar, academic journals, government reports (DENR, WHO, IPBES), and environmental organizations. No primary data (surveys/experiments) were collected.</p>
+      </div>
+    </section>
+
+    <!-- CASE STUDIES -->
+    <section id="cases">
+      <div class="section-title reveal">
+        <i data-lucide="map-pin"></i> Case Studies & Examples
+      </div>
+
+      <div class="case-map-wrapper reveal">
+        <div id="caseMap" role="region" aria-label="Interactive world map showing biodiversity case study locations"></div>
+        <p class="map-hint"><i data-lucide="mouse-pointer"></i> Click any marker to see the case study details</p>
+      </div>
+
+      <div class="case-grid">
+        <!-- UPDATED CASES BASE SA BAGONG RESEARCH -->
+        <div class="case-card interactive-card reveal">
+          <div class="location"><i data-lucide="map-pin"></i> Kalimantan & Sumatra, Indonesia</div>
+          <h4>Devastating Deforestation</h4>
+          <p>Peatland forests cleared for paper and pulpwood. Devastating fires in 2015 peaked in 2016, with smoke hiding the loss in satellite images. Recent claims of a 90% reduction are debated as "cherry-picking" data.</p>
+        </div>
+        <div class="case-card interactive-card reveal" style="transition-delay: 0.1s;">
+          <div class="location"><i data-lucide="map-pin"></i> Eastern Himalayas</div>
+          <h4>Habitat Loss in the Mountains</h4>
+          <p>Over 75% of the original Himalayan habitat has been destroyed or degraded. This rapid loss is pushing incredible biodiversity—like snow leopards, red pandas, and 300+ bird species—toward extinction.</p>
+        </div>
+        <div class="case-card interactive-card reveal" style="transition-delay: 0.2s;">
+          <div class="location"><i data-lucide="map-pin"></i> United States (NOAA)</div>
+          <h4>Restoring Polluted Waters</h4>
+          <p>The National Oceanic and Atmospheric Administration (NOAA) allocated $28 million in 2022 to restore marine resources damaged by pollution, including oil spills and hazardous waste, focusing on habitats and fisheries.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ -->
     <section id="quiz">
       <div class="section-title reveal">
         <i data-lucide="help-circle"></i> Knowledge Check · 20 Questions
@@ -289,6 +416,7 @@
       <div id="quiz-result"></div>
     </section>
 
+    <!-- STAFF -->
     <section id="staff">
       <div class="section-title reveal">
         <i data-lucide="users"></i> Editorial Staff / About Us
@@ -296,9 +424,7 @@
       <div class="staff-grid">
         <div class="staff-member interactive-card reveal-scale">
           <div class="staff-float">
-            <div class="staff-avatar">
-              <img src="addriane.jpg" alt="Portrait of Addriane Quintela">
-            </div>
+            <div class="staff-avatar"><img src="addriane.jpg" alt="Portrait of Addriane Quintela"></div>
             <h4>Addriane Quintela</h4>
             <div class="role">Lead Researcher & Writer</div>
             <p>Main headline, case studies</p>
@@ -306,9 +432,7 @@
         </div>
         <div class="staff-member interactive-card reveal-scale" style="transition-delay: 0.1s;">
           <div class="staff-float">
-            <div class="staff-avatar">
-              <img src="camille.gif" alt="Portrait of Camille Osinsao">
-            </div>
+            <div class="staff-avatar"><img src="camille.gif" alt="Portrait of Camille Osinsao"></div>
             <h4>Camille Osinsao</h4>
             <div class="role">Research & Data Analyst</div>
             <p>Infographics, charts, references</p>
@@ -316,9 +440,7 @@
         </div>
         <div class="staff-member interactive-card reveal-scale" style="transition-delay: 0.2s;">
           <div class="staff-float">
-            <div class="staff-avatar">
-              <img src="aleah.jpg" alt="Portrait of Aleah Talusan">
-            </div>
+            <div class="staff-avatar"><img src="aleah.jpg" alt="Portrait of Aleah Talusan"></div>
             <h4>Aleah Talusan</h4>
             <div class="role">Ethics & Society Editor</div>
             <p>Ethical section, social implications</p>
@@ -326,9 +448,7 @@
         </div>
         <div class="staff-member interactive-card reveal-scale" style="transition-delay: 0.3s;">
           <div class="staff-float">
-            <div class="staff-avatar">
-              <img src="talusan.png" alt="Portrait of Moschin Talusan">
-            </div>
+            <div class="staff-avatar"><img src="talusan.png" alt="Portrait of Moschin Talusan"></div>
             <h4>Moschin Talusan</h4>
             <div class="role">Web Developer</div>
             <p>HTML/CSS/JS, interactive quiz</p>
@@ -336,9 +456,7 @@
         </div>
         <div class="staff-member interactive-card reveal-scale" style="transition-delay: 0.4s;">
           <div class="staff-float">
-            <div class="staff-avatar">
-              <img src="asuncion.jpg" alt="Portrait of Johnmarc Asuncion">
-            </div>
+            <div class="staff-avatar"><img src="asuncion.jpg" alt="Portrait of Johnmarc Asuncion"></div>
             <h4>Johnmarc Asuncion</h4>
             <div class="role">Web Developer</div>
             <p>HTML/CSS/JS, interactive quiz</p>
@@ -346,38 +464,62 @@
         </div>
         <div class="staff-member interactive-card reveal-scale" style="transition-delay: 0.5s;">
           <div class="staff-float">
-            <div class="staff-avatar">
-              <img src="marivic.jpg" alt="Portrait of Marivic Quikelez">
-            </div>
+            <div class="staff-avatar"><img src="marivic.jpg" alt="Portrait of Marivic Quikelez"></div>
             <h4>Marivic Quikelez</h4>
-            <div class="role">Visual & Media</div>
-            <p>Images, video, alt text</p>
+            <div class="role">Documentation Specialist</div>
+            <p>Assistance with documentation</p>
           </div>
         </div>
-      </div>
+        <div class="staff-member interactive-card reveal-scale" style="transition-delay: 0.6s;">
+          <div class="staff-float">
+            <div class="staff-avatar"><img src="greg.jpg" alt="Portrait of Greg Martin Taladro"></div>
+            <h4>Greg Martin Taladro</h4>
+            <div class="role">Visual & Media</div>
+            <p>Visual design, media production</p>
+          </div>
+        </div>
+        <div class="staff-member interactive-card reveal-scale" style="transition-delay: 0.7s;">
+          <div class="staff-float">
+            <div class="staff-avatar"><img src="joseph.jpg" alt="Portrait of Mark Cholo Param"></div>
+            <h4>Mark Cholo Param</h4>
+            <div class="role">Research Assistant</div>
+            <p>Assistant researcher</p>
+          </div>
+        </div>
+        <div class="staff-member interactive-card reveal-scale" style="transition-delay: 0.8s;">
+          <div class="staff-float">
+            <div class="staff-avatar"><img src="joanna.jpg" alt="Portrait of Joanna Marie Quiokeles"></div>
+            <h4>Joanna Marie Quiokeles</h4>
+            <div class="role">Visual & Media</div>
+            <p>Visual design, media production</p>
+          </div>
+        </div>
+      </div> <!-- Inayos ang pagkakasara ng staff-grid dito -->
       <p class="reveal" style="text-align: center; color: var(--text-light); margin-top: 1rem;">All members contributed to research, writing, and review. We follow strict research ethics and cite all sources.</p>
     </section>
 
+    <!-- REFERENCES -->
     <div class="section-title reveal">
       <i data-lucide="book"></i> References & Sources
     </div>
     <div class="references interactive-card reveal">
       <ul>
-        <li>IPBES (2019). Global Assessment Report on Biodiversity and Ecosystem Services.</li>
-        <li>WHO (2021). Biodiversity and Health.</li>
-        <li>WWF (2022). Living Planet Report.</li>
-        <li>Keesing, F. et al. (2010). Impacts of biodiversity on the emergence of infectious diseases. <em>Nature</em>.</li>
-        <li>Philippine Biodiversity Conservation Priorities (2020).</li>
-        <li>Additional group research findings, 2025 (unpublished).</li>
-        <li>Images: original SVG graphics by team; icons from Lucide (ISC License).</li>
-        <li>Map tiles: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors; powered by <a href="https://leafletjs.com/" target="_blank" rel="noopener">Leaflet</a>.</li>
+        <li>Bonaccorso, N. (2015). Before and after: Devastating deforestation in photos. <em>The Weather Channel</em>.</li>
+        <li>Convention on Biological Diversity. (2022). Kunming-Montreal Global Biodiversity Framework.</li>
+        <li>Díaz, S., et al. (2019). Pervasive human-driven decline of life on Earth points to the need for transformative change. <em>Science</em>.</li>
+        <li>Himalayan Geographic. (n.d.). Mountains lose their trees.</li>
+        <li>Intergovernmental Science-Policy Platform on Biodiversity and Ecosystem Services. (2019). Global assessment report on biodiversity and ecosystem services.</li>
+        <li>Lang, C. (2025). New report finds that Indonesia’s claim of 90% reduction of deforestation... <em>REDD-Monitor</em>.</li>
+        <li>National Oceanic and Atmospheric Administration. (2022). $28 million to restore marine resources damaged by pollution.</li>
+        <li>Newbold, T., et al. (2015). Global effects of land use on local terrestrial biodiversity. <em>Nature</em>.</li>
+        <li>World Wide Fund for Nature. (2024). Living Planet Report 2024.</li>
       </ul>
     </div>
 
   </main>
 
   <footer>
-    <p>© 2025 BioSphere · Educational Website for Science, Technology & Society</p>
+    <p>© 2026 BioSphere · BSIT 2-03 Group 2 · PHINMA Saint Jude College Manila</p>
     <p><i data-lucide="leaf"></i> Accessible · Research-based · Ethical</p>
   </footer>
 
@@ -385,9 +527,86 @@
     <i data-lucide="arrow-up"></i>
   </button>
 
+  <!-- MODALS -->
+  <div id="modal-habitat" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('modal-habitat')">&times;</button>
+      <h2>1. Deforestation and Habitat Destruction</h2>
+      <p>Deforestation and habitat destruction are major threats to biodiversity. Forests, wetlands, mangroves, and other natural habitats provide food, shelter, and breeding areas for numerous species. When these habitats are cleared for agriculture, settlements, roads, mining, and other human activities, plants and animals may lose the resources they need to survive.</p>
+      <h3>Case Study: Kalimantan & Sumatra</h3>
+      <p>In Indonesia, peatland forest is cleared for paper and pulpwood. Devastating fires in 2015 peaked in 2016, with smoke hiding the loss in satellite images. Furthermore, in the Eastern Himalayas, over 75% of the original habitat has been destroyed, pushing species like snow leopards and red pandas toward extinction.</p>
+      <h3>Related Study (Newbold et al., 2015)</h3>
+      <p>Their study, published in <em>Nature</em>, found that human activities such as intensive land use and related environmental pressures are associated with reductions in local biodiversity.</p>
+    </div>
+  </div>
+
+  <div id="modal-pollution" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('modal-pollution')">&times;</button>
+      <h2>2. Pollution and Improper Waste Disposal</h2>
+      <p>Pollution is another major threat to biodiversity. Plastic waste, chemicals, sewage, pesticides, and industrial pollutants can contaminate land and water ecosystems. Marine animals may become entangled in plastic waste or mistake it for food.</p>
+      <h3>Restoration Efforts</h3>
+      <p>Organizations like NOAA allocated $28 million in 2022 to restore marine resources damaged by pollution, including oil spills, ship groundings, and hazardous waste sites.</p>
+      <h3>Conservation Measure</h3>
+      <p>Reducing pollution through proper waste disposal, wastewater treatment, and responsible use of chemicals can help protect biodiversity and human health.</p>
+    </div>
+  </div>
+
+  <div id="modal-climate" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('modal-climate')">&times;</button>
+      <h2>3. Climate Change</h2>
+      <p>Climate change affects biodiversity by changing temperature patterns, rainfall, ocean conditions, and the frequency or intensity of certain extreme weather events. Coral bleaching, for example, can occur when unusually warm ocean temperatures stress corals.</p>
+    </div>
+  </div>
+
+  <div id="modal-overexploitation" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('modal-overexploitation')">&times;</button>
+      <h2>4. Overexploitation of Natural Resources</h2>
+      <p>Overexploitation occurs when plants, animals, fish, timber, or other natural resources are collected or used faster than they can recover. Examples include illegal wildlife trade, overfishing, excessive logging, and unsustainable hunting.</p>
+    </div>
+  </div>
+
+  <div id="modal-invasive" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('modal-invasive')">&times;</button>
+      <h2>5. Invasive Alien Species</h2>
+      <p>Invasive alien species are organisms introduced outside their natural range that spread and cause harm to native biodiversity, ecosystems, the economy, or human health.</p>
+    </div>
+  </div>
+
+  <div id="modal-synthesis" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('modal-synthesis')">&times;</button>
+      <h2>Synthesis: The Global Crisis</h2>
+      <p>According to the <strong>IPBES Global Assessment Report (2019)</strong>, nature is declining globally at rates unprecedented in human history. The <strong>Living Planet Report 2024</strong> documented substantial average declines in monitored vertebrate wildlife populations between 1970 and 2020.</p>
+    </div>
+  </div>
+
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="script.js"></script>
+  
+  <script>
+    function openModal(id) {
+      document.getElementById(id).classList.add('active');
+      document.body.style.overflow = 'hidden'; 
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+          overlay.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      });
+    });
+  </script>
 </body>
 </html>
