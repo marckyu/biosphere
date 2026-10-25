@@ -941,7 +941,6 @@ img {
   font-size: 0.95rem;
 }
 
-/* ===== ENHANCED QUIZ ANIMATIONS ===== */
 .quiz-progress {
   background: var(--card-bg);
   border-radius: var(--radius);
@@ -1031,7 +1030,6 @@ img {
   border: 1px solid var(--border-soft);
 }
 
-/* NEW: Scroll-based fade in/out for questions */
 .quiz-question {
   background: var(--soft-bg);
   padding: 1.3rem 1.5rem;
@@ -1039,8 +1037,6 @@ img {
   margin-bottom: 1.3rem;
   border-left: 6px solid var(--primary);
   will-change: transform, opacity;
-  
-  /* Setup for the opening/closing effect */
   opacity: 0;
   transform: translateY(40px) scale(0.96);
   transition: opacity 0.8s var(--ease-fluid), 
@@ -1050,7 +1046,6 @@ img {
               box-shadow 0.3s ease;
 }
 
-/* When the observer adds .is-visible */
 .quiz-question.is-visible {
   opacity: 1;
   transform: translateY(0) scale(1);
@@ -1077,7 +1072,6 @@ img {
   gap: 0.6rem;
 }
 
-/* Smoother Hover & Dependency */
 .quiz-option {
   display: flex;
   align-items: center;
@@ -1127,7 +1121,6 @@ img {
   line-height: 1.4;
 }
 
-/* More frequent, ultra-smooth hover state */
 .quiz-option:hover {
   background: rgba(15, 76, 92, 0.05);
   border-color: rgba(15, 76, 92, 0.15);
@@ -1148,7 +1141,6 @@ img {
   box-shadow: 0 2px 8px rgba(227, 180, 72, 0.3);
 }
 
-/* Dependency: When clicked (selected) */
 .quiz-option.selected,
 .quiz-option:has(input:checked) {
   background: rgba(227, 180, 72, 0.12);
@@ -1418,12 +1410,12 @@ img {
   color: #e8f0f2;
 }
 
-/* ===== STAFF SECTION ===== */
 .staff-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 1.2rem;
-  margin: 1.8rem 0;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin: 1.8rem auto;
+  max-width: 1000px;
 }
 
 .staff-member {
@@ -1447,7 +1439,6 @@ img {
   height: 100%;
   transition: box-shadow 0.35s var(--ease-spring);
   will-change: transform;
-  
   animation: floatSmooth 5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
 }
 
@@ -1792,6 +1783,9 @@ footer a {
   .home-cover {
     padding: 2rem 1.5rem;
   }
+  .staff-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
@@ -1925,8 +1919,7 @@ footer a {
     gap: 1.2rem;
   }
 
-  .visual-grid,
-  .staff-grid {
+  .visual-grid {
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   }
 
@@ -1959,6 +1952,12 @@ footer a {
     right: 16px;
     width: 46px;
     height: 46px;
+  }
+}
+
+@media (max-width: 600px) {
+  .staff-grid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -2095,4 +2094,4 @@ footer a {
     opacity: 1 !important;  
     animation: none !important;
   }
-} 
+}

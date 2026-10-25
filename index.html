@@ -21,103 +21,6 @@
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="style.css">
-  
-  <!-- Custom CSS para sa Modal (Popup) -->
-  <style>
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(8px);
-      z-index: 9999;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.4s var(--ease-fluid), visibility 0.4s var(--ease-fluid);
-    }
-    .modal-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-    .modal-content {
-      background: var(--card-bg);
-      color: var(--text-dark);
-      width: 90%;
-      max-width: 800px;
-      max-height: 85vh;
-      overflow-y: auto;
-      padding: 2.5rem;
-      border-radius: var(--radius);
-      box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-      position: relative;
-      transform: translateY(30px) scale(0.95);
-      transition: transform 0.5s var(--ease-spring);
-      border: 1px solid var(--border-soft);
-    }
-    .modal-overlay.active .modal-content {
-      transform: translateY(0) scale(1);
-    }
-    .modal-close {
-      position: sticky;
-      top: 0;
-      float: right;
-      background: var(--primary);
-      color: white;
-      border: none;
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 1.5rem;
-      display: flex; justify-content: center; align-items: center;
-      z-index: 10;
-      transition: all 0.3s var(--ease-bounce);
-    }
-    .modal-close:hover {
-      background: var(--secondary);
-      transform: scale(1.1) rotate(90deg);
-    }
-    .modal-content h2 {
-      color: var(--primary);
-      margin-bottom: 1.5rem;
-      padding-right: 40px;
-      font-size: clamp(1.4rem, 3vw, 2rem);
-    }
-    .modal-content h3 {
-      margin-top: 2rem;
-      margin-bottom: 0.8rem;
-      color: var(--primary-light);
-      font-size: 1.2rem;
-    }
-    .modal-content p {
-      margin-bottom: 1rem;
-      line-height: 1.7;
-      font-size: 1.05rem;
-    }
-    .modal-content ul {
-      margin-left: 1.5rem;
-      margin-bottom: 1rem;
-    }
-    .modal-content li {
-      margin-bottom: 0.5rem;
-      line-height: 1.6;
-    }
-    
-    /* Scrollbar sa loob ng Modal */
-    .modal-content::-webkit-scrollbar { width: 8px; }
-    .modal-content::-webkit-scrollbar-track { background: var(--soft-bg); border-radius: 10px; }
-    .modal-content::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 10px; }
-
-    /* Custom style para sa infographic */
-    .infographic-img {
-      width: 100%;
-      height: auto;
-      border-radius: 12px;
-      margin-top: 1rem;
-      border: 1px solid var(--border-soft);
-    }
-  </style>
 </head>
 <body>
 
@@ -164,10 +67,9 @@
     </div>
   </header>
 
-  <main class="container">
+  <main class="container" id="mainContent">
     <div id="searchStatus" class="search-status" role="status" aria-live="polite"></div>
 
-    <!-- CHAPTER 1: INTRODUCTION -->
     <section id="home" class="home-cover interactive-card">
       <h1 class="reveal-left"><i data-lucide="sprout"></i> Threats to Biodiversity<br>and the Healthy Society</h1>
       <div class="subhead reveal-left" style="transition-delay: 0.1s;">A Research Paper in Science, Technology, and Society · BSIT 2-03 Group 2</div>
@@ -191,7 +93,6 @@
       <p class="alt-text-note reveal"><i data-lucide="image"></i> Visual: forest, marine, and human health icons</p>
     </section>
 
-    <!-- HEADLINE -->
     <section id="headline">
       <div class="section-title reveal">
         <i data-lucide="newspaper"></i> Main Headline
@@ -204,7 +105,6 @@
       </div>
     </section>
 
-    <!-- CHAPTER 2: ARTICLES (The 5 Threats) -->
     <section id="articles">
       <div class="section-title reveal">
         <i data-lucide="file-text"></i> The Five Major Threats
@@ -248,14 +148,12 @@
       </div>
     </section>
 
-    <!-- VISUAL MATERIALS -->
     <section id="visuals">
       <div class="section-title reveal">
         <i data-lucide="pie-chart"></i> Visual Materials
       </div>
       <div class="visual-grid">
         
-        <!-- ACCURATE BAR CHART BASE SA RESEARCH -->
         <div class="visual-item interactive-card reveal-scale">
           <i data-lucide="bar-chart-3"></i>
           <h4>Species decline</h4>
@@ -286,7 +184,6 @@
           </div>
         </div>
 
-        <!-- BAGONG INFOGRAPHIC -->
         <div class="visual-item interactive-card reveal-scale" style="transition-delay: 0.2s;">
           <i data-lucide="image"></i>
           <h4>Major Threats Infographic</h4>
@@ -294,7 +191,6 @@
           <img src="threats-infographic.png" alt="Infographic showing deforestation, pollution, and overexploitation" class="infographic-img" onerror="this.style.display='none'">
         </div>
 
-        <!-- UPDATED VIDEO LINK (Kim Preshoff) -->
         <div class="visual-item interactive-card reveal-scale" style="transition-delay: 0.3s;">
           <i data-lucide="video"></i>
           <h4>Video</h4>
@@ -317,7 +213,6 @@
       </div>
     </section>
 
-    <!-- ETHICAL & SOCIAL ISSUES -->
     <section id="ethics">
       <div class="section-title reveal">
         <i data-lucide="scale"></i> Ethical & Social Issues
@@ -340,13 +235,12 @@
         </div>
         <div class="ethics-item interactive-card reveal-right" style="transition-delay: 0.3s;">
           <i data-lucide="chart-line"></i>
-          <h4>Sustainable development</h4>  
+          <h4>Sustainable development</h4>
           <p>Balancing economic growth with ecosystem protection — challenges for policy and individual choices. (Chapter 2.6.1)</p>
         </div>
       </div>
     </section>
 
-    <!-- CHAPTER 3: METHODOLOGY -->
     <section id="methodology">
       <div class="section-title reveal">
         <i data-lucide="microscope"></i> Research Methodology
@@ -357,7 +251,6 @@
       </div>
     </section>
 
-    <!-- CASE STUDIES -->
     <section id="cases">
       <div class="section-title reveal">
         <i data-lucide="map-pin"></i> Case Studies & Examples
@@ -369,7 +262,6 @@
       </div>
 
       <div class="case-grid">
-        <!-- UPDATED CASES BASE SA BAGONG RESEARCH -->
         <div class="case-card interactive-card reveal">
           <div class="location"><i data-lucide="map-pin"></i> Kalimantan & Sumatra, Indonesia</div>
           <h4>Devastating Deforestation</h4>
@@ -388,7 +280,6 @@
       </div>
     </section>
 
-    <!-- QUIZ -->
     <section id="quiz">
       <div class="section-title reveal">
         <i data-lucide="help-circle"></i> Knowledge Check · 20 Questions
@@ -416,7 +307,6 @@
       <div id="quiz-result"></div>
     </section>
 
-    <!-- STAFF -->
     <section id="staff">
       <div class="section-title reveal">
         <i data-lucide="users"></i> Editorial Staff / About Us
@@ -480,7 +370,7 @@
         </div>
         <div class="staff-member interactive-card reveal-scale" style="transition-delay: 0.7s;">
           <div class="staff-float">
-            <div class="staff-avatar"><img src="joseph.jpg" alt="Portrait of Mark Cholo Param"></div>
+            <div class="staff-avatar"><img src="mark.jpg" alt="Portrait of Mark Cholo Param"></div>
             <h4>Mark Cholo Param</h4>
             <div class="role">Research Assistant</div>
             <p>Assistant researcher</p>
@@ -494,11 +384,10 @@
             <p>Visual design, media production</p>
           </div>
         </div>
-      </div> <!-- Inayos ang pagkakasara ng staff-grid dito -->
+      </div>
       <p class="reveal" style="text-align: center; color: var(--text-light); margin-top: 1rem;">All members contributed to research, writing, and review. We follow strict research ethics and cite all sources.</p>
     </section>
 
-    <!-- REFERENCES -->
     <div class="section-title reveal">
       <i data-lucide="book"></i> References & Sources
     </div>
@@ -527,7 +416,6 @@
     <i data-lucide="arrow-up"></i>
   </button>
 
-  <!-- MODALS -->
   <div id="modal-habitat" class="modal-overlay">
     <div class="modal-content">
       <button class="modal-close" onclick="closeModal('modal-habitat')">&times;</button>
@@ -584,7 +472,6 @@
     </div>
   </div>
 
-  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
