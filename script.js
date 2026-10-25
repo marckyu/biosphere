@@ -7,7 +7,7 @@
     { q: "How does biodiversity loss affect human health?", options: ["Increases pandemic risk", "Improves air quality", "No effect", "Increases food security"], correct: 0 },
     { q: "What is zoonotic spillover?", options: ["Virus jumping from animals to humans", "Ocean acidification", "Plant pollination", "Deforestation method"], correct: 0 },
     { q: "Which ecosystem is most threatened by blast fishing?", options: ["Coral reefs", "Deserts", "Grasslands", "Tundras"], correct: 0 },
-    { q: "The Living Planet Report 2022 showed average decline in monitored wildlife populations of about:", options: ["68%", "10%", "25%", "90%"], correct: 0 },
+    { q: "The Living Planet Report 2024 showed an average decline in monitored wildlife populations (1970–2020) of about:", options: ["73%", "10%", "25%", "90%"], correct: 0 },
     { q: "What is an ethical concern of gene drives for conservation?", options: ["Unintended ecological effects", "They are too cheap", "They increase biodiversity instantly", "No concerns"], correct: 0 },
     { q: "Which of these is an ecosystem service?", options: ["Pollination", "Deforestation", "Mining", "Overfishing"], correct: 0 },
     { q: "How does deforestation influence malaria?", options: ["Increases mosquito breeding sites", "Kills all mosquitoes", "No link", "Reduces malaria"], correct: 0 },
@@ -20,11 +20,11 @@
     { q: "Which is an example of an ethical perspective on biodiversity?", options: ["Intrinsic value of species", "Only economic value matters", "Humans own nature", "No moral duty"], correct: 0 },
     { q: "What is a pollinator?", options: ["Bee, butterfly, etc.", "Pesticide", "Fertilizer", "Tractor"], correct: 0 },
     { q: "How does climate change threaten biodiversity?", options: ["Shifts species ranges", "Increases all populations", "No effect", "Stops evolution"], correct: 0 },
-    { q: "Which of the following is a case study in our article?", options: ["Amazon deforestation & malaria", "Urban gardening", "Renewable energy", "Space exploration"], correct: 0 },
+    { q: "Which of the following is a case study in our paper?", options: ["Kalimantan & Sumatra deforestation", "Urban gardening", "Renewable energy", "Space exploration"], correct: 0 },
     { q: "What is the primary goal of the BioSphere website?", options: ["Educate about biodiversity & health links", "Sell products", "Entertainment", "Political campaign"], correct: 0 }
   ];
 
-  let quizData = []; 
+  let quizData = [];
 
   const quizContainer = document.getElementById('quizContainer');
   const resultDiv = document.getElementById('quiz-result');
@@ -34,6 +34,9 @@
   const percentLabel = document.getElementById('quizPercent');
   const progressFill = document.getElementById('quizProgressFill');
 
+  let closeMenu = function() {};
+
+  /* ---------- helpers ---------- */
   function shuffleArray(array) {
     let currentIndex = array.length, randomIndex;
     while (currentIndex !== 0) {
@@ -45,18 +48,14 @@
   }
 
   function prepareQuiz() {
-    let shuffledQuestions = shuffleArray([...baseQuizData]);
+    const shuffledQuestions = shuffleArray([...baseQuizData]);
     quizData = shuffledQuestions.map(item => {
-      let optionsWithCorrect = item.options.map((opt, index) => ({
-        text: opt,
-        isCorrect: index === item.correct
-      }));
-      let shuffledOptions = shuffleArray([...optionsWithCorrect]);
-      let newCorrectIndex = shuffledOptions.findIndex(opt => opt.isCorrect);
+      const withFlag = item.options.map((opt, index) => ({ text: opt, isCorrect: index === item.correct }));
+      const shuffled = shuffleArray([...withFlag]);
       return {
         q: item.q,
-        options: shuffledOptions.map(opt => opt.text),
-        correct: newCorrectIndex
+        options: shuffled.map(o => o.text),
+        correct: shuffled.findIndex(o => o.isCorrect)
       };
     });
   }
@@ -67,43 +66,83 @@
     }
   }
 
+  // Lucide replaces <i> with <svg>, so we rebuild the icon instead of editing it
+  function setIcon(btn, name) {
+    if (!btn) return;
+    btn.innerHTML = '<i data-lucide="' + name + '"></i>';
+    refreshLucide();
+  }
+
+  function safeGet(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
+  function safeSet(key, val) { try { localStorage.setItem(key, val); } catch (e) {} }
+
+  /* ---------- theme ---------- */
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    setIcon(document.getElementById('themeToggle'), theme === 'dark' ? 'sun' : 'moon');
+  }
+
   function initThemeToggle() {
     const toggle = document.getElementById('themeToggle');
     if (!toggle) return;
-    const savedTheme = localStorage.getItem('biosphere-theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
-    applyTheme(initialTheme);
+    applyTheme(safeGet('biosphere-theme') || (prefersDark ? 'dark' : 'light'));
     toggle.addEventListener('click', () => {
-      const current = document.documentElement.getAttribute('data-theme');
-      const next = current === 'dark' ? 'light' : 'dark';
+      const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
       applyTheme(next);
-      localStorage.setItem('biosphere-theme', next);
+      safeSet('biosphere-theme', next);
     });
   }
 
-  function applyTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-    const icon = document.querySelector('#themeToggle i');
-    if (icon) {
-      icon.setAttribute('data-lucide', theme === 'dark' ? 'sun' : 'moon');
-      refreshLucide();
-    }
-  }
-
+  /* ---------- mobile menu ---------- */
   function initMobileMenu() {
     const menuToggle = document.getElementById('menuToggle');
     const navLinks = document.getElementById('navLinks');
     if (!menuToggle || !navLinks) return;
+    const setMenu = (open) => {
+      navLinks.classList.toggle('open', open);
+      menuToggle.classList.toggle('active', open);
+      menuToggle.setAttribute('aria-expanded', String(open));
+      setIcon(menuToggle, open ? 'x' : 'menu');
+    };
+    closeMenu = () => setMenu(false);
     menuToggle.addEventListener('click', (e) => {
       e.stopPropagation();
-      const isOpen = navLinks.classList.toggle('open');
-      menuToggle.classList.toggle('active', isOpen);
-      const icon = menuToggle.querySelector('i');
-      if (icon) { icon.setAttribute('data-lucide', isOpen ? 'x' : 'menu'); refreshLucide(); }
+      setMenu(!navLinks.classList.contains('open'));
     });
   }
 
+  /* ---------- modals ---------- */
+  function initModals() {
+    let lastFocus = null;
+    window.openModal = function(id) {
+      const m = document.getElementById(id);
+      if (!m) return;
+      lastFocus = document.activeElement;
+      m.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      const c = m.querySelector('.modal-close');
+      if (c) c.focus();
+    };
+    window.closeModal = function(id) {
+      const m = document.getElementById(id);
+      if (m) m.classList.remove('active');
+      document.body.style.overflow = '';
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    };
+    document.querySelectorAll('.modal-overlay').forEach(o => {
+      o.setAttribute('role', 'dialog');
+      o.setAttribute('aria-modal', 'true');
+      o.addEventListener('click', (e) => { if (e.target === o) window.closeModal(o.id); });
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      const a = document.querySelector('.modal-overlay.active');
+      if (a) window.closeModal(a.id);
+    });
+  }
+
+  /* ---------- search ---------- */
   function initSearch() {
     const input = document.getElementById('searchInput');
     const btn = document.getElementById('searchBtn');
@@ -121,9 +160,7 @@
       let visibleCount = 0;
       let firstMatch = null;
       items.forEach(el => {
-        const text = el.textContent.toLowerCase();
-        const match = text.includes(query);
-        if (match) {
+        if (el.textContent.toLowerCase().includes(query)) {
           el.style.display = '';
           visibleCount++;
           if (!firstMatch) firstMatch = el;
@@ -133,30 +170,25 @@
       });
       status.classList.add('visible');
       if (visibleCount === 0) {
-        status.innerHTML = `<i data-lucide="search"></i> No results found. <button class="clear-search" type="button">Clear search</button>`;
+        status.innerHTML = '<i data-lucide="search"></i> No results found. <button class="clear-search" type="button">Clear search</button>';
       } else {
-        status.innerHTML = `<i data-lucide="check-circle-2"></i> Found <strong>${visibleCount}</strong> results. <button class="clear-search" type="button">Clear search</button>`;
-        if (firstMatch) { setTimeout(() => { firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 300); }
+        status.innerHTML = '<i data-lucide="check-circle-2"></i> Found <strong>' + visibleCount + '</strong> results. <button class="clear-search" type="button">Clear search</button>';
+        if (firstMatch) setTimeout(() => { firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 300);
       }
       const clearBtn = status.querySelector('.clear-search');
       if (clearBtn) {
-        clearBtn.addEventListener('click', () => {
-          input.value = '';
-          runSearch();
-          input.focus();
-        });
+        clearBtn.addEventListener('click', () => { input.value = ''; runSearch(); input.focus(); });
       }
       refreshLucide();
     }
 
     let debounceTimer;
-    input.addEventListener('input', () => {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(runSearch, 200);
-    });
-    if (btn) { btn.addEventListener('click', () => { clearTimeout(debounceTimer); runSearch(); }); }
+    input.addEventListener('input', () => { clearTimeout(debounceTimer); debounceTimer = setTimeout(runSearch, 200); });
+    input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { clearTimeout(debounceTimer); runSearch(); } });
+    if (btn) btn.addEventListener('click', () => { clearTimeout(debounceTimer); runSearch(); });
   }
 
+  /* ---------- quiz ---------- */
   function renderQuiz() {
     if (!quizContainer) return;
     prepareQuiz();
@@ -175,34 +207,30 @@
             `).join('')}
           </div>
           <div class="answer-feedback" id="feedback-${index}"></div>
-        </div>
-      `;
+        </div>`;
     });
     quizContainer.innerHTML = html;
     if (resultDiv) { resultDiv.classList.remove('visible'); resultDiv.innerHTML = ''; }
     updateProgress();
-    quizContainer.querySelectorAll('input[type="radio"]').forEach(radio => {
-      radio.addEventListener('change', updateProgress);
-    });
-    const questions = quizContainer.querySelectorAll('.quiz-question');
+    quizContainer.querySelectorAll('input[type="radio"]').forEach(r => r.addEventListener('change', updateProgress));
+
+    // one-time reveal (no flicker when scrolling back)
     const quizObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) { entry.target.classList.add('is-visible'); }
-        else { entry.target.classList.remove('is-visible'); }
+        entry.target.classList.toggle('is-visible', entry.isIntersecting);
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-    questions.forEach(q => quizObserver.observe(q));
+    quizContainer.querySelectorAll('.quiz-question').forEach(q => quizObserver.observe(q));
     setTimeout(refreshLucide, 100);
   }
 
   function updateProgress() {
     let answered = 0;
     quizData.forEach((_, i) => {
-      const radios = document.getElementsByName(`q${i}`);
+      const radios = document.getElementsByName('q' + i);
       for (let r of radios) { if (r.checked) { answered++; break; } }
     });
-    const total = quizData.length;
-    const percent = Math.round(answered / total * 100);
+    const percent = Math.round(answered / quizData.length * 100);
     if (answeredCounter) answeredCounter.textContent = answered;
     if (percentLabel) percentLabel.textContent = percent + '%';
     if (progressFill) progressFill.style.width = percent + '%';
@@ -212,61 +240,48 @@
     const questions = document.querySelectorAll('.quiz-question');
     if (questions.length === 0) return;
     let score = 0;
-    let answeredAll = true;
     let firstUnanswered = null;
 
     for (let i = 0; i < questions.length; i++) {
-      const radios = document.getElementsByName(`q${i}`);
-      let selected = null;
-      for (let r of radios) { if (r.checked) { selected = r.value; break; } }
-      if (selected === null) {
-        answeredAll = false;
-        if (!firstUnanswered) firstUnanswered = questions[i];
-      }
+      const radios = document.getElementsByName('q' + i);
+      let selected = false;
+      for (let r of radios) { if (r.checked) { selected = true; break; } }
+      if (!selected && !firstUnanswered) firstUnanswered = questions[i];
     }
 
-    if (!answeredAll) {
+    if (firstUnanswered) {
       if (resultDiv) {
         resultDiv.classList.add('visible');
-        resultDiv.innerHTML = `<div class="quiz-warning"><i data-lucide="alert-triangle"></i><span>Please answer all 20 questions before submitting.</span></div>`;
+        resultDiv.innerHTML = '<div class="quiz-warning"><i data-lucide="alert-triangle"></i><span>Please answer all 20 questions before submitting.</span></div>';
       }
       refreshLucide();
-      if (firstUnanswered) { firstUnanswered.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+      firstUnanswered.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
 
     for (let i = 0; i < questions.length; i++) {
       const qEl = questions[i];
-      const radios = document.getElementsByName(`q${i}`);
+      const radios = document.getElementsByName('q' + i);
       let selectedValue = null;
-      for (let r of radios) { if (r.checked) { selectedValue = parseInt(r.value); break; } }
-      const isCorrect = (selectedValue === quizData[i].correct);
+      for (let r of radios) { if (r.checked) { selectedValue = parseInt(r.value, 10); break; } }
+      const isCorrect = selectedValue === quizData[i].correct;
       if (isCorrect) score++;
       qEl.classList.remove('correct-highlight', 'incorrect-highlight');
       qEl.classList.add(isCorrect ? 'correct-highlight' : 'incorrect-highlight');
-      const feedbackDiv = document.getElementById(`feedback-${i}`);
+      const feedbackDiv = document.getElementById('feedback-' + i);
       if (feedbackDiv) {
         if (isCorrect) {
-          feedbackDiv.innerHTML = `<span class="correct-icon"><i data-lucide="check-circle-2"></i></span><span>Correct!</span>`;
+          feedbackDiv.innerHTML = '<span class="correct-icon"><i data-lucide="check-circle-2"></i></span><span>Correct!</span>';
         } else {
-          const correctAnswerText = quizData[i].options[quizData[i].correct];
-          const userAnswerText = quizData[i].options[selectedValue];
-          feedbackDiv.innerHTML = `<span class="incorrect-icon"><i data-lucide="x-circle"></i></span><span>Incorrect. Your answer: <strong>${userAnswerText}</strong></span><span class="correct-answer-text">Correct: ${correctAnswerText}</span>`;
+          feedbackDiv.innerHTML = '<span class="incorrect-icon"><i data-lucide="x-circle"></i></span><span>Incorrect. Your answer: <strong>' + quizData[i].options[selectedValue] + '</strong></span><span class="correct-answer-text">Correct: ' + quizData[i].options[quizData[i].correct] + '</span>';
         }
       }
     }
+    // lock answers after submit
+    quizContainer.querySelectorAll('input').forEach(inp => { inp.disabled = true; });
     refreshLucide();
     showResultCard(score);
-    if (score === 20 && typeof confetti === 'function') { fireConfetti(); }
-  }
-
-  function countAnswered() {
-    let count = 0;
-    quizData.forEach((_, i) => {
-      const radios = document.getElementsByName(`q${i}`);
-      for (let r of radios) { if (r.checked) { count++; break; } }
-    });
-    return count;
+    if (score === 20 && typeof confetti === 'function') fireConfetti();
   }
 
   function showResultCard(score) {
@@ -286,13 +301,10 @@
         <div class="quiz-result-percent">${percent}%</div>
         <p class="quiz-result-message">${message}</p>
         <button class="quiz-result-retake" id="retakeBtn" type="button"><i data-lucide="rotate-ccw"></i> Retake Quiz</button>
-      </div>
-    `;
+      </div>`;
     refreshLucide();
     animateCountUp(document.getElementById('scoreNumber'), score);
-    setTimeout(() => {
-      resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 100);
+    setTimeout(() => { resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100);
     const retakeBtn = document.getElementById('retakeBtn');
     if (retakeBtn) {
       retakeBtn.addEventListener('click', () => {
@@ -316,29 +328,40 @@
 
   function fireConfetti() {
     const colors = ['#0f4c5c', '#2a6f7a', '#3c6e47', '#e3b448', '#6fb87f'];
-    confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors });
+    confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, colors: colors });
   }
 
   function resetQuiz() { renderQuiz(); }
 
+  /* ---------- scroll stuff ---------- */
   function initScrollProgress() {
     const bar = document.getElementById('scroll-progress');
     if (!bar) return;
     window.addEventListener('scroll', () => {
       const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
       const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrolled = (scrollTop / scrollHeight) * 100;
-      bar.style.width = scrolled + '%';
+      bar.style.width = (scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0) + '%';
     }, { passive: true });
   }
 
   function initScrollReveal() {
     const targets = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .section-title');
     if (!targets.length) return;
+    // remember each element's stagger delay so it can replay on every scroll
+    targets.forEach(el => { el.dataset.delay = el.style.transitionDelay || '0s'; });
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) { entry.target.classList.add('visible'); }
-        else { entry.target.classList.remove('visible'); }
+        const el = entry.target;
+        clearTimeout(el._delayTimer);
+        if (entry.isIntersecting) {
+          el.style.transitionDelay = el.dataset.delay;
+          el.classList.add('visible');
+          // drop the delay once it has played so hover effects aren't delayed
+          el._delayTimer = setTimeout(() => { el.style.transitionDelay = '0s'; }, (parseFloat(el.dataset.delay) + 1) * 1000);
+        } else {
+          el.style.transitionDelay = '0s';
+          el.classList.remove('visible');
+        }
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
     targets.forEach(el => observer.observe(el));
@@ -347,9 +370,7 @@
   function initBackToTop() {
     const btn = document.getElementById('backToTop');
     if (!btn) return;
-    window.addEventListener('scroll', () => {
-      btn.classList.toggle('show', window.scrollY > 400);
-    }, { passive: true });
+    window.addEventListener('scroll', () => { btn.classList.toggle('show', window.scrollY > 400); }, { passive: true });
     btn.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
   }
 
@@ -358,10 +379,10 @@
     const navLinks = document.querySelectorAll('.nav-menu a');
     if (!sections.length || !navLinks.length) return;
     const updateActiveLink = (id) => {
-      navLinks.forEach(link => { link.classList.toggle('active', link.getAttribute('href') === `#${id}`); });
+      navLinks.forEach(link => { link.classList.toggle('active', link.getAttribute('href') === '#' + id); });
     };
     const spy = new IntersectionObserver((entries) => {
-      entries.forEach(entry => { if (entry.isIntersecting) { updateActiveLink(entry.target.id); } });
+      entries.forEach(entry => { if (entry.isIntersecting) updateActiveLink(entry.target.id); });
     }, { rootMargin: '-30% 0px -60% 0px' });
     sections.forEach(s => spy.observe(s));
     navLinks.forEach(link => {
@@ -370,6 +391,7 @@
         if (href && href.startsWith('#')) {
           e.preventDefault();
           const target = document.querySelector(href);
+          closeMenu();
           if (target) {
             target.scrollIntoView({ behavior: 'smooth' });
             history.replaceState(null, null, href);
@@ -404,6 +426,7 @@
     }, interval);
   }
 
+  /* ---------- map ---------- */
   function initCaseMap() {
     const mapEl = document.getElementById('caseMap');
     if (!mapEl || typeof L === 'undefined') return;
@@ -425,7 +448,7 @@
     }).addTo(map);
 
     const caseStudies = [
-      { coords: [-1.5, 110.0], location: 'Kalimantan & Sumatra, Indonesia', title: 'Devastating Deforestation', description: 'Peatland forest cleared for paper and pulp. 2015 fires peaked in 2016, with smoke hiding the loss.', stat: '75%+ habitat loss' },
+      { coords: [-1.5, 110.0], location: 'Kalimantan & Sumatra, Indonesia', title: 'Devastating Deforestation', description: 'Peatland forest cleared for paper and pulp. 2015 fires peaked in 2016, with smoke hiding the loss.', stat: '2015–16 peatland fires' },
       { coords: [28.0, 84.0], location: 'Eastern Himalayas', title: 'Himalayan Habitat Loss', description: 'Over 75% of original habitat destroyed, threatening snow leopards, red pandas, and 300+ bird species.', stat: '75% habitat destroyed' },
       { coords: [38.0, -97.0], location: 'United States (NOAA)', title: 'Restoring Polluted Waters', description: 'NOAA allocated $28M in 2022 to restore marine resources damaged by oil spills and hazardous waste.', stat: '$28M restoration fund' }
     ];
@@ -433,7 +456,7 @@
     function createIcon() {
       return L.divIcon({
         className: 'custom-marker',
-        html: `<div class="marker-wrap"><div class="marker-pulse"></div><div class="marker-pin"></div></div>`,
+        html: '<div class="marker-wrap"><div class="marker-pulse"></div><div class="marker-pin"></div></div>',
         iconSize: [30, 30],
         iconAnchor: [15, 30],
         popupAnchor: [0, -34]
@@ -448,8 +471,7 @@
           <h4>${study.title}</h4>
           <p>${study.description}</p>
           <span class="popup-stat">${study.stat}</span>
-        </div>
-      `, { autoPanPadding: [20, 20] });
+        </div>`, { autoPanPadding: [20, 20] });
       if (index === 0) setTimeout(() => marker.openPopup(), 800);
     });
 
@@ -459,28 +481,75 @@
     setTimeout(() => map.invalidateSize(), 400);
   }
 
+  /* ---------- background parallax (stops when idle, off on touch/reduced motion) ---------- */
   function initGlobalMouseParallax() {
     const shapes = document.querySelectorAll('.bg-shape');
     if (!shapes.length) return;
-    let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2, targetX = mouseX, targetY = mouseY;
-    window.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
-    function updateParallax() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || window.matchMedia('(hover: none)').matches) return;
+    let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+    let targetX = mouseX, targetY = mouseY, running = false;
+
+    function update() {
       targetX += (mouseX - targetX) * 0.05;
       targetY += (mouseY - targetY) * 0.05;
       const xOffset = (targetX - window.innerWidth / 2) * 0.05;
       const yOffset = (targetY - window.innerHeight / 2) * 0.05;
       shapes.forEach((shape, index) => {
         const speed = (index + 1) * 0.8;
-        shape.style.transform = `translate3d(${xOffset * speed}px, ${yOffset * speed}px, 0)`;
+        shape.style.transform = 'translate3d(' + (xOffset * speed) + 'px, ' + (yOffset * speed) + 'px, 0)';
       });
-      requestAnimationFrame(updateParallax);
+      if (Math.abs(mouseX - targetX) > 0.5 || Math.abs(mouseY - targetY) > 0.5) requestAnimationFrame(update);
+      else running = false;
     }
-    requestAnimationFrame(updateParallax);
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX; mouseY = e.clientY;
+      if (!running) { running = true; requestAnimationFrame(update); }
+    }, { passive: true });
   }
 
+  /* ---------- staff: auto team colors + legend filter ---------- */
+  function initStaffTeams() {
+    const members = document.querySelectorAll('.staff-member');
+    members.forEach(m => {
+      const roleEl = m.querySelector('.role');
+      const role = (roleEl ? roleEl.textContent : '').toLowerCase();
+      m.dataset.team = /developer/.test(role) ? 'dev'
+        : /visual|media/.test(role) ? 'visual'
+        : /document/.test(role) ? 'docs'
+        : 'research';
+    });
+
+    const grid = document.querySelector('.staff-grid');
+    if (!grid || document.querySelector('.staff-legend')) return;
+    const teams = [['research', 'Research & Writing'], ['dev', 'Development'], ['docs', 'Documentation'], ['visual', 'Visual & Media']];
+    const legend = document.createElement('div');
+    legend.className = 'staff-legend';
+    legend.setAttribute('role', 'group');
+    legend.setAttribute('aria-label', 'Highlight members by team');
+    legend.innerHTML = teams.map(t => '<button type="button" class="legend-chip" data-team="' + t[0] + '" aria-pressed="false"><span class="dot"></span>' + t[1] + '</button>').join('');
+    grid.parentNode.insertBefore(legend, grid);
+
+    let active = null;
+    legend.addEventListener('click', (e) => {
+      const chip = e.target.closest('.legend-chip');
+      if (!chip) return;
+      active = active === chip.dataset.team ? null : chip.dataset.team;
+      legend.querySelectorAll('.legend-chip').forEach(c => {
+        const on = c.dataset.team === active;
+        c.classList.toggle('active', on);
+        c.setAttribute('aria-pressed', String(on));
+      });
+      members.forEach(m => m.classList.toggle('dimmed', !!active && m.dataset.team !== active));
+    });
+  }
+
+  /* ---------- init ---------- */
   function init() {
     initThemeToggle();
     initMobileMenu();
+    initModals();
+    initStaffTeams();
     initSearch();
     renderQuiz();
     initScrollReveal();
