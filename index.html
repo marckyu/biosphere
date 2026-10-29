@@ -196,11 +196,12 @@
           </a>
         </div>
 
-        <div class="visual-item interactive-card reveal-scale" style="transition-delay: 0.4s;">
+        <div class="visual-item interactive-card reveal-scale" id="infographicCard" style="transition-delay: 0.4s; cursor: pointer;">
           <i data-lucide="shapes"></i>
           <h4>Icons & Infographics</h4>
           <p>Icon set: deforestation, pollution, overexploitation.</p>
         </div>
+
         <div class="visual-item interactive-card reveal-scale" style="transition-delay: 0.5s;">
           <i data-lucide="camera"></i>
           <h4>Photographs</h4>
@@ -307,85 +308,280 @@
       <div class="section-title reveal">
         <i data-lucide="users"></i> Editorial Staff / About Us
       </div>
-      <div class="staff-grid">
+      
+      <div class="staff-legend">
+        <button class="legend-chip" data-team="research"><span class="dot"></span> Research & Writing</button>
+        <button class="legend-chip" data-team="dev"><span class="dot"></span> Development</button>
+        <button class="legend-chip" data-team="docs"><span class="dot"></span> Documentation</button>
+        <button class="legend-chip" data-team="visual"><span class="dot"></span> Visual & Media</button>
+      </div>
 
-        <div class="staff-member interactive-card reveal-scale">
-          <div class="staff-float">
-            <div class="staff-avatar"><img src="addriane.jpg" alt="Portrait of Addriane Quintela" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Addriane+Quintela&background=0f4c5c&color=fff&size=150'"></div>
-            <h4>Addriane Quintela</h4>
-            <div class="role">Lead Researcher & Writer</div>
-            <p>Main headline, case studies</p>
+      <div class="slider-container">
+        <div class="slider-track" id="staffSliderTrack">
+          
+          <div class="staff-member" data-team="research" data-name="Addriane Quintela" data-role="Lead Researcher & Writer" data-desc="Main headline, case studies">
+            <div class="staff-float">
+              <div class="staff-avatar">
+                <img src="addriane.jpg" alt="Addriane Quintela" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Addriane+Quintela&background=0f4c5c&color=fff&size=150'">
+              </div>
+              <h4>Addriane Quintela</h4>
+              <div class="role">Lead Researcher & Writer</div>
+              <p>Main headline, case studies</p>
+            </div>
           </div>
-        </div>
-        <div class="staff-member interactive-card reveal-scale" style="transition-delay: 0.1s;">
-          <div class="staff-float">
-            <div class="staff-avatar"><img src="camille.gif" alt="Portrait of Camille Osinsao" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Camille+Osinsao&background=0f4c5c&color=fff&size=150'"></div>
-            <h4>Camille Osinsao</h4>
-            <div class="role">Research & Data Analyst</div>
-            <p>Infographics, charts, references</p>
-          </div>
-        </div>
-        <div class="staff-member interactive-card reveal-scale" style="transition-delay: 0.2s;">
-          <div class="staff-float">
-            <div class="staff-avatar"><img src="aleah.jpg" alt="Portrait of Aleah Talusan" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Aleah+Talusan&background=0f4c5c&color=fff&size=150'"></div>
-            <h4>Aleah Talusan</h4>
-            <div class="role">Ethics & Society Editor</div>
-            <p>Ethical section, social implications</p>
-          </div>
-        </div>
 
-        <div class="staff-member interactive-card reveal-scale" style="transition-delay: 0.3s;">
-          <div class="staff-float">
-            <div class="staff-avatar"><img src="talusan.png" alt="Portrait of Moschin Talusan" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Moschin+Talusan&background=0f4c5c&color=fff&size=150'"></div>
-            <h4>Moschin Talusan</h4>
-            <div class="role">Web Developer</div>
-            <p>HTML/CSS/JS, interactive quiz</p>
+          <div class="staff-member" data-team="research" data-name="Camille Osinsao" data-role="Research & Data Analyst" data-desc="Infographics, charts, references">
+            <div class="staff-float">
+              <div class="staff-avatar">
+                <img src="camille.gif" alt="Camille Osinsao" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Camille+Osinsao&background=0f4c5c&color=fff&size=150'">
+              </div>
+              <h4>Camille Osinsao</h4>
+              <div class="role">Research & Data Analyst</div>
+              <p>Infographics, charts, references</p>
+            </div>
           </div>
-        </div>
-        <div class="staff-member interactive-card reveal-scale" style="transition-delay: 0.4s;">
-          <div class="staff-float">
-            <div class="staff-avatar"><img src="asuncion.jpg" alt="Portrait of Johnmarc Asuncion" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Johnmarc+Asuncion&background=0f4c5c&color=fff&size=150'"></div>
-            <h4>Johnmarc Asuncion</h4>
-            <div class="role">Web Developer</div>
-            <p>HTML/CSS/JS, interactive quiz</p>
-          </div>
-        </div>
-        <div class="staff-member interactive-card reveal-scale" style="transition-delay: 0.5s;">
-          <div class="staff-float">
-            <div class="staff-avatar"><img src="marivic.jpg" alt="Portrait of Marivic Quikelez" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Marivic+Quikelez&background=0f4c5c&color=fff&size=150'"></div>
-            <h4>Marivic Quikelez</h4>
-            <div class="role">Documentation Specialist</div>
-            <p>Assistance with documentation</p>
-          </div>
-        </div>
 
-        <div class="staff-member interactive-card reveal-scale" style="transition-delay: 0.6s;">
-          <div class="staff-float">
-            <div class="staff-avatar"><img src="greg.jpg" alt="Portrait of Greg Martin Taladro" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Greg+Martin&background=0f4c5c&color=fff&size=150'"></div>
-            <h4>Greg Martin Taladro</h4>
-            <div class="role">Visual & Media</div>
-            <p>Visual design, media production</p>
+          <div class="staff-member" data-team="research" data-name="Aleah Talusan" data-role="Ethics & Society Editor" data-desc="Ethical section, social implications">
+            <div class="staff-float">
+              <div class="staff-avatar">
+                <img src="aleah.jpg" alt="Aleah Talusan" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Aleah+Talusan&background=0f4c5c&color=fff&size=150'">
+              </div>
+              <h4>Aleah Talusan</h4>
+              <div class="role">Ethics & Society Editor</div>
+              <p>Ethical section, social implications</p>
+            </div>
           </div>
-        </div>
-        <div class="staff-member interactive-card reveal-scale" style="transition-delay: 0.7s;">
-          <div class="staff-float">
-            <div class="staff-avatar"><img src="joanna.jpg" alt="Portrait of Joanna Marie Quiokeles" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Joanna+Marie&background=0f4c5c&color=fff&size=150'"></div>
-            <h4>Joanna Marie Quiokeles</h4>
-            <div class="role">Visual & Media</div>
-            <p>Visual design, media production</p>
+
+          <div class="staff-member" data-team="dev" data-name="Moschin Talusan" data-role="Web Developer" data-desc="HTML/CSS/JS, interactive quiz">
+            <div class="staff-float">
+              <div class="staff-avatar">
+                <img src="talusan.png" alt="Moschin Talusan" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Moschin+Talusan&background=0f4c5c&color=fff&size=150'">
+              </div>
+              <h4>Moschin Talusan</h4>
+              <div class="role">Web Developer</div>
+              <p>HTML/CSS/JS, interactive quiz</p>
+            </div>
           </div>
-        </div>
-        <div class="staff-member interactive-card reveal-scale" style="transition-delay: 0.8s;">
-          <div class="staff-float">
-            <div class="staff-avatar"><img src="mark.jpg" alt="Portrait of Mark Cholo Param" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Mark+Cholo&background=0f4c5c&color=fff&size=150'"></div>
-            <h4>Mark Cholo Param</h4>
-            <div class="role">Research Assistant</div>
-            <p>Assistant researcher</p>
+
+          <div class="staff-member" data-team="dev" data-name="Johnmarc Asuncion" data-role="Web Developer" data-desc="HTML/CSS/JS, interactive quiz">
+            <div class="staff-float">
+              <div class="staff-avatar">
+                <img src="asuncion.jpg" alt="Johnmarc Asuncion" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Johnmarc+Asuncion&background=0f4c5c&color=fff&size=150'">
+              </div>
+              <h4>Johnmarc Asuncion</h4>
+              <div class="role">Web Developer</div>
+              <p>HTML/CSS/JS, interactive quiz</p>
+            </div>
           </div>
+
+          <div class="staff-member" data-team="docs" data-name="Marivic Quikelez" data-role="Documentation Specialist" data-desc="Assistance with documentation">
+            <div class="staff-float">
+              <div class="staff-avatar">
+                <img src="marivic.jpg" alt="Marivic Quikelez" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Marivic+Quikelez&background=0f4c5c&color=fff&size=150'">
+              </div>
+              <h4>Marivic Quikelez</h4>
+              <div class="role">Documentation Specialist</div>
+              <p>Assistance with documentation</p>
+            </div>
+          </div>
+
+          <div class="staff-member" data-team="visual" data-name="Greg Martin Taladro" data-role="Visual & Media" data-desc="Visual design, media production">
+            <div class="staff-float">
+              <div class="staff-avatar">
+                <img src="greg.jpg" alt="Greg Martin" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Greg+Martin&background=0f4c5c&color=fff&size=150'">
+              </div>
+              <h4>Greg Martin Taladro</h4>
+              <div class="role">Visual & Media</div>
+              <p>Visual design, media production</p>
+            </div>
+          </div>
+
+          <div class="staff-member" data-team="visual" data-name="Joanna Marie Quiokeles" data-role="Visual & Media" data-desc="Visual design, media production">
+            <div class="staff-float">
+              <div class="staff-avatar">
+                <img src="joanna.jpg" alt="Joanna Marie" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Joanna+Marie&background=0f4c5c&color=fff&size=150'">
+              </div>
+              <h4>Joanna Marie Quiokeles</h4>
+              <div class="role">Visual & Media</div>
+              <p>Visual design, media production</p>
+            </div>
+          </div>
+
+          <div class="staff-member" data-team="research" data-name="Mark Cholo Param" data-role="Research Assistant" data-desc="Assistant researcher">
+            <div class="staff-float">
+              <div class="staff-avatar">
+                <img src="mark.jpg" alt="Mark Cholo" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Mark+Cholo&background=0f4c5c&color=fff&size=150'">
+              </div>
+              <h4>Mark Cholo Param</h4>
+              <div class="role">Research Assistant</div>
+              <p>Assistant researcher</p>
+            </div>
+          </div>
+
+          <div class="staff-member" data-team="research" data-name="Addriane Quintela" data-role="Lead Researcher & Writer" data-desc="Main headline, case studies">
+            <div class="staff-float">
+              <div class="staff-avatar">
+                <img src="addriane.jpg" alt="Addriane Quintela" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Addriane+Quintela&background=0f4c5c&color=fff&size=150'">
+              </div>
+              <h4>Addriane Quintela</h4>
+              <div class="role">Lead Researcher & Writer</div>
+              <p>Main headline, case studies</p>
+            </div>
+          </div>
+
+          <div class="staff-member" data-team="research" data-name="Camille Osinsao" data-role="Research & Data Analyst" data-desc="Infographics, charts, references">
+            <div class="staff-float">
+              <div class="staff-avatar">
+                <img src="camille.gif" alt="Camille Osinsao" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Camille+Osinsao&background=0f4c5c&color=fff&size=150'">
+              </div>
+              <h4>Camille Osinsao</h4>
+              <div class="role">Research & Data Analyst</div>
+              <p>Infographics, charts, references</p>
+            </div>
+          </div>
+
+          <div class="staff-member" data-team="research" data-name="Aleah Talusan" data-role="Ethics & Society Editor" data-desc="Ethical section, social implications">
+            <div class="staff-float">
+              <div class="staff-avatar">
+                <img src="aleah.jpg" alt="Aleah Talusan" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Aleah+Talusan&background=0f4c5c&color=fff&size=150'">
+              </div>
+              <h4>Aleah Talusan</h4>
+              <div class="role">Ethics & Society Editor</div>
+              <p>Ethical section, social implications</p>
+            </div>
+          </div>
+
+          <div class="staff-member" data-team="dev" data-name="Moschin Talusan" data-role="Web Developer" data-desc="HTML/CSS/JS, interactive quiz">
+            <div class="staff-float">
+              <div class="staff-avatar">
+                <img src="talusan.png" alt="Moschin Talusan" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Moschin+Talusan&background=0f4c5c&color=fff&size=150'">
+              </div>
+              <h4>Moschin Talusan</h4>
+              <div class="role">Web Developer</div>
+              <p>HTML/CSS/JS, interactive quiz</p>
+            </div>
+          </div>
+
+          <div class="staff-member" data-team="dev" data-name="Johnmarc Asuncion" data-role="Web Developer" data-desc="HTML/CSS/JS, interactive quiz">
+            <div class="staff-float">
+              <div class="staff-avatar">
+                <img src="asuncion.jpg" alt="Johnmarc Asuncion" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Johnmarc+Asuncion&background=0f4c5c&color=fff&size=150'">
+              </div>
+              <h4>Johnmarc Asuncion</h4>
+              <div class="role">Web Developer</div>
+              <p>HTML/CSS/JS, interactive quiz</p>
+            </div>
+          </div>
+
+          <div class="staff-member" data-team="docs" data-name="Marivic Quikelez" data-role="Documentation Specialist" data-desc="Assistance with documentation">
+            <div class="staff-float">
+              <div class="staff-avatar">
+                <img src="marivic.jpg" alt="Marivic Quikelez" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Marivic+Quikelez&background=0f4c5c&color=fff&size=150'">
+              </div>
+              <h4>Marivic Quikelez</h4>
+              <div class="role">Documentation Specialist</div>
+              <p>Assistance with documentation</p>
+            </div>
+          </div>
+
+          <div class="staff-member" data-team="visual" data-name="Greg Martin Taladro" data-role="Visual & Media" data-desc="Visual design, media production">
+            <div class="staff-float">
+              <div class="staff-avatar">
+                <img src="greg.jpg" alt="Greg Martin" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Greg+Martin&background=0f4c5c&color=fff&size=150'">
+              </div>
+              <h4>Greg Martin Taladro</h4>
+              <div class="role">Visual & Media</div>
+              <p>Visual design, media production</p>
+            </div>
+          </div>
+
+          <div class="staff-member" data-team="visual" data-name="Joanna Marie Quiokeles" data-role="Visual & Media" data-desc="Visual design, media production">
+            <div class="staff-float">
+              <div class="staff-avatar">
+                <img src="joanna.jpg" alt="Joanna Marie" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Joanna+Marie&background=0f4c5c&color=fff&size=150'">
+              </div>
+              <h4>Joanna Marie Quiokeles</h4>
+              <div class="role">Visual & Media</div>
+              <p>Visual design, media production</p>
+            </div>
+          </div>
+
+          <div class="staff-member" data-team="research" data-name="Mark Cholo Param" data-role="Research Assistant" data-desc="Assistant researcher">
+            <div class="staff-float">
+              <div class="staff-avatar">
+                <img src="mark.jpg" alt="Mark Cholo" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Mark+Cholo&background=0f4c5c&color=fff&size=150'">
+              </div>
+              <h4>Mark Cholo Param</h4>
+              <div class="role">Research Assistant</div>
+              <p>Assistant researcher</p>
+            </div>
+          </div>
+
         </div>
       </div>
+      
       <p class="reveal" style="text-align: center; color: var(--text-light); margin-top: 1rem;">All members contributed to research, writing, and review. We follow strict research ethics and cite all sources.</p>
     </section>
+
+    <div id="staffModal" class="modal-overlay">
+      <div class="modal-content staff-modal-content">
+        <button class="modal-close" onclick="closeStaffModal()">&times;</button>
+        <div class="staff-modal-header">
+          <div class="staff-modal-avatar-wrap">
+            <img id="modalStaffImg" src="" alt="Staff Image">
+          </div>
+          <div class="staff-modal-title-wrap">
+            <h2 id="modalStaffName"></h2>
+            <span id="modalStaffRole" class="role"></span>
+          </div>
+        </div>
+        <div class="staff-modal-body">
+          <p id="modalStaffDesc"></p>
+        </div>
+        <div class="staff-modal-footer">
+          <button class="btn-secondary" onclick="closeStaffModal()">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="infographicModal" class="modal-overlay">
+      <div class="modal-content infographic-modal-content">
+        <button class="modal-close" aria-label="Close" onclick="closeInfographicModal()">&times;</button>
+        <h2 style="text-align: center; margin-bottom: 2rem;">Major Threats Infographic</h2>
+        
+        <div class="infographic-grid">
+          
+          <div class="info-card">
+            <div class="info-icon-wrap">
+              <i data-lucide="trees"></i>
+            </div>
+            <h3>Deforestation</h3>
+            <p>Clearing of forests for agriculture and settlements destroys habitats, pushing wildlife closer to humans and increasing zoonotic disease risks.</p>
+          </div>
+
+          <div class="info-card">
+            <div class="info-icon-wrap">
+              <i data-lucide="factory"></i>
+            </div>
+            <h3>Pollution</h3>
+            <p>Plastic waste, chemicals, and industrial runoff contaminate ecosystems, poisoning wildlife and threatening human food and water sources.</p>
+          </div>
+
+          <div class="info-card">
+            <div class="info-icon-wrap">
+              <i data-lucide="fish-symbol"></i>
+            </div>
+            <h3>Overexploitation</h3>
+            <p>Illegal wildlife trade, overfishing, and excessive logging deplete species faster than they can recover, destabilizing food webs.</p>
+          </div>
+
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem;">
+          <button class="btn-secondary" onclick="closeInfographicModal()">Close Infographic</button>
+        </div>
+      </div>
+    </div>
 
     <div class="section-title reveal">
       <i data-lucide="book"></i> References & Sources

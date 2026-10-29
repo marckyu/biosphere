@@ -1,4 +1,4 @@
-  (function() {
+(function() {
     'use strict';
 
     const baseQuizData = [
@@ -36,7 +36,6 @@
 
     let closeMenu = function() {};
 
-    /* ---------- helpers ---------- */
     function shuffleArray(array) {
       let currentIndex = array.length, randomIndex;
       while (currentIndex !== 0) {
@@ -66,7 +65,6 @@
       }
     }
 
-    // Lucide replaces <i> with <svg>, so we rebuild the icon instead of editing it
     function setIcon(btn, name) {
       if (!btn) return;
       btn.innerHTML = '<i data-lucide="' + name + '"></i>';
@@ -76,7 +74,6 @@
     function safeGet(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
     function safeSet(key, val) { try { localStorage.setItem(key, val); } catch (e) {} }
 
-    /* ---------- theme ---------- */
     function applyTheme(theme) {
       document.documentElement.setAttribute('data-theme', theme);
       setIcon(document.getElementById('themeToggle'), theme === 'dark' ? 'sun' : 'moon');
@@ -94,7 +91,6 @@
       });
     }
 
-    /* ---------- mobile menu ---------- */
     function initMobileMenu() {
       const menuToggle = document.getElementById('menuToggle');
       const navLinks = document.getElementById('navLinks');
@@ -112,7 +108,6 @@
       });
     }
 
-    /* ---------- modals ---------- */
     function initModals() {
       let lastFocus = null;
       window.openModal = function(id) {
@@ -138,11 +133,14 @@
       document.addEventListener('keydown', (e) => {
         if (e.key !== 'Escape') return;
         const a = document.querySelector('.modal-overlay.active');
-        if (a) window.closeModal(a.id);
+        if (a) {
+          if (a.id === 'staffModal') window.closeStaffModal();
+          else if (a.id === 'infographicModal') window.closeInfographicModal();
+          else window.closeModal(a.id);
+        }
       });
     }
 
-    /* ---------- search ---------- */
     function initSearch() {
       const input = document.getElementById('searchInput');
       const btn = document.getElementById('searchBtn');
@@ -188,7 +186,6 @@
       if (btn) btn.addEventListener('click', () => { clearTimeout(debounceTimer); runSearch(); });
     }
 
-    /* ---------- quiz ---------- */
     function renderQuiz() {
       if (!quizContainer) return;
       prepareQuiz();
@@ -214,7 +211,6 @@
       updateProgress();
       quizContainer.querySelectorAll('input[type="radio"]').forEach(r => r.addEventListener('change', updateProgress));
 
-      // one-time reveal (no flicker when scrolling back)
       const quizObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           entry.target.classList.toggle('is-visible', entry.isIntersecting);
@@ -277,7 +273,6 @@
           }
         }
       }
-      // lock answers after submit
       quizContainer.querySelectorAll('input').forEach(inp => { inp.disabled = true; });
       refreshLucide();
       showResultCard(score);
@@ -333,7 +328,6 @@
 
     function resetQuiz() { renderQuiz(); }
 
-    /* ---------- scroll stuff ---------- */
     function initScrollProgress() {
       const bar = document.getElementById('scroll-progress');
       if (!bar) return;
@@ -347,7 +341,6 @@
     function initScrollReveal() {
       const targets = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .section-title');
       if (!targets.length) return;
-      // remember each element's stagger delay so it can replay on every scroll
       targets.forEach(el => { el.dataset.delay = el.style.transitionDelay || '0s'; });
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -356,7 +349,6 @@
           if (entry.isIntersecting) {
             el.style.transitionDelay = el.dataset.delay;
             el.classList.add('visible');
-            // drop the delay once it has played so hover effects aren't delayed
             el._delayTimer = setTimeout(() => { el.style.transitionDelay = '0s'; }, (parseFloat(el.dataset.delay) + 1) * 1000);
           } else {
             el.style.transitionDelay = '0s';
@@ -426,7 +418,6 @@
       }, interval);
     }
 
-    /* ---------- map ---------- */
     function initCaseMap() {
       const mapEl = document.getElementById('caseMap');
       if (!mapEl || typeof L === 'undefined') return;
@@ -481,7 +472,6 @@
       setTimeout(() => map.invalidateSize(), 400);
     }
 
-    /* ---------- background parallax (stops when idle, off on touch/reduced motion) ---------- */
     function initGlobalMouseParallax() {
       const shapes = document.querySelectorAll('.bg-shape');
       if (!shapes.length) return;
@@ -508,7 +498,6 @@
       }, { passive: true });
     }
 
-    /* ---------- staff: auto team colors + legend filter ---------- */
     function initStaffTeams() {
       const members = document.querySelectorAll('.staff-member');
       members.forEach(m => {
@@ -520,8 +509,9 @@
           : 'research';
       });
 
-      const grid = document.querySelector('.staff-grid');
+      const grid = document.querySelector('.slider-container');
       if (!grid || document.querySelector('.staff-legend')) return;
+      
       const teams = [['research', 'Research & Writing'], ['dev', 'Development'], ['docs', 'Documentation'], ['visual', 'Visual & Media']];
       const legend = document.createElement('div');
       legend.className = 'staff-legend';
@@ -544,12 +534,83 @@
       });
     }
 
-    
+    function initStaffModal() {
+      const members = document.querySelectorAll('.staff-member');
+      const staffModal = document.getElementById('staffModal');
+      const modalImg = document.getElementById('modalStaffImg');
+      const modalName = document.getElementById('modalStaffName');
+      const modalRole = document.getElementById('modalStaffRole');
+      const modalDesc = document.getElementById('modalStaffDesc');
+      const sliderTrack = document.getElementById('staffSliderTrack');
+
+      if (!staffModal || members.length === 0) return;
+
+      window.closeStaffModal = function() {
+        staffModal.classList.remove('active');
+        document.body.style.overflow = '';
+        if (sliderTrack) sliderTrack.classList.remove('paused');
+      };
+
+      members.forEach(member => {
+        member.addEventListener('click', () => {
+          const name = member.getAttribute('data-name') || member.querySelector('h4').textContent;
+          const role = member.getAttribute('data-role') || member.querySelector('.role').textContent;
+          const desc = member.getAttribute('data-desc') || member.querySelector('p').textContent;
+          const imgSrc = member.querySelector('.staff-avatar img').src;
+          const team = member.dataset.team;
+
+          if (modalImg) modalImg.src = imgSrc;
+          if (modalName) modalName.textContent = name;
+          if (modalRole) {
+            modalRole.textContent = role;
+            if (team === 'research') modalRole.style.borderColor = '#4db8c9';
+            else if (team === 'dev') modalRole.style.borderColor = '#f0c868';
+            else if (team === 'docs') modalRole.style.borderColor = '#4db8c9';
+            else if (team === 'visual') modalRole.style.borderColor = '#6fb87f';
+          }
+          if (modalDesc) modalDesc.textContent = "Core Tasks: " + desc;
+
+          if (sliderTrack) sliderTrack.classList.add('paused');
+          staffModal.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+
+      staffModal.addEventListener('click', function(e) {
+        if (e.target === this) window.closeStaffModal();
+      });
+    }
+
+    function initInfographicModal() {
+      const infographicCard = document.getElementById('infographicCard');
+      const infographicModal = document.getElementById('infographicModal');
+
+      if (!infographicCard || !infographicModal) return;
+
+      window.closeInfographicModal = function() {
+        infographicModal.classList.remove('active');
+        document.body.style.overflow = '';
+      };
+
+      infographicCard.addEventListener('click', () => {
+        infographicModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+
+      infographicModal.addEventListener('click', (e) => {
+        if (e.target === infographicModal) {
+          window.closeInfographicModal();
+        }
+      });
+    }
+
     function init() {
       initThemeToggle();
       initMobileMenu();
       initModals();
       initStaffTeams();
+      initStaffModal();
+      initInfographicModal();
       initSearch();
       renderQuiz();
       initScrollReveal();
