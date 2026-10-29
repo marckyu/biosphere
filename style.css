@@ -2006,95 +2006,208 @@ footer a {
   transform: rotate(90deg);
 }
 
+/* ===== Major Threats Infographic (photo cards modal) ===== */
 .infographic-modal-content {
-  max-width: 900px;
-  border-top: 8px solid var(--accent);
-  background: var(--card-bg);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  --flow-bg: #eef6f8;
+  --flow-line: #0f4c5c;
+  --flow-glow: rgba(15, 76, 92, 0.3);
+  max-width: 1100px;
+  border: 1px solid var(--flow-line);
+  border-top: 1px solid var(--flow-line);
+  background: var(--flow-bg);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45), 0 0 30px var(--flow-glow);
 }
 
-.infographic-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.5rem;
+[data-theme="dark"] .infographic-modal-content {
+  --flow-bg: #0b181b;
+  --flow-line: #4db8c9;
+  --flow-glow: rgba(77, 184, 201, 0.28);
+  background: radial-gradient(circle at 50% 0%, #11282d 0%, #0b181b 70%);
 }
 
-.info-card {
-  background: var(--soft-bg-2);
-  border-radius: 16px;
-  padding: 1.5rem;
+.infographic-title {
   text-align: center;
-  border: 1px solid var(--border-soft);
-  transition: all 0.3s var(--ease-spring);
-  position: relative;
-  overflow: hidden;
+  margin-bottom: 1.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--flow-line) !important;
+  text-shadow: 0 0 14px var(--flow-glow);
+  padding-right: 0 !important;
 }
 
-.info-card::before {
+.threat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.4rem;
+}
+
+.threat-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: clamp(330px, 52vh, 470px);
+  padding: 2rem 1.3rem 1.6rem;
+  text-align: center;
+  color: #fff;
+  border: 2px solid var(--flow-line);
+  border-radius: 18px;
+  box-shadow: 0 0 18px var(--flow-glow), 0 6px 0 var(--flow-line);
+  transition: transform 0.35s var(--ease-spring), box-shadow 0.35s ease;
+}
+
+.threat-card::before {            /* photo layer */
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(77, 184, 201, 0.08), transparent);
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  z-index: -2;
+  background-image: var(--bg);
+  background-position: var(--pos, center);
+  background-size: cover;
+  background-repeat: no-repeat;
+  transition: transform 0.6s ease;
 }
 
-.info-card:hover {
-  transform: translateY(-5px);
-  border-color: var(--accent);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 15px rgba(240, 200, 104, 0.15);
+.threat-card::after {             /* dark teal overlay for legibility */
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(8, 28, 33, 0.65) 0%, rgba(8, 28, 33, 0.35) 45%, rgba(8, 28, 33, 0.65) 100%);
 }
 
-.info-card:hover::before {
-  opacity: 1;
+.threat-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0 28px var(--flow-line), 0 6px 0 var(--flow-line);
 }
+.threat-card:hover::before { transform: scale(1.07); }
 
-.info-icon-wrap {
-  width: 64px;
-  height: 64px;
-  margin: 0 auto 1rem;
-  background: rgba(77, 184, 201, 0.1);
-  border: 2px solid #4db8c9;
+.threat-icon {
+  width: 96px;
+  height: 96px;
+  margin-bottom: 1.3rem;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 3px solid #4db8c9;
+  background: rgba(10, 36, 42, 0.85);
   color: #4db8c9;
-  font-size: 1.8rem;
-  box-shadow: 0 0 15px rgba(77, 184, 201, 0.2);
-  transition: transform 0.3s var(--ease-bounce);
+  box-shadow: 0 0 22px rgba(77, 184, 201, 0.45);
+}
+.threat-icon svg { width: 44px; height: 44px; }
+
+.threat-card h3 {
+  margin: 0 0 0.8rem;
+  color: #fff;
+  font-size: 1.45rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
 }
 
-.info-card:hover .info-icon-wrap {
-  transform: scale(1.1) rotate(5deg);
-  box-shadow: 0 0 25px rgba(77, 184, 201, 0.4);
+.threat-card p {
+  margin: 0;
+  color: #f1f8f9;
+  font-size: 1.02rem;
+  line-height: 1.55;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
 }
 
-.info-card h3 {
-  color: var(--primary);
-  font-size: 1.2rem;
-  margin-bottom: 0.8rem;
+.flow-footer { text-align: center; margin-top: 2rem; }
+.btn-close-infographic {
+  padding: 0.75rem 2.2rem;
+  border-radius: 999px;
+  border: 2px solid var(--flow-line);
+  background: transparent;
+  color: var(--flow-line);
   font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 0 14px var(--flow-glow), inset 0 0 10px var(--flow-glow);
+  transition: all 0.25s ease;
+}
+.btn-close-infographic:hover {
+  background: var(--flow-line);
+  color: var(--flow-bg);
+  box-shadow: 0 0 24px var(--flow-line);
 }
 
-.info-card p {
-  color: var(--text-light);
-  font-size: 0.9rem;
-  line-height: 1.5;
+.infographic-modal-content .modal-close {
+  background: rgba(10, 36, 42, 0.9);
+  color: #4db8c9;
+  border: 1px solid var(--flow-line);
 }
 
-[data-theme="dark"] .infographic-modal-content {
-  background: #0d1b1e;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+@media (max-width: 860px) {
+  .threat-grid { grid-template-columns: 1fr; }
+  .threat-card { min-height: 340px; }
 }
 
-[data-theme="dark"] .info-card {
-  background: #142a2e;
+/* ===== Sierra Madre before / after photo modal ===== */
+.photo-modal-content { max-width: 900px; }
+
+.photo-title {
+  font-size: clamp(1.5rem, 4vw, 2.3rem);
+  font-weight: 800;
 }
 
-[data-theme="dark"] .info-card:hover {
-  border-color: #f0c868;
+.photo-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem 1rem;
 }
+
+.photo-label {
+  text-align: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--flow-line);
+  text-shadow: 0 0 12px var(--flow-glow);
+}
+.photo-label--after { color: var(--accent); text-shadow: 0 0 12px rgba(240, 200, 104, 0.35); }
+
+.photo-frame {
+  margin: 0;
+  overflow: hidden;
+  aspect-ratio: 3 / 2;
+  border: 2px solid var(--flow-line);
+  border-radius: 12px;
+  background: #0b181b;
+  box-shadow: 0 0 14px var(--flow-glow);
+  transition: transform 0.3s var(--ease-spring), box-shadow 0.3s ease;
+}
+.photo-frame:nth-child(even) { border-color: var(--accent); box-shadow: 0 0 14px rgba(240, 200, 104, 0.25); }
+.photo-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.photo-frame:hover { transform: translateY(-3px); box-shadow: 0 0 24px var(--flow-line); }
+.photo-frame:hover img { transform: scale(1.06); }
+
+.photo-note {
+  margin: 1.2rem 0 0;
+  text-align: center;
+  font-size: 0.85rem;
+  opacity: 0.75;
+  color: var(--flow-line);
+}
+
+@media (max-width: 520px) {
+  .photo-compare { gap: 0.6rem; }
+  .photo-label { font-size: 0.9rem; letter-spacing: 0.08em; }
+  .photo-frame { border-radius: 8px; }
+}
+
 
 @media (max-width: 900px) {
   .container {
@@ -2230,10 +2343,6 @@ footer a {
 
   .leaflet-popup-content {
     width: 220px !important;
-  }
-
-  .infographic-grid {
-    grid-template-columns: 1fr;
   }
 
   .infographic-modal-content {

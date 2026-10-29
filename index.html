@@ -81,15 +81,16 @@
 
       <div class="cover-image-placeholder">
         <div class="img-wrap reveal-scale">
-          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%232a6f7a'/%3E%3Ctext x='100' y='80' font-size='14' text-anchor='middle' fill='%23ffffff' font-family='Arial'%3EForest Biodiversity%3C/text%3E%3C/svg%3E" alt="Illustration of a lush forest representing biodiversity">
+          <img src="forest bio.jpg" width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%233c6e47'/%3E%3Ctext x='100' y='80' font-size='14' text-anchor='middle' fill='%23ffffff' font-family='Arial'%3EMarine Life%3C/text%3E%3C/svg%3E"alt="Illustration of a lush forest representing biodiversity">
         </div>
         <div class="img-wrap reveal-scale" style="transition-delay: 0.1s;">
-          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%233c6e47'/%3E%3Ctext x='100' y='80' font-size='14' text-anchor='middle' fill='%23ffffff' font-family='Arial'%3EMarine Life%3C/text%3E%3C/svg%3E" alt="Illustration of marine biodiversity">
+          <img src="marine life.jpg" width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%233c6e47'/%3E%3Ctext x='100' y='80' font-size='14' text-anchor='middle' fill='%23ffffff' font-family='Arial'%3EMarine Life%3C/text%3E%3C/svg%3E" alt="Illustration of marine biodiversity">
         </div>
         <div class="img-wrap reveal-scale" style="transition-delay: 0.2s;">
-          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%230f4c5c'/%3E%3Ctext x='100' y='80' font-size='14' text-anchor='middle' fill='%23ffffff' font-family='Arial'%3EHuman Health%3C/text%3E%3C/svg%3E" alt="Symbol representing human health and society">
+          <img src="human health.jpg" width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%230f4c5c'/%3E%3Ctext x='100' y='80' font-size='14' text-anchor='middle' fill='%23ffffff' font-family='Arial'%3EHuman Health%3C/text%3E%3C/svg%3E" alt="Symbol representing human health and society">
         </div>
       </div>
+      <br>
       <p class="alt-text-note reveal"><i data-lucide="image"></i> Visual: forest, marine, and human health icons</p>
     </section>
 
@@ -157,11 +158,12 @@
         <div class="visual-item interactive-card reveal-scale">
           <i data-lucide="bar-chart-3"></i>
           <h4>Species decline</h4>
-          <p>Living Planet Report 2024: 73% average drop in monitored wildlife populations (1970–2020).</p>
+          <p>Living Planet Report 2024: 73% average drop in monitored wildlife populations (1970–2020).</p> <br>
           <div class="bar-chart">
             <div>
               <div class="bar" style="height: 100px; background: var(--primary);"><span class="bar-value" data-target="100">100%</span></div>
               <div class="bar-label">1970</div>
+            
             </div>
             <div>
               <div class="bar" style="height: 27px;"><span class="bar-value" data-target="27">27%</span></div>
@@ -180,7 +182,7 @@
           </div>
         </div>
 
-        <div class="visual-item interactive-card reveal-scale" style="transition-delay: 0.2s;">
+        <div class="visual-item interactive-card reveal-scale open-infographic" style="transition-delay: 0.2s; cursor: pointer;" role="button" tabindex="0" aria-label="Open Major Threats Infographic">
           <i data-lucide="image"></i>
           <h4>Major Threats Infographic</h4>
           <p>Visualizing Deforestation, Pollution, and Overexploitation.</p>
@@ -196,13 +198,13 @@
           </a>
         </div>
 
-        <div class="visual-item interactive-card reveal-scale" id="infographicCard" style="transition-delay: 0.4s; cursor: pointer;">
+        <div class="visual-item interactive-card reveal-scale open-infographic" id="infographicCard" style="transition-delay: 0.4s; cursor: pointer;" role="button" tabindex="0" aria-label="Open Major Threats Infographic">
           <i data-lucide="shapes"></i>
           <h4>Icons & Infographics</h4>
           <p>Icon set: deforestation, pollution, overexploitation.</p>
         </div>
 
-        <div class="visual-item interactive-card reveal-scale" style="transition-delay: 0.5s;">
+        <div class="visual-item interactive-card reveal-scale" id="photosCard" data-open-modal="photoModal" style="transition-delay: 0.5s; cursor: pointer;" role="button" tabindex="0" aria-label="Open Sierra Madre before and after photographs">
           <i data-lucide="camera"></i>
           <h4>Photographs</h4>
           <p>Before/after habitat loss imagery (used with permission).</p>
@@ -410,7 +412,7 @@
           <div class="staff-member" data-team="research" data-name="Mark Cholo Param" data-role="Research Assistant" data-desc="Assistant researcher">
             <div class="staff-float">
               <div class="staff-avatar">
-                <img src="mark.jpg" alt="Mark Cholo" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Mark+Cholo&background=0f4c5c&color=fff&size=150'">
+                <img src="cholo.jpg" alt="Mark Cholo" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=Mark+Cholo&background=0f4c5c&color=fff&size=150'">
               </div>
               <h4>Mark Cholo Param</h4>
               <div class="role">Research Assistant</div>
@@ -544,41 +546,62 @@
       </div>
     </div>
 
-    <div id="infographicModal" class="modal-overlay">
+    <div id="infographicModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="infographicTitle">
       <div class="modal-content infographic-modal-content">
         <button class="modal-close" aria-label="Close" onclick="closeInfographicModal()">&times;</button>
-        <h2 style="text-align: center; margin-bottom: 2rem;">Major Threats Infographic</h2>
-        
-        <div class="infographic-grid">
-          
-          <div class="info-card">
-            <div class="info-icon-wrap">
-              <i data-lucide="trees"></i>
-            </div>
+        <h2 id="infographicTitle" class="infographic-title">3 Major Threats to Biodiversity</h2>
+
+        <div class="threat-grid">
+
+          <article class="threat-card" style="--bg: url('Deforestation.webp'), url('images/Deforestation.webp');">
+            <div class="threat-icon"><i data-lucide="trees"></i></div>
             <h3>Deforestation</h3>
             <p>Clearing of forests for agriculture and settlements destroys habitats, pushing wildlife closer to humans and increasing zoonotic disease risks.</p>
-          </div>
+          </article>
 
-          <div class="info-card">
-            <div class="info-icon-wrap">
-              <i data-lucide="factory"></i>
-            </div>
+          <article class="threat-card" style="--bg: url('Pollution.jpg'), url('images/Pollution.jpg');">
+            <div class="threat-icon"><i data-lucide="factory"></i></div>
             <h3>Pollution</h3>
             <p>Plastic waste, chemicals, and industrial runoff contaminate ecosystems, poisoning wildlife and threatening human food and water sources.</p>
-          </div>
+          </article>
 
-          <div class="info-card">
-            <div class="info-icon-wrap">
-              <i data-lucide="fish-symbol"></i>
-            </div>
+          <article class="threat-card" style="--bg: url('Overexploitation.jpg'), url('images/Overexploitation.jpg');">
+            <div class="threat-icon"><i data-lucide="fish-symbol"></i></div>
             <h3>Overexploitation</h3>
             <p>Illegal wildlife trade, overfishing, and excessive logging deplete species faster than they can recover, destabilizing food webs.</p>
-          </div>
+          </article>
 
         </div>
 
-        <div style="text-align: center; margin-top: 2rem;">
-          <button class="btn-secondary" onclick="closeInfographicModal()">Close Infographic</button>
+        <div class="flow-footer">
+          <button class="btn-close-infographic" onclick="closeInfographicModal()">Return to Visuals Selector</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="photoModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="photoTitle">
+      <div class="modal-content infographic-modal-content photo-modal-content">
+        <button class="modal-close" aria-label="Close" onclick="closeModal('photoModal')">&times;</button>
+        <h2 id="photoTitle" class="infographic-title photo-title">This is our Sierra Madre</h2>
+
+        <div class="photo-compare">
+          <div class="photo-label">Before</div>
+          <div class="photo-label photo-label--after">After</div>
+
+          <figure class="photo-frame"><img src="sierra-before-1.jpg" alt="Before: green rolling hills of the Sierra Madre" loading="lazy"></figure>
+          <figure class="photo-frame"><img src="sierra-after-1.jpg" alt="After: bare, eroded land with a muddy river" loading="lazy"></figure>
+
+          <figure class="photo-frame"><img src="sierra-before-2.jpg" alt="Before: dense forested valley with a river" loading="lazy"></figure>
+          <figure class="photo-frame"><img src="sierra-after-2.jpg" alt="After: mining roads and cleared slopes in the same mountain range" loading="lazy"></figure>
+
+          <figure class="photo-frame"><img src="sierra-before-3.jpg" alt="Before: lush green mountain ridge" loading="lazy"></figure>
+          <figure class="photo-frame"><img src="sierra-after-3.jpg" alt="After: open-pit mine carved into the mountainside" loading="lazy"></figure>
+        </div>
+
+        <p class="photo-note">Before/after habitat loss imagery (used with permission).</p>
+
+        <div class="flow-footer">
+          <button class="btn-close-infographic" onclick="closeModal('photoModal')">Close</button>
         </div>
       </div>
     </div>

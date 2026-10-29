@@ -582,25 +582,52 @@
     }
 
     function initInfographicModal() {
-      const infographicCard = document.getElementById('infographicCard');
+      const triggers = document.querySelectorAll('.open-infographic');
       const infographicModal = document.getElementById('infographicModal');
 
-      if (!infographicCard || !infographicModal) return;
+      if (!triggers.length || !infographicModal) return;
 
       window.closeInfographicModal = function() {
         infographicModal.classList.remove('active');
         document.body.style.overflow = '';
+        const visuals = document.getElementById('visuals');
+        if (visuals && window.__infographicFromButton) {
+          visuals.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        window.__infographicFromButton = false;
       };
 
-      infographicCard.addEventListener('click', () => {
+      const open = () => {
         infographicModal.classList.add('active');
         document.body.style.overflow = 'hidden';
+        if (typeof lucide !== 'undefined' && lucide.createIcons) { try { lucide.createIcons(); } catch (e) {} }
+      };
+
+      triggers.forEach(t => {
+        t.addEventListener('click', open);
+        t.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+        });
       });
+
+      const returnBtn = infographicModal.querySelector('.btn-close-infographic');
+      if (returnBtn) returnBtn.addEventListener('click', () => { window.__infographicFromButton = true; }, true);
 
       infographicModal.addEventListener('click', (e) => {
         if (e.target === infographicModal) {
           window.closeInfographicModal();
         }
+      });
+    }
+
+    function initModalTriggers() {
+      document.querySelectorAll('[data-open-modal]').forEach(el => {
+        const id = el.getAttribute('data-open-modal');
+        const open = () => window.openModal && window.openModal(id);
+        el.addEventListener('click', open);
+        el.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+        });
       });
     }
 
@@ -611,6 +638,7 @@
       initStaffTeams();
       initStaffModal();
       initInfographicModal();
+      initModalTriggers();
       initSearch();
       renderQuiz();
       initScrollReveal();
