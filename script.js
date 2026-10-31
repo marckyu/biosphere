@@ -439,9 +439,9 @@
       }).addTo(map);
 
       const caseStudies = [
-        { coords: [-1.5, 110.0], location: 'Kalimantan & Sumatra, Indonesia', title: 'Devastating Deforestation', description: 'Peatland forest cleared for paper and pulp. 2015 fires peaked in 2016, with smoke hiding the loss.', stat: '2015–16 peatland fires' },
-        { coords: [28.0, 84.0], location: 'Eastern Himalayas', title: 'Himalayan Habitat Loss', description: 'Over 75% of original habitat destroyed, threatening snow leopards, red pandas, and 300+ bird species.', stat: '75% habitat destroyed' },
-        { coords: [38.0, -97.0], location: 'United States (NOAA)', title: 'Restoring Polluted Waters', description: 'NOAA allocated $28M in 2022 to restore marine resources damaged by oil spills and hazardous waste.', stat: '$28M restoration fund' }
+        { coords: [-1.5, 110.0], location: 'Kalimantan & Sumatra, Indonesia', title: 'Devastating Deforestation', description: 'Peatland forest cleared for paper and pulp. 2015 fires peaked in 2016, with smoke hiding the loss.', stat: '2015–16 peatland fires', image: 'case-indonesia.jpg', imageAlt: 'Aerial view of cleared peatland forest and logging roads in Indonesia' },
+        { coords: [28.0, 84.0], location: 'Eastern Himalayas', title: 'Himalayan Habitat Loss', description: 'Over 75% of original habitat destroyed, threatening snow leopards, red pandas, and 300+ bird species.', stat: '75% habitat destroyed', image: 'case-himalaya.jpg', imageAlt: 'Tree stumps and fallen logs on a cleared Himalayan hillside' },
+        { coords: [38.0, -97.0], location: 'United States (NOAA)', title: 'Restoring Polluted Waters', description: 'NOAA allocated $28M in 2022 to restore marine resources damaged by oil spills and hazardous waste.', stat: '$28M restoration fund', image: 'case-noaa.jpg', imageAlt: 'Workers in yellow rain gear washing oil from a rocky shoreline' }
       ];
 
       function createIcon() {
@@ -461,12 +461,35 @@
             <div class="popup-location"><i data-lucide="map-pin"></i> ${study.location}</div>
             <h4>${study.title}</h4>
             <p>${study.description}</p>
-            <span class="popup-stat">${study.stat}</span>
+            <button type="button" class="popup-stat" data-case-index="${index}" aria-label="View photo: ${study.stat}">${study.stat}<i data-lucide="image"></i></button>
           </div>`, { autoPanPadding: [20, 20] });
         if (index === 0) setTimeout(() => marker.openPopup(), 800);
       });
 
       map.on('popupopen', refreshLucide);
+
+      // Reusable image modal: one modal, content swapped per case study
+      function openCaseImage(study) {
+        const img = document.getElementById('caseImageEl');
+        if (!img) return;
+        document.getElementById('caseImageTitle').textContent = study.title;
+        document.getElementById('caseImageStat').textContent = study.stat;
+        document.getElementById('caseImageCaption').textContent = study.location + ' — ' + study.description;
+        img.src = study.image;
+        img.alt = study.imageAlt || study.title;
+        if (window.openModal) window.openModal('caseImageModal');
+      }
+
+      // Leaflet stops click bubbling inside popups, so bind on popupopen
+      map.on('popupopen', (e) => {
+        const root = e.popup.getElement();
+        const btn = root && root.querySelector('.popup-stat[data-case-index]');
+        if (!btn) return;
+        btn.addEventListener('click', () => {
+          const study = caseStudies[Number(btn.dataset.caseIndex)];
+          if (study) openCaseImage(study);
+        });
+      });
       map.on('focus click', () => map.scrollWheelZoom.enable());
       map.on('blur mouseout', () => map.scrollWheelZoom.disable());
       setTimeout(() => map.invalidateSize(), 400);

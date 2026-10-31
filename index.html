@@ -416,7 +416,7 @@
               </div>
               <h4>Mark Cholo Param</h4>
               <div class="role">Research Assistant</div>
-              <p>Assistant Researcher</p>
+              <p>Assistant researcher</p>
             </div>
           </div>
 
@@ -559,7 +559,7 @@
             <p>Clearing of forests for agriculture and settlements destroys habitats, pushing wildlife closer to humans and increasing zoonotic disease risks.</p>
           </article>
 
-          <article class="threat-card" style="--bg: url('Pollution.jpg'), url('images/Pollution.jpg');">
+          <article class="threat-card" style="--bg: url('Pollution.jpg'), url('images/Pollution.jpg'); --pos: 72% 100%;">
             <div class="threat-icon"><i data-lucide="factory"></i></div>
             <h3>Pollution</h3>
             <p>Plastic waste, chemicals, and industrial runoff contaminate ecosystems, poisoning wildlife and threatening human food and water sources.</p>
@@ -602,6 +602,21 @@
 
         <div class="flow-footer">
           <button class="btn-close-infographic" onclick="closeModal('photoModal')">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="caseImageModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="caseImageTitle">
+      <div class="modal-content infographic-modal-content case-image-modal">
+        <button class="modal-close" aria-label="Close" onclick="closeModal('caseImageModal')">&times;</button>
+        <h2 id="caseImageTitle" class="infographic-title case-image-title"></h2>
+        <span id="caseImageStat" class="case-image-stat"></span>
+        <figure class="case-image-figure">
+          <img id="caseImageEl" src="" alt="">
+        </figure>
+        <p id="caseImageCaption" class="case-image-caption"></p>
+        <div class="flow-footer">
+          <button class="btn-close-infographic" onclick="closeModal('caseImageModal')">Close</button>
         </div>
       </div>
     </div>
